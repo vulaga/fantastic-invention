@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VuxDZN</title>
-<link rel="icon" type="image/png" href="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776729610/longo_hviwqs.png">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776729610/longo_hviwqs.png">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init('xjHoPjpj5S47TdTkw');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -162,165 +162,155 @@ nav {
   color: var(--muted); text-transform: uppercase;
 }
 
-/* ── WORK GRID ── */
+/* ── WORK SHOP GRID ── */
 #work { padding: 0; }
 
-.grid-header {
-  display: grid;
-  grid-template-columns: 3rem 1fr 180px 120px;
+.shop-header {
   padding: 0.9rem 2rem;
   border-bottom: 1px solid var(--line);
-  gap: 2rem;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.grid-header span {
+.shop-header span {
   font-size: 0.62rem; letter-spacing: 0.2em;
   color: var(--muted); text-transform: uppercase;
 }
 
-.project-row {
+.shop-grid {
   display: grid;
-  grid-template-columns: 3rem 1fr 180px 120px;
-  padding: 0 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  border-left: 1px solid var(--line);
+  padding: 1.5rem;
+}
+
+.project-card {
+  border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  gap: 2rem;
-  align-items: center;
-  min-height: 80px;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
   transition: background 0.25s;
-  cursor: crosshair;
-}
-.project-row:hover { background: var(--hover-bg); }
-
-/* hover image preview */
-.project-preview {
-  position: absolute;
-  right: 160px; top: 50%;
-  transform: translateY(-50%) scale(0.92);
-  width: 220px; height: 140px;
-  object-fit: cover;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 10;
-  border: 1px solid var(--line);
-  background: var(--muted);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.65rem; letter-spacing: 0.1em; color: var(--bg);
-}
-.project-row:hover .project-preview {
-  opacity: 1;
-  transform: translateY(-50%) scale(1);
-}
-
-.proj-num {
-  font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted);
-}
-.proj-name {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(1rem, 2.2vw, 1.5rem);
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  transition: letter-spacing 0.3s;
-}
-.project-row:hover .proj-name { letter-spacing: 0.03em; }
-.proj-cat {
-  font-size: 0.65rem; letter-spacing: 0.15em;
-  color: var(--muted); text-transform: uppercase;
-}
-.proj-year {
-  font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted);
-  text-align: right;
-}
-
-/* ── FEATURED CAROUSEL ── */
-.featured-carousel {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  overflow: hidden;
-  position: relative;
-  padding: 2.5rem 0;
-  background: var(--bg);
-}
-.featured-carousel-label {
-  padding: 0 2rem 1.5rem;
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
-.carousel-track-wrap {
   overflow: hidden;
   position: relative;
 }
-.carousel-track-wrap::before,
-.carousel-track-wrap::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 80px;
-  z-index: 2;
-  pointer-events: none;
-}
-.carousel-track-wrap::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg), transparent);
-}
-.carousel-track-wrap::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg), transparent);
-}
-.carousel-track {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: max-content;
-  animation: carousel-scroll 30s linear infinite;
-}
-.carousel-track:hover { animation-play-state: paused; }
-@keyframes carousel-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.carousel-item {
-  flex-shrink: 0;
-  width: auto;
-  height: 260px;
+.project-card:hover { background: var(--hover-bg); }
+
+.project-card-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
   background: var(--hover-bg);
-  border: 1px solid var(--line);
-  overflow: hidden;
   position: relative;
-  cursor: crosshair;
-  transition: border-color 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.carousel-item:hover { border-color: rgba(242,240,235,0.2); }
-.carousel-item img {
-  height: 100%;
-  width: auto;
+.project-card-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
   display: block;
-  object-fit: contain;
   transition: transform 0.5s ease, opacity 0.4s;
   opacity: 0;
 }
-.carousel-item img.loaded { opacity: 1; }
-.carousel-item:hover img { transform: scale(1.03); }
-.carousel-item-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(transparent, rgba(12,12,12,0.85));
-  opacity: 0; transition: opacity 0.3s;
-  display: flex; justify-content: space-between; align-items: flex-end;
+.project-card-thumb img.loaded { opacity: 1; }
+.project-card:hover .project-card-thumb img { transform: scale(1.04); }
+
+.project-card-info {
+  padding: 1.1rem 1.4rem 1.3rem;
 }
-.carousel-item:hover .carousel-item-info { opacity: 1; }
-.carousel-item-name {
+.project-card-num {
+  font-size: 0.6rem; letter-spacing: 0.15em;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.project-card-name {
   font-family: 'Unbounded', sans-serif;
-  font-size: 0.7rem; font-weight: 300;
-  letter-spacing: 0.02em;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+  transition: letter-spacing 0.3s;
 }
-.carousel-item-cat {
-  font-size: 0.58rem; letter-spacing: 0.15em;
+.project-card:hover .project-card-name { letter-spacing: 0.02em; }
+.project-card-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+}
+.project-card-cat {
+  font-size: 0.6rem; letter-spacing: 0.15em;
   color: var(--muted); text-transform: uppercase;
+}
+.project-card-year {
+  font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted);
+}
+
+/* keep proj-num / proj-name / proj-cat / proj-year for detail overlay JS refs */
+.proj-num, .proj-name, .proj-cat, .proj-year { display: none; }
+.project-preview { display: none; }
+
+/* ── SERVICES & TOOLS ── */
+#services {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 4rem 2rem;
+}
+.services-header {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-bottom: 3.5rem;
+}
+.service-card {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 2rem 1.6rem;
+  transition: background 0.25s;
+}
+.service-card:hover { background: var(--hover-bg); }
+.service-num {
+  font-size: 0.6rem; letter-spacing: 0.15em;
+  color: var(--muted); margin-bottom: 1.2rem;
+}
+.service-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+}
+.service-desc {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+}
+.tools-header {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.tool-tag {
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.tool-tag:hover { border-color: var(--fg); color: var(--fg); }
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .services-grid { grid-template-columns: 1fr; }
 }
 
 /* ── CONTACT ── */
@@ -426,9 +416,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* ── PROJECT DETAIL OVERLAY ── */
-.project-row { cursor: crosshair; }
-.project-row:hover { cursor: pointer; }
+  .project-card { cursor: pointer; }
 
 .proj-detail-overlay {
   position: fixed; inset: 0; z-index: 200;
@@ -664,13 +652,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   }
   .hero-count .num { font-size: clamp(3rem, 16vw, 5rem); }
 
-  .grid-header { display: none; }
-  .project-row {
-    grid-template-columns: 2.5rem 1fr 1fr;
-    min-height: 64px; padding: 0 1.4rem; gap: 1rem;
-  }
-  .proj-year { display: none; }
-  .project-preview { display: none; }
+  .shop-grid { grid-template-columns: 1fr 1fr; border-left: none; }
 
   .image-grid { grid-template-columns: 1fr 1fr; }
   .img-cell:first-child { grid-column: span 2; }
@@ -743,7 +725,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span>
     </div>
     <div class="hero-count">
-      <div class="num">07</div>
+      <div class="num">05</div>
       <div class="label" data-en="Projects" data-sr="Projekata">Projects</div>
     </div>
   </div>
@@ -751,72 +733,129 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
 <!-- WORK -->
 <section id="work">
-  <div class="grid-header fade-up">
-    <span>#</span>
-    <span data-en="Project" data-sr="Projekat">Project</span>
-    <span data-en="Category" data-sr="Kategorija">Category</span>
-    <span style="text-align:right" data-en="Year" data-sr="Godina">Year</span>
+  <div class="shop-header fade-up">
+    <span data-en="Projects" data-sr="Projekti">Projects</span>
+    <span>05</span>
   </div>
 
-  <div class="project-row fade-up">
-    <span class="proj-num">01</span>
-    <span class="proj-name" data-en="GTAVPARE" data-sr="GTAVPARE">GTAVPARE</span>
-    <span class="proj-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-    <span class="proj-year">2026</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776717652/photo_prepop_npxyml.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">02</span>
-    <span class="proj-name" data-en="JMFade" data-sr="JMFade">JMFade</span>
-    <span class="proj-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-    <span class="proj-year">2024</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716758/bnr_xrtscu.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">03</span>
-    <span class="proj-name" data-en="Goldenito" data-sr="Goldenito">Goldenito</span>
-    <span class="proj-cat" data-en="Discord Visuals" data-sr="Discord Vizuali">Discord Visuals</span>
-    <span class="proj-year">2025</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716734/goldi_banner_mzrc2i.gif" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">04</span>
-    <span class="proj-name" data-en="Bikosni Market" data-sr="Bikosni Market">Bikosni Market</span>
-    <span class="proj-cat" data-en="Discord Visuals" data-sr="Discord Vizuali">Discord Visuals</span>
-    <span class="proj-year">2025</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716739/bikosnio_nteae7.gif" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">05</span>
-    <span class="proj-name" data-en="PlayZone Visuals" data-sr="PlayZone Vizuali">PlayZone Visuals</span>
-    <span class="proj-cat" data-en="Social Media Design" data-sr="Dizajn Društvenih Mreža">Social Media Design</span>
-    <span class="proj-year">2026</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776720631/play_now_yjct31.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">06</span>
-    <span class="proj-name" data-en="MM2Vault" data-sr="MM2Vault">MM2Vault</span>
-    <span class="proj-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-    <span class="proj-year">2025</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721497/logo_mmmm2_mdokvw.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
-  <div class="project-row fade-up">
-    <span class="proj-num">07</span>
-    <span class="proj-name" data-en="Nosscuri" data-sr="Nosscuri">Nosscuri</span>
-    <span class="proj-cat" data-en="Album Cover" data-sr="Album Cover">Album Cover</span>
-    <span class="proj-year">2025</span>
-    <div class="project-preview"><img src="https://res.cloudinary.com/dxetzmj1i/image/upload/v1776726093/albm_cvr_rldo8d.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-  </div>
+  <div class="shop-grid">
 
-  <!-- featured carousel -->
-  <div class="featured-carousel fade-up">
-    <p class="featured-carousel-label" data-en="Featured Work" data-sr="Istaknuti Radovi">Featured Work</p>
-    <div class="carousel-track-wrap">
-      <div class="carousel-track" id="carouselTrack">
-        <!-- items injected by JS -->
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717652/photo_prepop_npxyml.png" alt="GTAVPARE" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">01</p>
+        <p class="project-card-name" data-en="GTAVPARE" data-sr="GTAVPARE">GTAVPARE</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-year">2026</span>
+        </div>
       </div>
     </div>
+
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895660/blabalbal_khcysz.png" alt="JMFade" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">02</p>
+        <p class="project-card-name" data-en="JMFade" data-sr="JMFade">JMFade</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-year">2024</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif" alt="Goldenito" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">03</p>
+        <p class="project-card-name" data-en="Goldenito" data-sr="Goldenito">Goldenito</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Discord Visuals" data-sr="Discord Vizuali">Discord Visuals</span>
+          <span class="project-card-year">2025</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png" alt="PlayZone Visuals" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">04</p>
+        <p class="project-card-name" data-en="PlayZone Visuals" data-sr="PlayZone Vizuali">PlayZone Visuals</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Social Media Design" data-sr="Dizajn Društvenih Mreža">Social Media Design</span>
+          <span class="project-card-year">2026</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png" alt="Luka Photography" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">05</p>
+        <p class="project-card-name" data-en="Luka Photography" data-sr="Luka Photography">Luka Photography</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-year">2026</span>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
+
+  <!-- services & tools -->
+  <section id="services" class="fade-up">
+    <p class="services-header" data-en="What I Do" data-sr="Šta Radim">What I Do</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <p class="service-num">01</p>
+        <p class="service-name" data-en="Social Media Design" data-sr="Dizajn Društvenih Mreža">Social Media Design</p>
+        <p class="service-desc" data-en="Scroll-stopping visuals for Instagram, TikTok and beyond. Designed to drive engagement and keep your feed looking sharp." data-sr="Upečatljivi vizuali za Instagram, TikTok i ostale platforme. Dizajnirani da povećaju angažovanje.">Scroll-stopping visuals for Instagram, TikTok and beyond. Designed to drive engagement and keep your feed looking sharp.</p>
+      </div>
+
+      <div class="service-card">
+        <p class="service-num">02</p>
+        <p class="service-name" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</p>
+        <p class="service-desc" data-en="Visual systems, brand assets and guidelines built to be consistent, recognizable and built to last across every platform." data-sr="Vizuelni sistemi, brendirani materijali i smernice napravljeni da budu dosledni i prepoznatljivi.">Visual systems, brand assets and guidelines built to be consistent, recognizable and built to last across every platform.</p>
+      </div>
+
+      <div class="service-card">
+        <p class="service-num">03</p>
+        <p class="service-name" data-en="Motion Graphics" data-sr="Motion Grafika">Motion Graphics</p>
+        <p class="service-desc" data-en="Animated logos, banners, intros and transitions. Bringing your brand to life with motion that grabs attention and holds it." data-sr="Animirani logotipi, baneri, intra i prelazi. Vaš brend oživljen kroz pokret koji hvata pažnju.">Animated logos, banners, intros and transitions. Bringing your brand to life with motion that grabs attention and holds it.</p>
+      </div>
+
+      <div class="service-card">
+        <p class="service-num">04</p>
+        <p class="service-name" data-en="Logo Design" data-sr="Dizajn Logotipa">Logo Design</p>
+        <p class="service-desc" data-en="Clean, bold logos that communicate who you are at a glance. Delivered in all formats, ready for print and digital use." data-sr="Čisti, upečatljivi logotipi koji komuniciraju ko ste na prvi pogled. Isporučeni u svim formatima.">Clean, bold logos that communicate who you are at a glance. Delivered in all formats, ready for print and digital use.</p>
+      </div>
+
+    </div>
+
+    <p class="tools-header" data-en="Tools" data-sr="Alati">Tools</p>
+    <div class="tools-list">
+      <span class="tool-tag">Photoshop</span>
+      <span class="tool-tag">Illustrator</span>
+      <span class="tool-tag">After Effects</span>
+      <span class="tool-tag">Blender</span>
+      <span class="tool-tag">Premiere Pro</span>
+    </div>
+  </section>
 </section>
 
 <!-- CONTACT -->
@@ -1003,10 +1042,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Complete brand identity for GTAVPARE — a GTA Online in-game currency and rank boost service targeting the Balkans region. Visual system, logo, color palette, and social media assets built for a bold, street-influenced aesthetic.',
       descSr: 'Kompletan vizuelni identitet za GTAVPARE — servis za GTA Online in-game valutu i rank boost koji cilja balkanska tržišta. Vizuelni sistem, logo, paleta boja i materijali za društvene mreže kreirani u uličnom, edgy stilu.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776717740/pngpng_mspfam.png',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776717740/pngpng_mspfam.png',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
       tools: ['Photoshop', 'Blender', 'After Effects'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776722984/bnnnr_yzsnvh.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722984/bnnnr_yzsnvh.png']
     },
     {
       num: '02',
@@ -1017,9 +1056,9 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Brand identity design for JMFade. Logo, typography, and visual language crafted to represent the brand across digital and physical touchpoints.',
       descSr: 'Dizajn vizuelnog identiteta za JMFade. Logo, tipografija i vizuelni jezik kreirani da predstave brend na svim digitalnim i fizičkim kanalima.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776722292/jm_white_iueag6.png',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
       tools: ['Adobe Illustrator', 'Photoshop', 'Figma'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png']
     },
     {
       num: '03',
@@ -1030,24 +1069,13 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Discord server visuals for Goldenito Community. Animated logo, banner, and full visual identity for the server.',
       descSr: 'Discord server vizuali za Goldenito Community. Animirani logo, baner i kompletan vizuelni identitet servera.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716756/goldi_vuy0gn.gif',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif',
       tools: ['Blender', 'After Effects', 'Photoshop'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716756/goldi_vuy0gn.gif']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif']
     },
+
     {
       num: '04',
-      titleEn: 'Bikosni Market',   titleSr: 'Bikosni Market',
-      catEn:   'Discord Visuals', catSr: 'Discord Vizuali',
-      year: '2025',
-      client: 'Bikosni Market',
-      statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Discord server visuals for Bikosni Market — animated banner and visual identity for a Valorant-themed marketplace server.',
-      descSr: 'Discord server vizuali za Bikosni Market — animirani baner i vizuelni identitet za Valorant marketplace server.',
-      tools: ['After Effects', 'Photoshop'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776716739/bikosnio_nteae7.gif']
-    },
-    {
-      num: '05',
       titleEn: 'PlayZone Visuals',  titleSr: 'PlayZone Vizuali',
       catEn:   'Social Media Design',   catSr:   'Dizajn Društvenih Mreža',
       year: '2026',
@@ -1056,33 +1084,24 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       descEn: 'Social media design concept for an entertainment & gaming platform. Bold visuals, high-energy compositions and a vibrant color system designed to drive engagement across digital channels.',
       descSr: 'Koncept dizajna društvenih mreža za entertainment i gaming platformu. Bold vizuali, energični rasporedi i živopisan sistem boja dizajnirani da povećaju angažovanje na digitalnim kanalima.',
       tools: ['Photoshop', 'Illustrator'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776720594/pp_pwxitr.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720594/pp_pwxitr.png']
     },
+
     {
-      num: '06',
-      titleEn: 'MM2Vault',      titleSr: 'MM2Vault',
-      catEn:   'Brand Identity', catSr:   'Brend Identitet',
-      year: '2025',
-      client: 'mm2vault.rs',
+      num: '05',
+      titleEn: 'Luka Photography',  titleSr: 'Luka Photography',
+      catEn:   'Brand Identity',   catSr:   'Brend Identitet',
+      year: '2026',
+      client: 'Luka Photography',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Complete brand identity for MM2Vault — a Murder Mystery 2 trading and shop platform. Logo design, visual system and product visuals tailored for the Roblox trading community.',
-      descSr: 'Kompletan vizuelni identitet za MM2Vault — platformu za trgovinu i shop u Murder Mystery 2. Dizajn logotipa, vizuelni sistem i produktni vizuali prilagođeni Roblox trading zajednici.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721482/logo_mm2_ec2x7e.png',
+      descEn: 'Brand identity design for Luka Photography, including a polished visual direction and banner assets for a modern, premium presentation.',
+      descSr: 'Dizajn brend identiteta za Luka Photography, uključujući doterani vizuelni pravac i baner materijale za moderan, premium nastup.',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894710/lp_png_anhabh.png',
       tools: ['Photoshop', 'Illustrator'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721474/mm2_bundle_bgzwjh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721477/mm2_nozevi_pqd6ml.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721481/mm2_pis_no9fay.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721783/highlight_opuwua.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776721474/mm2_tutorijal_juxqgc.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894767/post_lp_2.0_ngjonx.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895161/bnr_g1hll3.png']
     },
-    {
-      num: '07',
-      titleEn: 'Nosscuri',  titleSr: 'Nosscuri',
-      catEn:   'Album Cover',  catSr:   'Album Cover',
-      year: '2025',
-      client: 'Nosscuri',
-      statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Album cover design for Nosscuri. Visual identity crafted to match the artist\'s sound and aesthetic.',
-      descSr: 'Dizajn albuma za Nosscuri. Vizuelni identitet kreiran da odgovara zvuku i estetici umetnika.',
-      tools: ['Photoshop'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/v1776726093/albm_cvr_rldo8d.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1776726110/cvr_2_rxvivy.png']
-    }
+
+
   ];
 
   let currentProjIndex = 0;
@@ -1187,58 +1206,13 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     if (e.key === 'Escape') { closeLightbox(); closeDetail(); }
   });
 
-  // attach click handlers to project rows
-  document.querySelectorAll('.project-row').forEach((row, i) => {
-    row.addEventListener('click', () => openDetail(i));
+  // attach click handlers to project cards
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    card.addEventListener('click', () => openDetail(i));
   });
 
   // ─── FEATURED CAROUSEL ──────────────────────────────────────────
-  (function buildCarousel() {
-    const track = document.getElementById('carouselTrack');
-    if (!track) return;
 
-    const skipKeywords = ['highlight', 'hl_', 'hlhlhl'];
-
-    const carouselItems = [];
-    projects.forEach(p => {
-      if (!p.images || !p.images.length) return;
-      const suitable = p.images.filter(src => !skipKeywords.some(kw => src.includes(kw)));
-      suitable.forEach(src => {
-        carouselItems.push({ src, name: p.titleEn, cat: p.catEn });
-      });
-    });
-
-    if (carouselItems.length === 0) return;
-
-    // Fisher-Yates shuffle
-    for (let i = carouselItems.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [carouselItems[i], carouselItems[j]] = [carouselItems[j], carouselItems[i]];
-    }
-
-    const allItems = [...carouselItems, ...carouselItems];
-
-    allItems.forEach((item, i) => {
-      const el = document.createElement('div');
-      el.className = 'carousel-item';
-
-      const img = document.createElement('img');
-      img.src = item.src;
-      img.alt = item.name;
-      img.onload = () => img.classList.add('loaded');
-
-      const info = document.createElement('div');
-      info.className = 'carousel-item-info';
-      info.innerHTML = `<span class="carousel-item-name">${item.name}</span><span class="carousel-item-cat">${item.cat}</span>`;
-
-      el.appendChild(img);
-      el.appendChild(info);
-      track.appendChild(el);
-    });
-
-    const duration = Math.max(25, carouselItems.length * 4);
-    track.style.animationDuration = duration + 's';
-  })();
 </script>
 </body>
 </html>
