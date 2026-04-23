@@ -184,8 +184,8 @@ nav {
 }
 
 .project-card {
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: 16px;
   cursor: pointer;
   transition: background 0.25s;
   overflow: hidden;
@@ -264,6 +264,7 @@ nav {
 .service-card {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+  border-radius: 12px;
   padding: 2rem 1.6rem;
   transition: background 0.25s;
 }
@@ -298,6 +299,7 @@ nav {
 }
 .tool-tag {
   border: 1px solid var(--line);
+  border-radius: 999px;
   padding: 0.35rem 0.8rem;
   font-size: 0.65rem;
   letter-spacing: 0.12em;
@@ -528,6 +530,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   overflow: hidden;
   cursor: zoom-in;
   background: var(--hover-bg);
+  border-radius: 12px;
   display: block;
 }
 .proj-masonry-item img {
@@ -544,6 +547,12 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   display: flex; align-items: center; justify-content: center;
   font-size: 0.62rem; letter-spacing: 0.15em;
   color: var(--muted); text-transform: uppercase;
+}
+
+/* project detail: story */
+.proj-detail-story {
+  margin-top: 1.35rem;
+  opacity: 0.82;
 }
 
 /* lightbox */
@@ -598,6 +607,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   font-size: 0.62rem; letter-spacing: 0.12em;
   text-transform: uppercase;
   border: 1px solid var(--line);
+  border-radius: 999px;
   padding: 0.35rem 0.75rem;
   color: var(--muted);
   transition: all 0.2s;
@@ -950,12 +960,14 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     <div>
       <p class="proj-detail-desc-label" data-en="About" data-sr="O projektu">About</p>
       <p class="proj-detail-desc" id="detailDesc">Project description goes here.</p>
+      <p class="proj-detail-desc proj-detail-story" id="detailStory" style="display:none;"></p>
     </div>
     <div class="proj-detail-tools">
       <p class="proj-detail-tools-label" data-en="Tools & Scope" data-sr="Alati i opseg">Tools & Scope</p>
       <div class="proj-detail-tools-list" id="detailTools"></div>
     </div>
   </div>
+
 
   <div class="proj-detail-nav">
     <button class="proj-nav-btn" id="prevProjBtn" onclick="navigateDetail(-1)">
@@ -988,6 +1000,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       const p = el.getAttribute('data-' + lang + '-placeholder');
       if (p) el.placeholder = p;
     });
+    const overlay = document.getElementById('projDetailOverlay');
+    if (overlay && overlay.classList.contains('open')) {
+      renderDetail(currentProjIndex);
+    }
   }
 
   // mobile menu
@@ -1042,10 +1058,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Complete brand identity for GTAVPARE — a GTA Online in-game currency and rank boost service targeting the Balkans region. Visual system, logo, color palette, and social media assets built for a bold, street-influenced aesthetic.',
       descSr: 'Kompletan vizuelni identitet za GTAVPARE — servis za GTA Online in-game valutu i rank boost koji cilja balkanska tržišta. Vizuelni sistem, logo, paleta boja i materijali za društvene mreže kreirani u uličnom, edgy stilu.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
+      storyEn: 'The brief was credibility at a glance: players scroll fast, compare offers in seconds, and bounce if anything feels generic. I leaned into high-contrast street signage, gritty texture, and “system” layouts that echo in-game HUD language — then tightened the hierarchy so cash, rank, and proof-of-service read instantly on both desktop banners and phone-first promos. Motion pieces were storyboarded like short trailers so the brand could flex in Discord and short-form cuts without losing the mark.',
+      storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre — zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
       tools: ['Photoshop', 'Blender', 'After Effects'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722984/bnnnr_yzsnvh.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722984/bnnnr_yzsnvh.png'],
+      closeups: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716746/hlhlhl_fqxlfh.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716761/rank_pc_photo_nyrh2g.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716733/cash_pc_photo_xhaqem.png'
+      ]
     },
     {
       num: '02',
@@ -1056,9 +1078,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Brand identity design for JMFade. Logo, typography, and visual language crafted to represent the brand across digital and physical touchpoints.',
       descSr: 'Dizajn vizuelnog identiteta za JMFade. Logo, tipografija i vizuelni jezik kreirani da predstave brend na svim digitalnim i fizičkim kanalima.',
+      storyEn: 'JMFade needed a barbershop-adjacent calm that still felt premium on a phone screen. I started from spacing: generous margins, a restrained palette, and a wordmark that reads clean at favicon size. Deliverables were sequenced like a real launch — hero banner first, then in-feed highlights and a price/menu layout — so the client could roll out without redesigning every week.',
+      storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje — prvo hero baner, zatim highlight postovi i raspored cenovnika — da klijent može da uvodi bezikonskog redizajna svake nedelje.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
       tools: ['Adobe Illustrator', 'Photoshop', 'Figma'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png'],
+      closeups: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716758/bnr_xrtscu.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png'
+      ]
     },
     {
       num: '03',
@@ -1069,9 +1098,15 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Discord server visuals for Goldenito Community. Animated logo, banner, and full visual identity for the server.',
       descSr: 'Discord server vizuali za Goldenito Community. Animirani logo, baner i kompletan vizuelni identitet servera.',
+      storyEn: 'Creator communities live inside tiny thumbnails and animated headers — so Goldenito prioritized motion-first recognition. The loop reads in under a second: mark → mascot energy → color punch. Banner framing keeps the focal cluster away from Discord UI chrome, and the GIF mark is legible even when Discord compresses the living daylights out of it.',
+      storySr: 'Kreator zajednice žive u malim thumbnailovima i animiranim zaglavljima — zato je Goldenito stavio motion na prvo mesto. Petlja se pročita za manje od sekunde: znak → maskota → boja. Baner je kadriran tako da žarište ne ulazi u Discord UI, a GIF marka ostaje čitljiva i kad platforma agresivno kompresuje fajl.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif',
       tools: ['Blender', 'After Effects', 'Photoshop'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif'],
+      closeups: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716734/goldi_banner_mzrc2i.gif',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716756/goldi_vuy0gn.gif'
+      ]
     },
 
     {
@@ -1083,8 +1118,15 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Concept', statusSr: 'Koncept',
       descEn: 'Social media design concept for an entertainment & gaming platform. Bold visuals, high-energy compositions and a vibrant color system designed to drive engagement across digital channels.',
       descSr: 'Koncept dizajna društvenih mreža za entertainment i gaming platformu. Bold vizuali, energični rasporedi i živopisan sistem boja dizajnirani da povećaju angažovanje na digitalnim kanalima.',
+      storyEn: 'This concept explores “channel surfing” energy — loud color blocks, diagonal motion cues, and poster-style crops that survive the Instagram crop roulette. The goal wasn’t a single pretty frame; it was a repeatable kit: one hero, one secondary pattern, and a portrait variant that still reads when half-covered by UI.',
+      storySr: 'Koncept istražuje energiju „channel surfinga“ — glasne blokove boja, dijagonalne pokretne nagoveštaje i poster kadrove koji prežive Instagram nasumične cropove. Cilj nije bio jedan lep frejm već ponovljiv kit: jedan hero, jedan sekundarni pattern i vertikalna varijanta koja i dalje deluje kad je UI pola prekrije.',
       tools: ['Photoshop', 'Illustrator'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720594/pp_pwxitr.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720594/pp_pwxitr.png'],
+      closeups: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720631/play_now_yjct31.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720612/gw_fs74kk.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720594/pp_pwxitr.png'
+      ]
     },
 
     {
@@ -1096,9 +1138,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Brand identity design for Luka Photography, including a polished visual direction and banner assets for a modern, premium presentation.',
       descSr: 'Dizajn brend identiteta za Luka Photography, uključujući doterani vizuelni pravac i baner materijale za moderan, premium nastup.',
+      storyEn: 'Photography brands win on restraint: fewer gimmicks, more editorial spacing. Here the story is “quiet luxury” — soft neutrals, precise type rhythm, and banners that feel like magazine spreads rather than loud promos. Social templates were designed so photos stay the hero: frames, not fights, with the mark anchoring corners instead of screaming center stage.',
+      storySr: 'Fotografski brendovi pobeđuju suzdržanošću: manje trikova, više editorial razmaka. Priča ovde je „tiha luksuznost“ — meki neutrali, precizan ritam tipografije i baneri koji deluju kao magazinski spreadovi, a ne kao vikaći promo. Šabloni za mreže su urađeni tako da fotografija ostane heroj: ramovi, a ne borba, sa znakom koji sidri uglove umesto da vrišti iz centra.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894710/lp_png_anhabh.png',
       tools: ['Photoshop', 'Illustrator'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894767/post_lp_2.0_ngjonx.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895161/bnr_g1hll3.png']
+      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894767/post_lp_2.0_ngjonx.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895161/bnr_g1hll3.png'],
+      closeups: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776892525/bnr_vux_lp_bjrion.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776894767/post_lp_2.0_ngjonx.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776895161/bnr_g1hll3.png'
+      ]
     },
 
 
@@ -1139,6 +1188,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     document.getElementById('detailClient').textContent = p.client;
     document.getElementById('detailStatus').textContent = isEn ? p.statusEn : p.statusSr;
     document.getElementById('detailDesc').textContent   = isEn ? p.descEn   : p.descSr;
+
+    const storyEl = document.getElementById('detailStory');
+    const storyText = isEn ? p.storyEn : p.storySr;
+    if (storyText) {
+      storyEl.style.display = 'block';
+      storyEl.textContent = storyText;
+    } else {
+      storyEl.style.display = 'none';
+      storyEl.textContent = '';
+    }
 
     // tools
     const toolsEl = document.getElementById('detailTools');
@@ -1185,6 +1244,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       });
     }
 
+
     // nav buttons
     document.getElementById('prevProjBtn').disabled = (idx === 0);
     document.getElementById('nextProjBtn').disabled = (idx === projects.length - 1);
@@ -1193,8 +1253,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   // lightbox
   function openLightbox(idx) {
     const p = projects[currentProjIndex];
-    if (!p || !p.images || !p.images[idx]) return;
-    document.getElementById('lightboxImg').src = p.images[idx];
+    if (!p) return;
+    const all = [...(p.images || [])];
+    if (!all[idx]) return;
+    document.getElementById('lightboxImg').src = all[idx];
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
