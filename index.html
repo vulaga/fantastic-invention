@@ -548,6 +548,19 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   font-size: 0.62rem; letter-spacing: 0.15em;
   color: var(--muted); text-transform: uppercase;
 }
+.proj-masonry-video {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--hover-bg);
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.proj-masonry-video video {
+  width: 100%; display: block;
+}
 
 /* project detail: story */
 .proj-detail-story {
@@ -723,7 +736,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- HERO -->
 <section class="hero fade-up visible">
   <div class="hero-left">
-    <p class="hero-index" data-en="Portfolio — 2025" data-sr="Portfolio — 2025">Portfolio — 2025</p>
+    <p class="hero-index" data-en="Portfolio — 2026" data-sr="Portfolio — 2026">Portfolio — 2026</p>
     <h1 class="hero-title">
       <span data-en="GRAPHIC<br><em>DESIGNER</em><br>& MOTION" data-sr="GRAFIČKI<br><em>DIZAJNER</em><br>& MOTION">GRAPHIC<br><em>DESIGNER</em><br>& MOTION</span>
     </h1>
@@ -735,7 +748,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span>
     </div>
     <div class="hero-count">
-      <div class="num">05</div>
+      <div class="num">06</div>
       <div class="label" data-en="Projects" data-sr="Projekata">Projects</div>
     </div>
   </div>
@@ -745,7 +758,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <section id="work">
   <div class="shop-header fade-up">
     <span data-en="Projects" data-sr="Projekti">Projects</span>
-    <span>05</span>
+    <span>06</span>
   </div>
 
   <div class="shop-grid">
@@ -817,6 +830,20 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
         <p class="project-card-name" data-en="Luka Photography" data-sr="Luka Photography">Luka Photography</p>
         <div class="project-card-meta">
           <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-year">2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-card-thumb">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1777404488/dantemazo_1_febhjn.gif" alt="GTAVPARE Ad" onload="this.classList.add('loaded')">
+      </div>
+      <div class="project-card-info">
+        <p class="project-card-num">06</p>
+        <p class="project-card-name" data-en="GTAVPARE Ad" data-sr="GTAVPARE Ad">GTAVPARE Ad</p>
+        <div class="project-card-meta">
+          <span class="project-card-cat" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
           <span class="project-card-year">2026</span>
         </div>
       </div>
@@ -1151,6 +1178,23 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     },
 
 
+    {
+      num: '06',
+      titleEn: 'GTAVPARE Ad',   titleSr: 'GTAVPARE Ad',
+      catEn:   'Motion Design', catSr: 'Motion Dizajn',
+      year: '2026',
+      client: 'GTAVPARE',
+      statusEn: 'Completed', statusSr: 'Završeno',
+      descEn: 'Ad visual for GTAVPARE. A kinetic motion piece blending fluid animation, bold typography and sharp transitions to define the brand through movement.',
+      descSr: 'Ad vizual za GTAVPARE. Kinetički motion komad koji spaja fluidnu animaciju, bold tipografiju i oštre tranzicije kako bi brend definisao kroz pokret.',
+      storyEn: 'Motion-first branding demands that every second earns its place. The brief was simple: make the mark feel alive. Tight timing, frame-accurate cuts and a restrained color palette let the motion breathe without overstaying its welcome. The loop is engineered to feel inevitable — not just stylish.',
+      storySr: 'Motion-first brending zahteva da svaka sekunda opravda svoje mesto. Zadatak je bio jednostavan: neka znak deluje živo. Precizno tajming, rezovi tačni na frejm i suzdržana paleta boja daju pokretu prostor da diše. Petlja je projektovana da deluje neizbežno — ne samo stilski.',
+      tools: ['After Effects', 'Blender'],
+      video: 'https://res.cloudinary.com/dxetzmj1i/video/upload/q_auto/f_auto/v1777403696/dantemazo_1_tfnkhb.mp4',
+      images: [],
+      closeups: []
+    },
+
   ];
 
   let currentProjIndex = 0;
@@ -1227,10 +1271,18 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     const images = (p.images && p.images.length) ? p.images : [];
 
     if (images.length === 0) {
-      const ph = document.createElement('div');
-      ph.className = 'proj-masonry-placeholder';
-      ph.textContent = '[ no images ]';
-      masonry.appendChild(ph);
+      if (p.video) {
+        const vItem = document.createElement('div');
+        vItem.className = 'proj-masonry-video';
+        vItem.style.columnSpan = 'all';
+        vItem.innerHTML = `<video autoplay loop muted playsinline controls style="width:100%;display:block;border-radius:12px;"><source src="${p.video}" type="video/mp4"></video>`;
+        masonry.appendChild(vItem);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'proj-masonry-placeholder';
+        ph.textContent = '[ no images ]';
+        masonry.appendChild(ph);
+      }
     } else {
       images.forEach((src, i) => {
         const item = document.createElement('div');
