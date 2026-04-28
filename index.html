@@ -477,12 +477,12 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 }
 /* title row */
 .proj-detail-title-row {
-  display: flex; align-items: flex-end;
+  display: flex; align-items: flex-start;
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
 }
-.proj-detail-title-area {}
+.proj-detail-title-area { flex: 1; min-width: 0; }
 .proj-detail-label {
   font-size: 0.58rem; letter-spacing: 0.22em;
   color: var(--muted); text-transform: uppercase;
@@ -494,6 +494,26 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: -0.02em;
+}
+.proj-detail-hook {
+  margin-top: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 520px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.desc-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.desc-sep {
+  color: var(--muted);
 }
 /* meta inline row */
 .proj-detail-meta {
@@ -705,6 +725,37 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   .proj-detail-nav { padding: 2rem 1.4rem; }
   .proj-detail-header { padding: 1rem 1.4rem; }
 }
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 0 1rem;
+}
+.load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.load-more-btn:hover {
+  background: var(--hover-bg);
+  border-color: var(--text);
+}
+.project-card.hidden-card {
+  display: none;
+}
+.project-card.reveal-card {
+  animation: fadeInUp 0.4s ease forwards;
+}
 </style>
 </head>
 <body>
@@ -761,9 +812,9 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     <span>06</span>
   </div>
 
-  <div class="shop-grid">
+  <div class="shop-grid" id="projectGrid">
 
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="1">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717652/photo_prepop_npxyml.png" alt="GTAVPARE" onload="this.classList.add('loaded')">
       </div>
@@ -777,7 +828,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="2">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895660/blabalbal_khcysz.png" alt="JMFade" onload="this.classList.add('loaded')">
       </div>
@@ -791,7 +842,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="3">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif" alt="Goldenito" onload="this.classList.add('loaded')">
       </div>
@@ -805,8 +856,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
-
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="4">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png" alt="PlayZone Visuals" onload="this.classList.add('loaded')">
       </div>
@@ -820,8 +870,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
-
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="5">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png" alt="Luka Photography" onload="this.classList.add('loaded')">
       </div>
@@ -835,7 +884,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
-    <div class="project-card fade-up">
+    <div class="project-card fade-up" data-index="6">
       <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1777404488/dantemazo_1_febhjn.gif" alt="GTAVPARE Ad" onload="this.classList.add('loaded')">
       </div>
@@ -849,8 +898,13 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </div>
     </div>
 
+  </div>
 
-
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+    <button class="load-more-btn" id="loadMoreBtn">
+      <span data-en="Load More" data-sr="Učitaj Još">Load More</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 
   <!-- services & tools -->
@@ -860,26 +914,26 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
       <div class="service-card">
         <p class="service-num">01</p>
-        <p class="service-name" data-en="Social Media Design" data-sr="Dizajn Društvenih Mreža">Social Media Design</p>
-        <p class="service-desc" data-en="Scroll-stopping visuals for Instagram, TikTok and beyond. Designed to drive engagement and keep your feed looking sharp." data-sr="Upečatljivi vizuali za Instagram, TikTok i ostale platforme. Dizajnirani da povećaju angažovanje.">Scroll-stopping visuals for Instagram, TikTok and beyond. Designed to drive engagement and keep your feed looking sharp.</p>
+        <p class="service-name" data-en="Brand Identity for Gaming & Online Brands" data-sr="Brend Identitet za Gaming i Online Brendove">Brand Identity for Gaming & Online Brands</p>
+        <p class="service-desc" data-en="Logos, color systems and visual identity built to stand out in competitive spaces." data-sr="Logotipi, sistemi boja i vizuelni identitet napravljeni da se istaknu u konkurentnom prostoru.">Logos, color systems and visual identity built to stand out in competitive spaces.</p>
       </div>
 
       <div class="service-card">
         <p class="service-num">02</p>
-        <p class="service-name" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</p>
-        <p class="service-desc" data-en="Visual systems, brand assets and guidelines built to be consistent, recognizable and built to last across every platform." data-sr="Vizuelni sistemi, brendirani materijali i smernice napravljeni da budu dosledni i prepoznatljivi.">Visual systems, brand assets and guidelines built to be consistent, recognizable and built to last across every platform.</p>
+        <p class="service-name" data-en="Social Media Visuals (High Engagement)" data-sr="Vizuali za Društvene Mreže (Visok Angažman)">Social Media Visuals (High Engagement)</p>
+        <p class="service-desc" data-en="Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks." data-sr="Postovi, thumbnailovi i baneri koji zaustavljaju skrolovanje i povećavaju klikove.">Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks.</p>
       </div>
 
       <div class="service-card">
         <p class="service-num">03</p>
-        <p class="service-name" data-en="Motion Graphics" data-sr="Motion Grafika">Motion Graphics</p>
-        <p class="service-desc" data-en="Animated logos, banners, intros and transitions. Bringing your brand to life with motion that grabs attention and holds it." data-sr="Animirani logotipi, baneri, intra i prelazi. Vaš brend oživljen kroz pokret koji hvata pažnju.">Animated logos, banners, intros and transitions. Bringing your brand to life with motion that grabs attention and holds it.</p>
+        <p class="service-name" data-en="Motion Graphics & Intros" data-sr="Motion Grafika i Intra">Motion Graphics & Intros</p>
+        <p class="service-desc" data-en="Animated logos, transitions and visuals that bring your brand to life." data-sr="Animirani logotipi, tranzicije i vizuali koji oživljavaju vaš brend.">Animated logos, transitions and visuals that bring your brand to life.</p>
       </div>
 
       <div class="service-card">
         <p class="service-num">04</p>
-        <p class="service-name" data-en="Logo Design" data-sr="Dizajn Logotipa">Logo Design</p>
-        <p class="service-desc" data-en="Clean, bold logos that communicate who you are at a glance. Delivered in all formats, ready for print and digital use." data-sr="Čisti, upečatljivi logotipi koji komuniciraju ko ste na prvi pogled. Isporučeni u svim formatima.">Clean, bold logos that communicate who you are at a glance. Delivered in all formats, ready for print and digital use.</p>
+        <p class="service-name" data-en="Content Packs (Bundle)" data-sr="Content Paketi (Paket)">Content Packs (Bundle)</p>
+        <p class="service-desc" data-en="Everything in one — logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Sve u jednom — logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Everything in one — logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
       </div>
 
     </div>
@@ -962,6 +1016,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <div class="proj-detail-title-area">
         <p class="proj-detail-label" id="detailCat">Brand Identity</p>
         <h2 class="proj-detail-title" id="detailTitle">Project Name</h2>
+        <p class="proj-detail-hook" id="detailDesc">Project description goes here.</p>
       </div>
       <div class="proj-detail-meta">
         <div class="proj-detail-meta-item">
@@ -984,11 +1039,6 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   <div class="proj-detail-masonry" id="detailMasonry"></div>
 
   <div class="proj-detail-body">
-    <div>
-      <p class="proj-detail-desc-label" data-en="About" data-sr="O projektu">About</p>
-      <p class="proj-detail-desc" id="detailDesc">Project description goes here.</p>
-      <p class="proj-detail-desc proj-detail-story" id="detailStory" style="display:none;"></p>
-    </div>
     <div class="proj-detail-tools">
       <p class="proj-detail-tools-label" data-en="Tools & Scope" data-sr="Alati i opseg">Tools & Scope</p>
       <div class="proj-detail-tools-list" id="detailTools"></div>
@@ -1083,8 +1133,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'GTAVPARE',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Complete brand identity for GTAVPARE — a GTA Online in-game currency and rank boost service targeting the Balkans region. Visual system, logo, color palette, and social media assets built for a bold, street-influenced aesthetic.',
-      descSr: 'Kompletan vizuelni identitet za GTAVPARE — servis za GTA Online in-game valutu i rank boost koji cilja balkanska tržišta. Vizuelni sistem, logo, paleta boja i materijali za društvene mreže kreirani u uličnom, edgy stilu.',
+      descEn: 'Problem — A GTA boost service drowning in competitors with no real identity.\nSolution — Built a street-influenced brand system that looks legit and hits hard at first glance.',
+      descSr: 'Problem — GTA boost servis koji se gubi među konkurencijom bez pravog identiteta.\nRešenje — Izgrađen ulični brend sistem koji deluje legitimno i udara jako na prvi pogled.',
       storyEn: 'The brief was credibility at a glance: players scroll fast, compare offers in seconds, and bounce if anything feels generic. I leaned into high-contrast street signage, gritty texture, and “system” layouts that echo in-game HUD language — then tightened the hierarchy so cash, rank, and proof-of-service read instantly on both desktop banners and phone-first promos. Motion pieces were storyboarded like short trailers so the brand could flex in Discord and short-form cuts without losing the mark.',
       storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre — zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
@@ -1103,8 +1153,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2024',
       client: 'JMFade',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Brand identity design for JMFade. Logo, typography, and visual language crafted to represent the brand across digital and physical touchpoints.',
-      descSr: 'Dizajn vizuelnog identiteta za JMFade. Logo, tipografija i vizuelni jezik kreirani da predstave brend na svim digitalnim i fizičkim kanalima.',
+      descEn: 'Problem — A growing brand with no visual system to unify it across platforms.\nSolution — Designed a clean logo and visual language built to be consistent and recognizable everywhere.',
+      descSr: 'Problem — Brend u razvoju bez vizuelnog sistema koji bi ga ujedinio na svim platformama.\nRešenje — Dizajniran čist logo i vizuelni jezik koji je dosledan i prepoznatljiv svuda.',
       storyEn: 'JMFade needed a barbershop-adjacent calm that still felt premium on a phone screen. I started from spacing: generous margins, a restrained palette, and a wordmark that reads clean at favicon size. Deliverables were sequenced like a real launch — hero banner first, then in-feed highlights and a price/menu layout — so the client could roll out without redesigning every week.',
       storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje — prvo hero baner, zatim highlight postovi i raspored cenovnika — da klijent može da uvodi bezikonskog redizajna svake nedelje.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
@@ -1123,8 +1173,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2025',
       client: 'Goldenito',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Discord server visuals for Goldenito Community. Animated logo, banner, and full visual identity for the server.',
-      descSr: 'Discord server vizuali za Goldenito Community. Animirani logo, baner i kompletan vizuelni identitet servera.',
+      descEn: 'Problem — A Discord community with no visual presence to stand out or build trust.\nSolution — Delivered a full identity: animated logo, banner and assets that made the server feel like a real brand.',
+      descSr: 'Problem — Discord zajednica bez vizuelnog prisustva da se istakne ili izgradi poverenje.\nRešenje — Isporučen kompletan identitet: animirani logo, baner i materijali koji su serveru dali izgled pravog brenda.',
       storyEn: 'Creator communities live inside tiny thumbnails and animated headers — so Goldenito prioritized motion-first recognition. The loop reads in under a second: mark → mascot energy → color punch. Banner framing keeps the focal cluster away from Discord UI chrome, and the GIF mark is legible even when Discord compresses the living daylights out of it.',
       storySr: 'Kreator zajednice žive u malim thumbnailovima i animiranim zaglavljima — zato je Goldenito stavio motion na prvo mesto. Petlja se pročita za manje od sekunde: znak → maskota → boja. Baner je kadriran tako da žarište ne ulazi u Discord UI, a GIF marka ostaje čitljiva i kad platforma agresivno kompresuje fajl.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif',
@@ -1143,8 +1193,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: '—',
       statusEn: 'Concept', statusSr: 'Koncept',
-      descEn: 'Social media design concept for an entertainment & gaming platform. Bold visuals, high-energy compositions and a vibrant color system designed to drive engagement across digital channels.',
-      descSr: 'Koncept dizajna društvenih mreža za entertainment i gaming platformu. Bold vizuali, energični rasporedi i živopisan sistem boja dizajnirani da povećaju angažovanje na digitalnim kanalima.',
+      descEn: 'Problem — A gaming platform with generic visuals that got ignored in the feed.\nSolution — Created bold, high-energy social content designed to stop the scroll and drive clicks.',
+      descSr: 'Problem — Gaming platforma sa generičkim vizualima koji se gube u feedu.\nRešenje — Kreiran bold, energičan social sadržaj dizajniran da zaustavi skrolovanje i poveća klikove.',
       storyEn: 'This concept explores “channel surfing” energy — loud color blocks, diagonal motion cues, and poster-style crops that survive the Instagram crop roulette. The goal wasn’t a single pretty frame; it was a repeatable kit: one hero, one secondary pattern, and a portrait variant that still reads when half-covered by UI.',
       storySr: 'Koncept istražuje energiju „channel surfinga“ — glasne blokove boja, dijagonalne pokretne nagoveštaje i poster kadrove koji prežive Instagram nasumične cropove. Cilj nije bio jedan lep frejm već ponovljiv kit: jedan hero, jedan sekundarni pattern i vertikalna varijanta koja i dalje deluje kad je UI pola prekrije.',
       tools: ['Photoshop', 'Illustrator'],
@@ -1163,8 +1213,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'Luka Photography',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Brand identity design for Luka Photography, including a polished visual direction and banner assets for a modern, premium presentation.',
-      descSr: 'Dizajn brend identiteta za Luka Photography, uključujući doterani vizuelni pravac i baner materijale za moderan, premium nastup.',
+      descEn: 'Problem — A photographer with great work but no brand to match the quality.\nSolution — Built a clean, premium identity with logo and banner assets that reflect the craft.',
+      descSr: 'Problem — Fotograf sa odličnim radom ali bez brenda koji odgovara kvalitetu.\nRešenje — Izgrađen čist, premium identitet sa logom i baner materijalima koji odražavaju zanat.',
       storyEn: 'Photography brands win on restraint: fewer gimmicks, more editorial spacing. Here the story is “quiet luxury” — soft neutrals, precise type rhythm, and banners that feel like magazine spreads rather than loud promos. Social templates were designed so photos stay the hero: frames, not fights, with the mark anchoring corners instead of screaming center stage.',
       storySr: 'Fotografski brendovi pobeđuju suzdržanošću: manje trikova, više editorial razmaka. Priča ovde je „tiha luksuznost“ — meki neutrali, precizan ritam tipografije i baneri koji deluju kao magazinski spreadovi, a ne kao vikaći promo. Šabloni za mreže su urađeni tako da fotografija ostane heroj: ramovi, a ne borba, sa znakom koji sidri uglove umesto da vrišti iz centra.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894710/lp_png_anhabh.png',
@@ -1185,8 +1235,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'GTAVPARE',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Ad visual for GTAVPARE. A kinetic motion piece blending fluid animation, bold typography and sharp transitions to define the brand through movement.',
-      descSr: 'Ad vizual za GTAVPARE. Kinetički motion komad koji spaja fluidnu animaciju, bold tipografiju i oštre tranzicije kako bi brend definisao kroz pokret.',
+      descEn: 'Problem — The brand needed motion but had nothing to show in video format.\nSolution — Produced a 10-second ad that brings the identity to life — tight, sharp and impossible to ignore.',
+      descSr: 'Problem — Brend je trebao motion ali nije imao ništa za video format.\nRešenje — Produciran 10-sekundni ad koji oživljava identitet — precizan, oštar i nemoguć za ignorisanje.',
       storyEn: 'Motion-first branding demands that every second earns its place. The brief was simple: make the mark feel alive. Tight timing, frame-accurate cuts and a restrained color palette let the motion breathe without overstaying its welcome. The loop is engineered to feel inevitable — not just stylish.',
       storySr: 'Motion-first brending zahteva da svaka sekunda opravda svoje mesto. Zadatak je bio jednostavan: neka znak deluje živo. Precizno tajming, rezovi tačni na frejm i suzdržana paleta boja daju pokretu prostor da diše. Petlja je projektovana da deluje neizbežno — ne samo stilski.',
       tools: ['After Effects', 'Blender'],
@@ -1231,17 +1281,19 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     document.getElementById('detailYear').textContent  = p.year;
     document.getElementById('detailClient').textContent = p.client;
     document.getElementById('detailStatus').textContent = isEn ? p.statusEn : p.statusSr;
-    document.getElementById('detailDesc').textContent   = isEn ? p.descEn   : p.descSr;
 
-    const storyEl = document.getElementById('detailStory');
-    const storyText = isEn ? p.storyEn : p.storySr;
-    if (storyText) {
-      storyEl.style.display = 'block';
-      storyEl.textContent = storyText;
-    } else {
-      storyEl.style.display = 'none';
-      storyEl.textContent = '';
-    }
+    const descEl = document.getElementById('detailDesc');
+    const descText = isEn ? p.descEn : p.descSr;
+    const descLines = descText.split('\n');
+    descEl.innerHTML = descLines.map(line => {
+      const dash = line.indexOf(' — ');
+      if (dash !== -1) {
+        const label = line.substring(0, dash);
+        const body  = line.substring(dash + 3);
+        return `<span class="desc-label">${label}</span><span class="desc-sep"> — </span>${body}`;
+      }
+      return line;
+    }).join('<br><br>');
 
     // tools
     const toolsEl = document.getElementById('detailTools');
@@ -1326,6 +1378,36 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   });
 
   // ─── FEATURED CAROUSEL ──────────────────────────────────────────
+
+  // ─── LOAD MORE ───────────────────────────────────────────────────
+  const VISIBLE_DEFAULT = 6;
+  const LOAD_STEP = 3;
+  const allCards = Array.from(document.querySelectorAll('.project-card[data-index]'));
+
+  function initLoadMore() {
+    allCards.forEach((card, i) => {
+      if (i >= VISIBLE_DEFAULT) card.classList.add('hidden-card');
+    });
+    updateLoadMoreBtn();
+  }
+
+  function updateLoadMoreBtn() {
+    const wrap = document.getElementById('loadMoreWrap');
+    const hidden = allCards.filter(c => c.classList.contains('hidden-card'));
+    wrap.style.display = hidden.length > 0 ? 'flex' : 'none';
+  }
+
+  document.getElementById('loadMoreBtn').addEventListener('click', () => {
+    const hidden = allCards.filter(c => c.classList.contains('hidden-card'));
+    hidden.slice(0, LOAD_STEP).forEach(card => {
+      card.classList.remove('hidden-card');
+      card.classList.add('reveal-card');
+      setTimeout(() => card.classList.remove('reveal-card'), 500);
+    });
+    updateLoadMoreBtn();
+  });
+
+  initLoadMore();
 
 </script>
 </body>
