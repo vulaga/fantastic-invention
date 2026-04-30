@@ -315,6 +315,108 @@ nav {
   .services-grid { grid-template-columns: 1fr; }
 }
 
+/* ── ABOUT ── */
+#about {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.about-header {
+  padding: 0.9rem 2rem;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.about-header span {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+}
+.about-body {
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.about-left {
+  border-right: 1px solid var(--line);
+  padding-right: 3rem;
+  display: flex; flex-direction: column; justify-content: flex-start;
+}
+.about-index {
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+.about-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 2.5rem;
+}
+.about-title em { font-style: normal; color: var(--muted); }
+.about-bio {
+  font-size: 0.78rem;
+  color: rgba(242,240,235,0.6);
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+  max-width: 400px;
+}
+.about-right {
+  padding-left: 3rem;
+  display: flex; flex-direction: column; gap: 3rem; justify-content: flex-start;
+}
+.about-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.about-stat {
+  padding: 1.8rem 1.4rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  border-right: 1px solid var(--line);
+  transition: background 0.25s;
+}
+.about-stat:last-child { border-right: none; }
+.about-stat:hover { background: var(--hover-bg); }
+.about-stat-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.about-stat-label {
+  font-size: 0.6rem; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  line-height: 1.5;
+}
+.about-focus-label {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.about-focus-list {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+}
+@media (max-width: 768px) {
+  .about-body {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 1.4rem;
+  }
+  .about-left {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .about-right { padding-left: 0; }
+  .about-stats { grid-template-columns: repeat(3, 1fr); }
+  .about-stat { padding: 1.2rem 0.9rem; }
+}
+
 /* ── CONTACT ── */
 #contact {
   padding: 4rem 2rem;
@@ -799,6 +901,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   <div class="nav-right">
     <div class="nav-links">
       <a href="#work" data-en="Work" data-sr="Radovi">Work</a>
+      <a href="#about" data-en="About" data-sr="O Meni">About</a>
       <a href="#contact" data-en="Contact" data-sr="Kontakt">Contact</a>
     </div>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">SR</button>
@@ -811,6 +914,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work" onclick="closeMenu()" data-en="Work" data-sr="Radovi">Work</a>
+  <a href="#about" onclick="closeMenu()" data-en="About" data-sr="O Meni">About</a>
   <a href="#contact" onclick="closeMenu()" data-en="Contact" data-sr="Kontakt">Contact</a>
   <button class="lang-btn" onclick="toggleLang(); closeMenu();" id="langBtnMobile">SR</button>
 </div>
@@ -978,6 +1082,49 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <span class="tool-tag">Premiere Pro</span>
     </div>
   </section>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-up">
+  <div class="about-header">
+    <span data-en="About" data-sr="O Meni">About</span>
+    <span data-en="The Designer" data-sr="Dizajner">The Designer</span>
+  </div>
+  <div class="about-body">
+    <div class="about-left">
+      <div class="about-index" data-en="VuxDZN — 2026" data-sr="VuxDZN — 2026">VuxDZN — 2026</div>
+      <h2 class="about-title">
+        <span data-en="CRAFTING<br><em>BRANDS</em><br>THAT LAST" data-sr="KREIRANJE<br><em>BRENDOVA</em><br>KOJI TRAJU">CRAFTING<br><em>BRANDS</em><br>THAT LAST</span>
+      </h2>
+      <p class="about-bio" data-en="I'm a graphic designer and motion artist focused on gaming, online brands, and digital creators. I build identities that are sharp, intentional, and built to be remembered — not just seen." data-sr="Ja sam grafički dizajner i motion artist fokusiran na gaming, online brendove i digitalne kreatore. Gradim identitete koji su precizni, promišljeni i napravljeni da se pamte — a ne samo vide.">I'm a graphic designer and motion artist focused on gaming, online brands, and digital creators. I build identities that are sharp, intentional, and built to be remembered — not just seen.</p>
+    </div>
+    <div class="about-right">
+      <div class="about-stats">
+        <div class="about-stat">
+          <span class="about-stat-num">06</span>
+          <span class="about-stat-label" data-en="Projects Completed" data-sr="Završenih Projekata">Projects Completed</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-num">2+</span>
+          <span class="about-stat-label" data-en="Years of Experience" data-sr="Godina Iskustva">Years of Experience</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-num">5</span>
+          <span class="about-stat-label" data-en="Tools Mastered" data-sr="Savladanih Alata">Tools Mastered</span>
+        </div>
+      </div>
+      <div class="about-focus">
+        <p class="about-focus-label" data-en="Focus Areas" data-sr="Oblast Rada">Focus Areas</p>
+        <div class="about-focus-list">
+          <span class="tool-tag" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="tool-tag" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
+          <span class="tool-tag" data-en="Social Media Visuals" data-sr="Vizuali za Mreže">Social Media Visuals</span>
+          <span class="tool-tag" data-en="Gaming Brands" data-sr="Gaming Brendovi">Gaming Brands</span>
+          <span class="tool-tag" data-en="Content Packs" data-sr="Content Paketi">Content Packs</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
