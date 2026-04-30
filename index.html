@@ -92,14 +92,14 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  padding: 8rem 2rem 0;
+  padding: 10rem 2rem 0;
   border-bottom: 1px solid var(--line);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
 }
 .hero-left {
-  padding-bottom: 4rem;
+  padding-bottom: 5rem;
   border-right: 1px solid var(--line);
   padding-right: 3rem;
   display: flex; flex-direction: column; justify-content: flex-end;
@@ -130,13 +130,53 @@ nav {
 }
 .hero-right {
   padding-left: 3rem;
-  padding-bottom: 4rem;
-  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;
+  padding-bottom: 5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.hero-right-bottom {
+  display: flex; flex-direction: column; gap: 2rem;
+}
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hero-stat {
+  padding: 1.4rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  border-right: 1px solid var(--line);
+  transition: background 0.25s;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat:hover { background: var(--hover-bg); }
+.hero-stat-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero-stat-label {
+  font-size: 0.58rem; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  line-height: 1.5;
+}
+.hero-focus-label {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.hero-focus-list {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
 }
 .hero-available {
-  display: flex; align-items: center; gap: 0.6rem;
+  display: inline-flex; align-items: center; gap: 0.65rem;
   font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted);
   text-transform: uppercase; margin-bottom: auto; padding-top: 1rem;
+  border: none; border-radius: 999px;
+  padding: 0.45rem 0.9rem;
 }
 .dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -312,7 +352,7 @@ nav {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 540px) {
-  .services-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── ABOUT ── */
@@ -399,6 +439,39 @@ nav {
 }
 .about-focus-list {
   display: flex; flex-wrap: wrap; gap: 0.6rem;
+}
+.about-details {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.about-detail-row {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.2s;
+}
+.about-detail-row:last-child { border-bottom: none; }
+.about-detail-row:hover { background: var(--hover-bg); }
+.about-detail-key {
+  font-size: 0.58rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  white-space: nowrap;
+}
+.about-detail-val {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.75rem; font-weight: 300;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+.about-detail-available {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  color: #4caf50; text-transform: uppercase;
 }
 @media (max-width: 768px) {
   .about-body {
@@ -767,6 +840,86 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 .proj-nav-btn svg { width: 14px; height: 14px; }
 .proj-nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
 
+/* ── ABOUT OVERLAY ── */
+.about-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--bg);
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.about-overlay.open { transform: translateX(0); }
+.about-overlay-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(12,12,12,0.92);
+  backdrop-filter: blur(12px);
+}
+.about-overlay-hero {
+  padding: 4rem 2rem 3rem;
+  border-bottom: 1px solid var(--line);
+}
+.about-overlay-index {
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.about-overlay-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 0.93;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.about-overlay-name em { font-style: normal; color: var(--muted); }
+.about-overlay-alias {
+  font-size: 0.65rem; letter-spacing: 0.25em;
+  color: var(--muted); text-transform: uppercase;
+}
+.about-overlay-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+}
+.about-overlay-left {
+  padding: 3rem 3rem 3rem 2rem;
+  border-right: none;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+.about-overlay-right {
+  padding: 3rem 2rem 3rem 3rem;
+  display: flex; flex-direction: column; gap: 2.5rem;
+}
+.about-overlay-section-label {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+.about-overlay-para {
+  font-size: 0.82rem; line-height: 1.95;
+  color: rgba(242,240,235,0.65);
+  letter-spacing: 0.03em;
+}
+.about-overlay-footer {
+  padding: 2.5rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+@media (max-width: 768px) {
+  .about-overlay-body { grid-template-columns: 1fr; }
+  .about-overlay-left { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 1.4rem; }
+  .about-overlay-right { padding: 2rem 1.4rem; }
+  .about-overlay-hero { padding: 2.5rem 1.4rem 2rem; }
+  .about-overlay-header { padding: 1rem 1.4rem; }
+  .about-overlay-footer { padding: 2rem 1.4rem; flex-direction: column; align-items: flex-start; }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   body { cursor: auto; }
@@ -776,88 +929,98 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   .nav-logo img { height: 52px; }
   .lang-btn { display: none; }
 
+  /* Hero: single column, generous spacing */
   .hero {
-    padding: 5.5rem 1.4rem 0;
+    padding: 8rem 1.6rem 0;
     grid-template-columns: 1fr;
+    gap: 0;
   }
   .hero-left {
     border-right: none;
     border-bottom: 1px solid var(--line);
     padding-right: 0;
-    padding-bottom: 2.5rem;
+    padding-bottom: 3.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 12vw, 4rem);
+    margin-bottom: 1.8rem;
+  }
+  .hero-sub {
+    font-size: 0.72rem;
+    max-width: 100%;
+    line-height: 1.9;
   }
   .hero-right {
     padding-left: 0;
-    padding-top: 2rem;
-    padding-bottom: 2.5rem;
-    align-items: flex-start;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+    padding-top: 2.5rem;
+    padding-bottom: 3.5rem;
+    flex-direction: column;
+    gap: 2rem;
   }
-  .hero-count .num { font-size: clamp(3rem, 16vw, 5rem); }
-
-  .shop-grid { grid-template-columns: 1fr 1fr; border-left: none; }
-
-  .image-grid { grid-template-columns: 1fr 1fr; }
-  .img-cell:first-child { grid-column: span 2; }
-
-  #contact {
-    grid-template-columns: 1fr;
-    padding: 3rem 1.4rem;
-    gap: 3rem;
+  .hero-available {
+    padding-top: 0;
+    margin-bottom: 0;
+    align-self: flex-start;
   }
+  /* Stats: full width, clean 3 cols */
+  .hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 10px;
+  }
+  .hero-stat {
+    padding: 1.1rem 0.9rem;
+  }
+  .hero-stat-num {
+    font-size: 1.4rem;
+  }
+  .hero-stat-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+  .hero-right-bottom { gap: 1.8rem; }
+
+  /* Work grid */
+  .shop-grid { grid-template-columns: repeat(2, 1fr); border-left: none; gap: 0.75rem; padding: 0.75rem; }
+  .shop-header { padding: 0.9rem 1rem; }
+
+  /* Services */
+  #services { padding: 2.5rem 1.4rem; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-card { padding: 1.4rem 1.2rem; border-radius: 0; }
+
+  /* Contact */
+  #contact { grid-template-columns: 1fr; padding: 3rem 1.4rem; gap: 3rem; }
   .contact-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 2.5rem; }
   .contact-right { padding-left: 0; }
 
+  /* Footer */
   footer { flex-direction: column; gap: 1rem; padding: 1.4rem; text-align: center; }
   .footer-links { justify-content: center; }
 
-  .proj-detail-hero {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding: 3rem 1.4rem;
-  }
+  /* Project detail overlay */
+  .proj-detail-hero { padding: 2rem 1.4rem 1.8rem; }
   .proj-detail-masonry { columns: 1; padding: 1rem; }
-  .proj-detail-body {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding: 2rem 1.4rem;
-  }
+  .proj-detail-body { grid-template-columns: 1fr; gap: 2.5rem; padding: 2rem 1.4rem; }
   .proj-detail-nav { padding: 2rem 1.4rem; }
   .proj-detail-header { padding: 1rem 1.4rem; }
+  .proj-detail-title-row { flex-direction: column; gap: 1.5rem; }
+  .proj-detail-meta { gap: 1.5rem; }
 
-  .proj-detail-hero {
-    padding: 2rem 1.4rem 1.8rem;
-  }
-  .proj-detail-title-row {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .proj-detail-title {
-    font-size: clamp(1.8rem, 9vw, 3rem);
-  }
-  .proj-detail-hook {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    max-width: 100%;
-    margin-top: 1rem;
-  }
-  .desc-label {
-    font-size: 0.62rem;
-  }
-  .proj-detail-meta {
-    flex-direction: row;
-    gap: 1.4rem;
-    flex-wrap: wrap;
-  }
-  .proj-detail-meta-val {
-    font-size: 0.68rem;
-  }
-  .proj-detail-brand-mark {
-    margin-bottom: 1.2rem;
-  }
+  /* About info rows */
+  .about-details { border-radius: 8px; }
+  .about-detail-row { padding: 0.9rem 1rem; }
 }
+
+@media (max-width: 390px) {
+  .hero-title { font-size: clamp(2.2rem, 13vw, 3rem); }
+  .hero-stat-num { font-size: 1.2rem; }
+  .hero-stat-label { font-size: 0.42rem; letter-spacing: 0.06em; }
+  .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; padding: 0.5rem; }
+  .project-card-name { font-size: 0.72rem; }
+  .project-card-info { padding: 0.7rem 0.8rem 0.9rem; }
+}
+
 .load-more-wrap {
   display: flex;
   justify-content: center;
@@ -901,7 +1064,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   <div class="nav-right">
     <div class="nav-links">
       <a href="#work" data-en="Work" data-sr="Radovi">Work</a>
-      <a href="#about" data-en="About" data-sr="O Meni">About</a>
+      <a href="javascript:void(0)" onclick="openAbout()" data-en="About" data-sr="O Meni">About</a>
       <a href="#contact" data-en="Contact" data-sr="Kontakt">Contact</a>
     </div>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">SR</button>
@@ -914,7 +1077,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work" onclick="closeMenu()" data-en="Work" data-sr="Radovi">Work</a>
-  <a href="#about" onclick="closeMenu()" data-en="About" data-sr="O Meni">About</a>
+  <a href="javascript:void(0)" onclick="openAbout(); closeMenu();" data-en="About" data-sr="O Meni">About</a>
   <a href="#contact" onclick="closeMenu()" data-en="Contact" data-sr="Kontakt">Contact</a>
   <button class="lang-btn" onclick="toggleLang(); closeMenu();" id="langBtnMobile">SR</button>
 </div>
@@ -922,20 +1085,41 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- HERO -->
 <section class="hero fade-up visible">
   <div class="hero-left">
-    <p class="hero-index" data-en="Portfolio — 2026" data-sr="Portfolio — 2026">Portfolio — 2026</p>
     <h1 class="hero-title">
-      <span data-en="GRAPHIC<br><em>DESIGNER</em><br>& MOTION" data-sr="GRAFIČKI<br><em>DIZAJNER</em><br>& MOTION">GRAPHIC<br><em>DESIGNER</em><br>& MOTION</span>
+      <span data-en="VUKAŠIN<br><em>ĐORĐEVIĆ</em>" data-sr="VUKAŠIN<br><em>ĐORĐEVIĆ</em>">VUKAŠIN<br><em>ĐORĐEVIĆ</em></span>
     </h1>
-    <p class="hero-sub" data-en="Brand identities, visuals and motion graphics that don't blend in." data-sr="Brend identiteti, vizuali i motion grafike koje se ne gube u masi.">Brand identities, visuals and motion graphics that don't blend in.</p>
+    <p class="hero-sub" data-en="Visual designer from Serbia. Brand identities, motion graphics and visuals that don't blend in." data-sr="Vizualni dizajner iz Srbije. Brend identiteti, motion grafika i vizuali koji se ne gube u masi.">Visual designer from Serbia. Brand identities, motion graphics and visuals that don't blend in.</p>
   </div>
   <div class="hero-right">
     <div class="hero-available">
       <div class="dot"></div>
       <span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span>
     </div>
-    <div class="hero-count">
-      <div class="num">06</div>
-      <div class="label" data-en="Projects" data-sr="Projekata">Projects</div>
+    <div class="hero-right-bottom">
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">06</span>
+          <span class="hero-stat-label" data-en="Projects Completed" data-sr="Završenih Projekata">Projects Completed</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">2+</span>
+          <span class="hero-stat-label" data-en="Years of Experience" data-sr="Godina Iskustva">Years of Experience</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">5</span>
+          <span class="hero-stat-label" data-en="Tools Mastered" data-sr="Savladanih Alata">Tools Mastered</span>
+        </div>
+      </div>
+      <div class="hero-focus-areas">
+        <p class="hero-focus-label" data-en="Focus Areas" data-sr="Oblast Rada">Focus Areas</p>
+        <div class="hero-focus-list">
+          <span class="tool-tag" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="tool-tag" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
+          <span class="tool-tag" data-en="Social Media Visuals" data-sr="Vizuali za Mreže">Social Media Visuals</span>
+          <span class="tool-tag" data-en="Gaming Brands" data-sr="Gaming Brendovi">Gaming Brands</span>
+          <span class="tool-tag" data-en="Content Packs" data-sr="Content Paketi">Content Packs</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1068,7 +1252,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <div class="service-card">
         <p class="service-num">04</p>
         <p class="service-name" data-en="Content Packs (Bundle)" data-sr="Content Paketi (Paket)">Content Packs (Bundle)</p>
-        <p class="service-desc" data-en="Everything in one — logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Sve u jednom — logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Everything in one — logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
+        <p class="service-desc" data-en="Everything in one, logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Sve u jednom, logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Everything in one, logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
       </div>
 
     </div>
@@ -1082,49 +1266,6 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       <span class="tool-tag">Premiere Pro</span>
     </div>
   </section>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="fade-up">
-  <div class="about-header">
-    <span data-en="About" data-sr="O Meni">About</span>
-    <span data-en="The Designer" data-sr="Dizajner">The Designer</span>
-  </div>
-  <div class="about-body">
-    <div class="about-left">
-      <div class="about-index" data-en="VuxDZN — 2026" data-sr="VuxDZN — 2026">VuxDZN — 2026</div>
-      <h2 class="about-title">
-        <span data-en="CRAFTING<br><em>BRANDS</em><br>THAT LAST" data-sr="KREIRANJE<br><em>BRENDOVA</em><br>KOJI TRAJU">CRAFTING<br><em>BRANDS</em><br>THAT LAST</span>
-      </h2>
-      <p class="about-bio" data-en="I'm a graphic designer and motion artist focused on gaming, online brands, and digital creators. I build identities that are sharp, intentional, and built to be remembered — not just seen." data-sr="Ja sam grafički dizajner i motion artist fokusiran na gaming, online brendove i digitalne kreatore. Gradim identitete koji su precizni, promišljeni i napravljeni da se pamte — a ne samo vide.">I'm a graphic designer and motion artist focused on gaming, online brands, and digital creators. I build identities that are sharp, intentional, and built to be remembered — not just seen.</p>
-    </div>
-    <div class="about-right">
-      <div class="about-stats">
-        <div class="about-stat">
-          <span class="about-stat-num">06</span>
-          <span class="about-stat-label" data-en="Projects Completed" data-sr="Završenih Projekata">Projects Completed</span>
-        </div>
-        <div class="about-stat">
-          <span class="about-stat-num">2+</span>
-          <span class="about-stat-label" data-en="Years of Experience" data-sr="Godina Iskustva">Years of Experience</span>
-        </div>
-        <div class="about-stat">
-          <span class="about-stat-num">5</span>
-          <span class="about-stat-label" data-en="Tools Mastered" data-sr="Savladanih Alata">Tools Mastered</span>
-        </div>
-      </div>
-      <div class="about-focus">
-        <p class="about-focus-label" data-en="Focus Areas" data-sr="Oblast Rada">Focus Areas</p>
-        <div class="about-focus-list">
-          <span class="tool-tag" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-          <span class="tool-tag" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
-          <span class="tool-tag" data-en="Social Media Visuals" data-sr="Vizuali za Mreže">Social Media Visuals</span>
-          <span class="tool-tag" data-en="Gaming Brands" data-sr="Gaming Brendovi">Gaming Brands</span>
-          <span class="tool-tag" data-en="Content Packs" data-sr="Content Paketi">Content Packs</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- CONTACT -->
@@ -1158,12 +1299,83 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
 <!-- FOOTER -->
 <footer>
-  <p data-en="© 2025 VuxDZN" data-sr="© 2025 VuxDZN">© 2025 VuxDZN</p>
+  <p data-en="© 2026 VuxDZN" data-sr="© 2026 VuxDZN">© 2026 VuxDZN</p>
   <div class="footer-links">
     <a href="https://instagram.com" target="_blank">Instagram</a>
-    <a href="https://tiktok.com" target="_blank">TikTok</a>
   </div>
 </footer>
+
+<!-- ABOUT OVERLAY -->
+<div class="about-overlay" id="aboutOverlay">
+  <div class="about-overlay-header">
+    <button class="proj-detail-back" onclick="closeAbout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span data-en="Back" data-sr="Nazad">Back</span>
+    </button>
+    <span class="proj-detail-tag" data-en="About Me" data-sr="O Meni">About Me</span>
+  </div>
+
+  <div class="about-overlay-hero">
+    <div class="about-overlay-index" data-en="Serbia, Visual Designer" data-sr="Srbija, Vizualni Dizajner">Serbia, Visual Designer</div>
+    <h2 class="about-overlay-name">Vukašin<br><em>Đorđević</em></h2>
+    <p class="about-overlay-alias">VuxDZN</p>
+  </div>
+
+  <div class="about-overlay-body">
+    <div class="about-overlay-left">
+      <p class="about-overlay-section-label" data-en="Who I Am" data-sr="Ko Sam">Who I Am</p>
+      <p class="about-overlay-para" data-en="I'm Vukašin Đorđević, a graphic designer and motion artist from Serbia. Under the alias VuxDZN, I create visual identities, motion graphics and social media content that cut through the noise." data-sr="Ja sam Vukašin Đorđević, grafički dizajner i motion artist iz Srbije. Pod aliasom VuxDZN, kreiram vizuelne identitete, motion grafiku i sadržaj za društvene mreže koji probija buku.">I'm Vukašin Đorđević, a graphic designer and motion artist from Serbia. Under the alias VuxDZN, I create visual identities, motion graphics and social media content that cut through the noise.</p>
+      <p class="about-overlay-para" data-en="My focus is on gaming brands, online creators and businesses that want to look sharp and be taken seriously. I don't do generic, every project is built from scratch around what the brand actually needs." data-sr="Fokusiram se na gaming brendove, online kreatore i biznise koji žele da izgledaju ozbiljno. Ne radim generičke stvari, svaki projekat gradim od nule oko onoga što brend zaista treba.">My focus is on gaming brands, online creators and businesses that want to look sharp and be taken seriously. I don't do generic, every project is built from scratch around what the brand actually needs.</p>
+      <p class="about-overlay-para" data-en="Design, for me, is about making things feel inevitable, like the brand couldn't have looked any other way." data-sr="Dizajn je za mene stvaranje nečega što deluje neizbežno, kao da brend nije mogao izgledati ni na koji drugi način.">Design, for me, is about making things feel inevitable, like the brand couldn't have looked any other way.</p>
+    </div>
+
+    <div class="about-overlay-right">
+      <div class="about-overlay-info">
+        <p class="about-overlay-section-label" data-en="Info" data-sr="Info">Info</p>
+        <div class="about-details">
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Full Name" data-sr="Puno Ime">Full Name</span>
+            <span class="about-detail-val">Vukašin Đorđević</span>
+          </div>
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Origin" data-sr="Poreklo">Origin</span>
+            <span class="about-detail-val" data-en="Serbia" data-sr="Srbija">Serbia</span>
+          </div>
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Role" data-sr="Uloga">Role</span>
+            <span class="about-detail-val" data-en="Visual Designer" data-sr="Vizualni Dizajner">Visual Designer</span>
+          </div>
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Alias" data-sr="Alias">Alias</span>
+            <span class="about-detail-val">VuxDZN</span>
+          </div>
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Status" data-sr="Status">Status</span>
+            <span class="about-detail-val about-detail-available"><span class="dot"></span><span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-overlay-tools">
+        <p class="about-overlay-section-label" data-en="Tools" data-sr="Alati">Tools</p>
+        <div class="tools-list">
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">After Effects</span>
+          <span class="tool-tag">Blender</span>
+          <span class="tool-tag">Premiere Pro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-overlay-footer">
+    <a href="mailto:hello@vuxdzn.art" class="contact-email">hello@vuxdzn.art</a>
+    <span class="about-overlay-section-label" data-en="Let's build something." data-sr="Hajde da napravimo nešto.">Let's build something.</span>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -1203,7 +1415,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
         </div>
         <div class="proj-detail-meta-item">
           <p class="proj-detail-meta-key" data-en="Client" data-sr="Klijent">Client</p>
-          <p class="proj-detail-meta-val" id="detailClient">—</p>
+          <p class="proj-detail-meta-val" id="detailClient">,</p>
         </div>
         <div class="proj-detail-meta-item">
           <p class="proj-detail-meta-key" data-en="Status" data-sr="Status">Status</p>
@@ -1311,10 +1523,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'GTAVPARE',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem — GTA boost service lost in a sea of competitors.\nSolution — Street-influenced brand system built to look legit and hit hard.',
-      descSr: 'Problem — GTA boost servis izgubljen među konkurencijom.\nRešenje — Ulični brend sistem koji deluje legitimno i udara jako.',
-      storyEn: 'The brief was credibility at a glance: players scroll fast, compare offers in seconds, and bounce if anything feels generic. I leaned into high-contrast street signage, gritty texture, and “system” layouts that echo in-game HUD language — then tightened the hierarchy so cash, rank, and proof-of-service read instantly on both desktop banners and phone-first promos. Motion pieces were storyboarded like short trailers so the brand could flex in Discord and short-form cuts without losing the mark.',
-      storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre — zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
+      descEn: 'Problem, GTA boost service lost in a sea of competitors.\nSolution, Street-influenced brand system built to look legit and hit hard.',
+      descSr: 'Problem, GTA boost servis izgubljen među konkurencijom.\nRešenje, Ulični brend sistem koji deluje legitimno i udara jako.',
+      storyEn: 'The brief was credibility at a glance: players scroll fast, compare offers in seconds, and bounce if anything feels generic. I leaned into high-contrast street signage, gritty texture, and “system” layouts that echo in-game HUD language, then tightened the hierarchy so cash, rank, and proof-of-service read instantly on both desktop banners and phone-first promos. Motion pieces were storyboarded like short trailers so the brand could flex in Discord and short-form cuts without losing the mark.',
+      storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre, zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
       tools: ['Photoshop', 'Blender', 'After Effects'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722984/bnnnr_yzsnvh.png'],
@@ -1331,10 +1543,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2024',
       client: 'JMFade',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem — Growing brand with no unified visual system.\nSolution — Clean logo and visual language built to be consistent everywhere.',
-      descSr: 'Problem — Brend u razvoju bez ujedinjenog vizuelnog sistema.\nRešenje — Čist logo i vizuelni jezik koji je dosledan svuda.',
-      storyEn: 'JMFade needed a barbershop-adjacent calm that still felt premium on a phone screen. I started from spacing: generous margins, a restrained palette, and a wordmark that reads clean at favicon size. Deliverables were sequenced like a real launch — hero banner first, then in-feed highlights and a price/menu layout — so the client could roll out without redesigning every week.',
-      storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje — prvo hero baner, zatim highlight postovi i raspored cenovnika — da klijent može da uvodi bezikonskog redizajna svake nedelje.',
+      descEn: 'Problem, Growing brand with no unified visual system.\nSolution, Clean logo and visual language built to be consistent everywhere.',
+      descSr: 'Problem, Brend u razvoju bez ujedinjenog vizuelnog sistema.\nRešenje, Čist logo i vizuelni jezik koji je dosledan svuda.',
+      storyEn: 'JMFade needed a barbershop-adjacent calm that still felt premium on a phone screen. I started from spacing: generous margins, a restrained palette, and a wordmark that reads clean at favicon size. Deliverables were sequenced like a real launch, hero banner first, then in-feed highlights and a price/menu layout, so the client could roll out without redesigning every week.',
+      storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje, prvo hero baner, zatim highlight postovi i raspored cenovnika, da klijent može da uvodi bezikonskog redizajna svake nedelje.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
       tools: ['Adobe Illustrator', 'Photoshop', 'Figma'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png'],
@@ -1351,10 +1563,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2025',
       client: 'Goldenito',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem — Discord community with no visual presence or identity.\nSolution — Animated logo, banner and assets that made it feel like a real brand.',
-      descSr: 'Problem — Discord zajednica bez vizuelnog prisustva ili identiteta.\nRešenje — Animirani logo, baner i materijali koji su je pretvorili u pravi brend.',
-      storyEn: 'Creator communities live inside tiny thumbnails and animated headers — so Goldenito prioritized motion-first recognition. The loop reads in under a second: mark → mascot energy → color punch. Banner framing keeps the focal cluster away from Discord UI chrome, and the GIF mark is legible even when Discord compresses the living daylights out of it.',
-      storySr: 'Kreator zajednice žive u malim thumbnailovima i animiranim zaglavljima — zato je Goldenito stavio motion na prvo mesto. Petlja se pročita za manje od sekunde: znak → maskota → boja. Baner je kadriran tako da žarište ne ulazi u Discord UI, a GIF marka ostaje čitljiva i kad platforma agresivno kompresuje fajl.',
+      descEn: 'Problem, Discord community with no visual presence or identity.\nSolution, Animated logo, banner and assets that made it feel like a real brand.',
+      descSr: 'Problem, Discord zajednica bez vizuelnog prisustva ili identiteta.\nRešenje, Animirani logo, baner i materijali koji su je pretvorili u pravi brend.',
+      storyEn: 'Creator communities live inside tiny thumbnails and animated headers, so Goldenito prioritized motion-first recognition. The loop reads in under a second: mark → mascot energy → color punch. Banner framing keeps the focal cluster away from Discord UI chrome, and the GIF mark is legible even when Discord compresses the living daylights out of it.',
+      storySr: 'Kreator zajednice žive u malim thumbnailovima i animiranim zaglavljima, zato je Goldenito stavio motion na prvo mesto. Petlja se pročita za manje od sekunde: znak → maskota → boja. Baner je kadriran tako da žarište ne ulazi u Discord UI, a GIF marka ostaje čitljiva i kad platforma agresivno kompresuje fajl.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif',
       tools: ['Blender', 'After Effects', 'Photoshop'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif'],
@@ -1369,12 +1581,12 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       titleEn: 'PlayZone Visuals',  titleSr: 'PlayZone Vizuali',
       catEn:   'Social Media Design',   catSr:   'Dizajn Društvenih Mreža',
       year: '2026',
-      client: '—',
+      client: ',',
       statusEn: 'Concept', statusSr: 'Koncept',
-      descEn: 'Problem — Gaming platform with generic visuals getting ignored.\nSolution — Bold social content designed to stop the scroll and drive clicks.',
-      descSr: 'Problem — Gaming platforma sa generičkim vizualima koji prolaze nezapaženo.\nRešenje — Bold social sadržaj koji zaustavlja skrolovanje i povećava klikove.',
-      storyEn: 'This concept explores “channel surfing” energy — loud color blocks, diagonal motion cues, and poster-style crops that survive the Instagram crop roulette. The goal wasn’t a single pretty frame; it was a repeatable kit: one hero, one secondary pattern, and a portrait variant that still reads when half-covered by UI.',
-      storySr: 'Koncept istražuje energiju „channel surfinga“ — glasne blokove boja, dijagonalne pokretne nagoveštaje i poster kadrove koji prežive Instagram nasumične cropove. Cilj nije bio jedan lep frejm već ponovljiv kit: jedan hero, jedan sekundarni pattern i vertikalna varijanta koja i dalje deluje kad je UI pola prekrije.',
+      descEn: 'Problem, Gaming platform with generic visuals getting ignored.\nSolution, Bold social content designed to stop the scroll and drive clicks.',
+      descSr: 'Problem, Gaming platforma sa generičkim vizualima koji prolaze nezapaženo.\nRešenje, Bold social sadržaj koji zaustavlja skrolovanje i povećava klikove.',
+      storyEn: 'This concept explores “channel surfing” energy, loud color blocks, diagonal motion cues, and poster-style crops that survive the Instagram crop roulette. The goal wasn’t a single pretty frame; it was a repeatable kit: one hero, one secondary pattern, and a portrait variant that still reads when half-covered by UI.',
+      storySr: 'Koncept istražuje energiju „channel surfinga“, glasne blokove boja, dijagonalne pokretne nagoveštaje i poster kadrove koji prežive Instagram nasumične cropove. Cilj nije bio jedan lep frejm već ponovljiv kit: jedan hero, jedan sekundarni pattern i vertikalna varijanta koja i dalje deluje kad je UI pola prekrije.',
       tools: ['Photoshop', 'Illustrator'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720594/pp_pwxitr.png'],
       closeups: [
@@ -1391,10 +1603,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'Luka Photography',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem — Great photography work, no brand to match it.\nSolution — Premium identity with logo and banners that reflect the craft.',
-      descSr: 'Problem — Odlični fotografski radovi, bez brenda koji ih prati.\nRešenje — Premium identitet sa logom i banerima koji odražavaju zanat.',
-      storyEn: 'Photography brands win on restraint: fewer gimmicks, more editorial spacing. Here the story is “quiet luxury” — soft neutrals, precise type rhythm, and banners that feel like magazine spreads rather than loud promos. Social templates were designed so photos stay the hero: frames, not fights, with the mark anchoring corners instead of screaming center stage.',
-      storySr: 'Fotografski brendovi pobeđuju suzdržanošću: manje trikova, više editorial razmaka. Priča ovde je „tiha luksuznost“ — meki neutrali, precizan ritam tipografije i baneri koji deluju kao magazinski spreadovi, a ne kao vikaći promo. Šabloni za mreže su urađeni tako da fotografija ostane heroj: ramovi, a ne borba, sa znakom koji sidri uglove umesto da vrišti iz centra.',
+      descEn: 'Problem, Great photography work, no brand to match it.\nSolution, Premium identity with logo and banners that reflect the craft.',
+      descSr: 'Problem, Odlični fotografski radovi, bez brenda koji ih prati.\nRešenje, Premium identitet sa logom i banerima koji odražavaju zanat.',
+      storyEn: 'Photography brands win on restraint: fewer gimmicks, more editorial spacing. Here the story is “quiet luxury”, soft neutrals, precise type rhythm, and banners that feel like magazine spreads rather than loud promos. Social templates were designed so photos stay the hero: frames, not fights, with the mark anchoring corners instead of screaming center stage.',
+      storySr: 'Fotografski brendovi pobeđuju suzdržanošću: manje trikova, više editorial razmaka. Priča ovde je „tiha luksuznost“, meki neutrali, precizan ritam tipografije i baneri koji deluju kao magazinski spreadovi, a ne kao vikaći promo. Šabloni za mreže su urađeni tako da fotografija ostane heroj: ramovi, a ne borba, sa znakom koji sidri uglove umesto da vrišti iz centra.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894710/lp_png_anhabh.png',
       tools: ['Photoshop', 'Illustrator'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894767/post_lp_2.0_ngjonx.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895161/bnr_g1hll3.png'],
@@ -1413,10 +1625,10 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       year: '2026',
       client: 'GTAVPARE',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem — Brand needed motion but had nothing in video format.\nSolution — 10-second ad that brings the identity to life. Sharp and impossible to ignore.',
-      descSr: 'Problem — Brend je trebao motion ali nije imao ništa za video.\nRešenje — 10-sekundni ad koji oživljava identitet. Oštar i nemoguć za ignorisanje.',
-      storyEn: 'Motion-first branding demands that every second earns its place. The brief was simple: make the mark feel alive. Tight timing, frame-accurate cuts and a restrained color palette let the motion breathe without overstaying its welcome. The loop is engineered to feel inevitable — not just stylish.',
-      storySr: 'Motion-first brending zahteva da svaka sekunda opravda svoje mesto. Zadatak je bio jednostavan: neka znak deluje živo. Precizno tajming, rezovi tačni na frejm i suzdržana paleta boja daju pokretu prostor da diše. Petlja je projektovana da deluje neizbežno — ne samo stilski.',
+      descEn: 'Problem, Brand needed motion but had nothing in video format.\nSolution, 10-second ad that brings the identity to life. Sharp and impossible to ignore.',
+      descSr: 'Problem, Brend je trebao motion ali nije imao ništa za video.\nRešenje, 10-sekundni ad koji oživljava identitet. Oštar i nemoguć za ignorisanje.',
+      storyEn: 'Motion-first branding demands that every second earns its place. The brief was simple: make the mark feel alive. Tight timing, frame-accurate cuts and a restrained color palette let the motion breathe without overstaying its welcome. The loop is engineered to feel inevitable, not just stylish.',
+      storySr: 'Motion-first brending zahteva da svaka sekunda opravda svoje mesto. Zadatak je bio jednostavan: neka znak deluje živo. Precizno tajming, rezovi tačni na frejm i suzdržana paleta boja daju pokretu prostor da diše. Petlja je projektovana da deluje neizbežno, ne samo stilski.',
       tools: ['After Effects', 'Blender'],
       video: 'https://res.cloudinary.com/dxetzmj1i/video/upload/q_auto/f_auto/v1777403696/dantemazo_1_tfnkhb.mp4',
       images: [],
@@ -1434,6 +1646,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     overlay.classList.add('open');
     overlay.scrollTop = 0;
     document.body.style.overflow = 'hidden';
+  }
+
+  function openAbout() {
+    document.getElementById('aboutOverlay').classList.add('open');
+    document.getElementById('aboutOverlay').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAbout() {
+    document.getElementById('aboutOverlay').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   function closeDetail() {
@@ -1464,11 +1686,11 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     const descText = isEn ? p.descEn : p.descSr;
     const descLines = descText.split('\n');
     descEl.innerHTML = descLines.map(line => {
-      const dash = line.indexOf(' — ');
+      const dash = line.indexOf(', ');
       if (dash !== -1) {
         const label = line.substring(0, dash);
         const body  = line.substring(dash + 3);
-        return `<span class="desc-label">${label}</span><span class="desc-sep"> — </span>${body}`;
+        return `<span class="desc-label">${label}</span><span class="desc-sep">, </span>${body}`;
       }
       return line;
     }).join('<br><br>');
@@ -1547,7 +1769,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLightbox(); closeDetail(); }
+    if (e.key === 'Escape') { closeLightbox(); closeDetail(); closeAbout(); }
   });
 
   // attach click handlers to project cards
