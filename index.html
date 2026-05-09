@@ -8,837 +8,1143 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init('xjHoPjpj5S47TdTkw');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 :root {
-  --bg: #0c0c0c;
-  --fg: #f2f0eb;
-  --muted: #3a3a3a;
-  --line: rgba(242,240,235,0.08);
-  --hover-bg: #161616;
+  /* surfaces */
+  --bg: #0b0b0b;
+  --fg: #efece6;
+  --fg-soft: rgba(239,236,230,0.72);
+  --fg-mute: rgba(239,236,230,0.42);
+  --fg-faint: rgba(239,236,230,0.18);
+  --line: rgba(239,236,230,0.07);
+  --hover: rgba(239,236,230,0.04);
+  --accent: #b9ff66;
+
+  /* signature gradient — used only on the hero wordmark */
+  --grad-mark: linear-gradient(180deg, #f6f3ec 0%, #c9c4b8 100%);
+
+  /* legacy compat (some inline references in JS still expect these) */
+  --grad-1: var(--grad-mark);
+  --grad-2: var(--grad-mark);
+  --grad-accent: var(--grad-mark);
+  --muted: var(--fg-mute);
+  --hover-bg: var(--hover);
+
+  /* spacing scale (8pt) */
+  --s1: .5rem;  --s2: 1rem;  --s3: 1.5rem; --s4: 2rem;
+  --s5: 3rem;   --s6: 4.5rem; --s7: 7rem;  --s8: 10rem;
+
+  /* type scale */
+  --t-display: clamp(3rem, 8.5vw, 8.5rem);
+  --t-h2:      clamp(2rem, 4.5vw, 4rem);
+  --t-h3:      clamp(1.1rem, 1.6vw, 1.35rem);
+  --t-body:    .95rem;
+  --t-meta:    .82rem;
+  --t-label:   .68rem;
+
+  /* shell */
+  --pad-x: clamp(1.25rem, 4vw, 4rem);
+  --shell: 1440px;
+}
+
+/* one and only label utility */
+.eyebrow {
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  font-weight: 400;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: 'DM Mono', monospace;
-  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: var(--t-body);
+  line-height: 1.55;
   overflow-x: hidden;
-  cursor: crosshair;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: inherit; }
+
+/* shared shell */
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.4rem 2rem;
-  border-bottom: 1px solid var(--line);
-  background: rgba(12,12,12,0.92);
-  backdrop-filter: blur(12px);
+  padding: 1.5rem var(--pad-x);
+  background: rgba(11,11,11,0.92);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid rgba(239,236,230,0.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
-.nav-logo img { height: 64px; width: auto; display: block; }
-.nav-right { display: flex; align-items: center; gap: 2.5rem; }
-.nav-links { display: flex; gap: 2rem; }
+.nav-logo { display: inline-flex; align-items: center; transition: transform 0.2s ease; }
+.nav-logo:hover { transform: scale(1.05); }
+.nav-logo img { height: 64px; width: auto; display: block; opacity: 0.95; }
+.nav-right { display: flex; align-items: center; gap: 2.25rem; }
+.nav-links { display: flex; gap: 2.25rem; }
 .nav-links a {
-  color: var(--muted);
+  color: var(--fg-soft);
   text-decoration: none;
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 0.25rem 0;
 }
 .nav-links a:hover { color: var(--fg); }
-.lang-btn {
-  background: none; border: 1px solid var(--line);
-  color: var(--muted); font-family: 'DM Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.1em;
-  padding: 0.3rem 0.6rem; cursor: crosshair;
-  transition: all 0.2s;
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
 }
-.lang-btn:hover { border-color: var(--fg); color: var(--fg); }
+.nav-links a:hover::after { width: 100%; }
+.lang-btn {
+  background: none; border: none;
+  color: var(--fg-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label); letter-spacing: 0.16em;
+  padding: 0.25rem 0;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+.lang-btn:hover { color: var(--fg); }
 
 /* hamburger */
 .hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  background: none; border: none; cursor: crosshair; padding: 2px;
+  display: none; flex-direction: column; gap: 4px;
+  background: none; border: none;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  position: relative;
+  z-index: 1001;
 }
 .hamburger span {
-  display: block; width: 22px; height: 1px;
+  display: block; width: 20px; height: 2px;
   background: var(--fg);
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border-radius: 2px;
 }
-.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.hamburger.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
 
 .mobile-menu {
   display: none; position: fixed; inset: 0;
-  background: var(--bg); z-index: 99;
-  flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+  background: var(--bg); z-index: 999;
+  flex-direction: column; align-items: flex-start; justify-content: flex-start;
+  gap: 1rem;
+  padding: 5rem var(--pad-x) 2rem;
+  overscroll-behavior: contain;
+  overflow-y: auto;
 }
 .mobile-menu.open { display: flex; }
 .mobile-menu a {
   font-family: 'Unbounded', sans-serif;
-  font-size: 2.2rem; font-weight: 300;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 300;
   color: var(--fg); text-decoration: none;
-  letter-spacing: 0.04em;
-  transition: opacity 0.2s;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: opacity 0.2s ease;
+  padding: 0.75rem 0;
+  display: block;
+  width: 100%;
+  touch-action: manipulation;
+  border-bottom: 1px solid var(--line);
 }
-.mobile-menu a:hover { opacity: 0.4; }
-.mobile-menu .lang-btn { margin-top: 1rem; }
+.mobile-menu a:hover { opacity: 0.7; }
+.mobile-menu .lang-btn { 
+  margin-top: 1rem; 
+  font-size: var(--t-label); 
+  color: var(--fg-mute); 
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--fg-mute);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+.mobile-menu .lang-btn:hover {
+  color: var(--fg);
+  border-color: var(--fg);
+  background: var(--hover);
+}
 
 /* ── HERO ── */
 .hero {
-  padding: 10rem 2rem 0;
-  border-bottom: 1px solid var(--line);
+  padding: clamp(7.25rem, 14vw, 11.5rem) var(--pad-x) clamp(4.5rem, 10vw, 7.5rem);
+  max-width: var(--shell);
+  margin-inline: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 3vw, 2.75rem);
 }
-.hero-left {
-  padding-bottom: 5rem;
-  border-right: 1px solid var(--line);
-  padding-right: 3rem;
-  display: flex; flex-direction: column; justify-content: flex-end;
-}
-.hero-index {
-  font-size: 0.65rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 3rem;
-}
+.hero-eyebrow { color: var(--fg-mute); }
 .hero-title {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.4rem, 5.5vw, 5rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  margin-bottom: 2.5rem;
+  font-size: var(--t-display);
+  font-weight: 300;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  margin: 0;
+  background: var(--grad-mark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .hero-title em {
   font-style: normal;
-  color: var(--muted);
+  font-weight: 200;
+  opacity: 0.55;
 }
-.hero-sub {
-  font-size: 0.75rem;
-  color: var(--muted);
-  line-height: 1.8;
-  max-width: 320px;
-  letter-spacing: 0.04em;
+.hero-lede {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: var(--fg-soft);
+  line-height: 1.6;
+  max-width: 38ch;
+  letter-spacing: -0.005em;
 }
-.hero-right {
-  padding-left: 3rem;
-  padding-bottom: 5rem;
-  display: flex; flex-direction: column; justify-content: space-between;
-}
-.hero-right-bottom {
-  display: flex; flex-direction: column; gap: 2rem;
-}
-.hero-stats {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.hero-stat {
-  padding: 1.4rem 1.2rem;
-  display: flex; flex-direction: column; gap: 0.4rem;
-  border-right: 1px solid var(--line);
-  transition: background 0.25s;
-}
-.hero-stat:last-child { border-right: none; }
-.hero-stat:hover { background: var(--hover-bg); }
-.hero-stat-num {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.hero-stat-label {
-  font-size: 0.58rem; letter-spacing: 0.15em;
-  color: var(--muted); text-transform: uppercase;
-  line-height: 1.5;
-}
-.hero-focus-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 0.8rem;
-}
-.hero-focus-list {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
+.hero-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+  border-top: 1px solid var(--line);
 }
 .hero-available {
-  display: inline-flex; align-items: center; gap: 0.65rem;
-  font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted);
-  text-transform: uppercase; margin-bottom: auto; padding-top: 1rem;
-  border: none; border-radius: 999px;
-  padding: 0.45rem 0.9rem;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-soft);
+  text-transform: uppercase;
 }
+.hero-scroll {
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.hero-scroll:hover { color: var(--fg); }
 .dot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: #4caf50;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; } 50% { opacity: 0.3; }
-}
-.hero-count {
-  text-align: right;
-}
-.hero-count .num {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(4rem, 10vw, 9rem);
-  font-weight: 900;
-  line-height: 1;
-  color: var(--line);
-  letter-spacing: -0.04em;
-}
-.hero-count .label {
-  font-size: 0.65rem; letter-spacing: 0.18em;
-  color: var(--muted); text-transform: uppercase;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
-/* ── WORK SHOP GRID ── */
-#work { padding: 0; }
+/* ── WORK INDEX ── */
+#work {
+  padding: 0;
+  scroll-margin-top: 5.5rem;
+}
 
 .shop-header {
-  padding: 0.9rem 2rem;
-  border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s3);
+  padding: clamp(1.25rem, 3vw, 2rem) var(--pad-x) 0;
+  max-width: var(--shell);
+  margin-inline: auto;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
-.shop-header span {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
+.shop-header span { color: var(--fg-mute); }
 
+/* ── PREMIUM PORTFOLIO GRID ── */
 .shop-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  border-left: 1px solid var(--line);
-  padding: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding: 0 var(--pad-x) clamp(3.5rem, 7vw, 5.5rem);
+  max-width: var(--shell);
+  margin-inline: auto;
+  align-items: stretch;
 }
 
+/* card base */
 .project-card {
-  border: 1px solid var(--line);
-  border-radius: 16px;
   cursor: pointer;
-  transition: background 0.25s;
-  overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #2a2a2a;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  will-change: transform;
+  touch-action: manipulation;
 }
-.project-card:hover { background: var(--hover-bg); }
+.project-card:hover {
+  transform: translateY(-7px) scale(1.009);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+  z-index: 2;
+}
 
+/* 2x2 grid: all cards equal size (span 1 column each) */
+.project-card[data-index="1"] { grid-column: span 1; --aspect: 4 / 3; }
+.project-card[data-index="2"] { grid-column: span 1; --aspect: 4 / 3; }
+.project-card[data-index="3"] { grid-column: span 1; --aspect: 4 / 3; }
+.project-card[data-index="4"] { grid-column: span 1; --aspect: 4 / 3; }
+.project-card[data-index="5"] { grid-column: span 1; --aspect: 4 / 3; }
+.project-card[data-index="6"] { grid-column: span 1; --aspect: 4 / 3; }
+
+/* thumb fills card */
 .project-card-thumb {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  background: var(--hover-bg);
   position: relative;
+  width: 100%;
+  aspect-ratio: var(--aspect, 4 / 3);
+  overflow: hidden;
+  flex-shrink: 0;
 }
+
+/* cinematic gradient overlay */
+.project-card-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    rgba(6,6,8,0.5) 65%,
+    rgba(6,6,8,0.9) 100%
+  );
+  z-index: 1;
+  transition: opacity 0.45s ease;
+}
+.project-card:hover .project-card-thumb::after { opacity: 0.85; }
+
 .project-card-thumb img {
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease, opacity 0.4s;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease;
   opacity: 0;
+  transform: scale(1.05);
 }
-.project-card-thumb img.loaded { opacity: 1; }
-.project-card:hover .project-card-thumb img { transform: scale(1.04); }
+.project-card-thumb img.loaded { opacity: 1; transform: scale(1); }
+.project-card:hover .project-card-thumb img { transform: scale(1.07); }
 
+/* info overlay — absolute over the image bottom */
 .project-card-info {
-  padding: 1.1rem 1.4rem 1.3rem;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: clamp(0.75rem, 1.4vw, 1.1rem) clamp(0.85rem, 1.4vw, 1.1rem);
 }
-.project-card-num {
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: var(--muted); margin-bottom: 0.4rem;
+
+/* arrow — fades in on hover */
+.project-card-info::after {
+  content: '↗';
+  position: absolute;
+  top: clamp(0.65rem, 1.2vw, 1rem);
+  right: clamp(0.85rem, 1.4vw, 1.1rem);
+  font-size: 1rem;
+  color: rgba(239,236,230,0.55);
+  opacity: 0;
+  transform: translate(-5px, 5px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.project-card-name {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.35rem;
-  transition: letter-spacing 0.3s;
+.project-card:hover .project-card-info::after {
+  opacity: 1;
+  transform: translate(0, 0);
 }
-.project-card:hover .project-card-name { letter-spacing: 0.02em; }
+
 .project-card-meta {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: rgba(239,236,230,0.45);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.project-card-meta-left {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  min-width: 0;
+}
+.project-card-num { flex-shrink: 0; }
+.project-card-num::after {
+  content: " · ";
+  margin: 0 0.45rem;
+  color: rgba(239,236,230,0.2);
 }
 .project-card-cat {
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: var(--muted); text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
-.project-card-year {
-  font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted);
+.project-card-year { flex-shrink: 0; }
+
+.project-card-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(0.82rem, 0.95vw, 0.98rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: rgba(239,236,230,0.92);
+  margin: 0;
+  transition: color 0.2s ease;
+  line-height: 1.15;
+}
+.project-card:hover .project-card-name { color: #fff; }
+
+/* dominant cards: bigger title */
+.project-card[data-index="1"] .project-card-name,
+.project-card[data-index="4"] .project-card-name {
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
 }
 
 /* keep proj-num / proj-name / proj-cat / proj-year for detail overlay JS refs */
 .proj-num, .proj-name, .proj-cat, .proj-year { display: none; }
 .project-preview { display: none; }
 
-/* ── SERVICES & TOOLS ── */
+/* ── CAPABILITIES & TOOLS ── */
 #services {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 4rem 2rem;
-}
-.services-header {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 2.5rem;
-}
-.services-grid {
+  padding: clamp(4rem, 9vw, 7rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  grid-template-columns: minmax(0, 18ch) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
   border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
-  margin-bottom: 3.5rem;
+}
+.services-header { color: var(--fg-mute); padding-top: 0.4rem; }
+.services-grid {
+  display: flex;
+  flex-direction: column;
 }
 .service-card {
-  border-right: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: baseline;
+  padding: clamp(1.2rem, 2.4vw, 1.8rem) 0;
   border-bottom: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 2rem 1.6rem;
-  transition: background 0.25s;
 }
-.service-card:hover { background: var(--hover-bg); }
+.service-card:last-child { border-bottom: none; }
 .service-num {
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: var(--muted); margin-bottom: 1.2rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
 }
 .service-name {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
   font-weight: 300;
   letter-spacing: -0.01em;
-  margin-bottom: 0.8rem;
-  line-height: 1.3;
+  line-height: 1.25;
+  color: var(--fg);
 }
 .service-desc {
-  font-size: 0.68rem;
-  color: var(--muted);
-  line-height: 1.75;
-  letter-spacing: 0.03em;
+  font-size: var(--t-meta);
+  color: var(--fg-soft);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
 }
 .tools-header {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 0.8rem;
+  color: var(--fg-mute);
+  grid-column: 1 / -1;
 }
 .tools-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.55rem 0.8rem;
+  align-items: baseline;
+  grid-column: 1 / -1;
 }
 .tool-tag {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  text-transform: uppercase;
-  transition: all 0.2s;
+  font-size: var(--t-meta);
+  color: var(--fg-soft);
+  letter-spacing: -0.005em;
+  position: relative;
+  padding-right: 0.8rem;
 }
-.tool-tag:hover { border-color: var(--fg); color: var(--fg); }
+.tool-tag:not(:last-child)::after {
+  content: '·';
+  color: var(--fg-faint);
+  margin-left: 0.8rem;
+}
 @media (max-width: 900px) {
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 540px) {
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  #services { grid-template-columns: 1fr; gap: 1.5rem; }
+  .service-card { grid-template-columns: 2.5rem 1fr; row-gap: 0.5rem; }
+  .service-desc { grid-column: 2 / -1; }
+
+  /* portfolio grid: 2 columns on tablet */
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  .project-card[data-index="1"],
+  .project-card[data-index="2"],
+  .project-card[data-index="3"],
+  .project-card[data-index="4"],
+  .project-card[data-index="5"],
+  .project-card[data-index="6"] {
+    grid-column: span 1;
+    --aspect: 4 / 3;
+  }
+  .project-card[data-index="1"] .project-card-name,
+  .project-card[data-index="4"] .project-card-name { font-size: clamp(0.95rem, 2.5vw, 1.15rem); }
 }
 
-/* ── ABOUT ── */
-#about {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+@media (max-width: 540px) {
+  /* portfolio grid: 1 column on mobile */
+  .shop-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .project-card[data-index="1"],
+  .project-card[data-index="2"],
+  .project-card[data-index="3"],
+  .project-card[data-index="4"],
+  .project-card[data-index="5"],
+  .project-card[data-index="6"] {
+    grid-column: span 1;
+    --aspect: 16 / 10;
+  }
+  .project-card { border-radius: 10px; }
+  .project-card:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
 }
-.about-header {
-  padding: 0.9rem 2rem;
-  border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.about-header span {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
-.about-body {
-  padding: 4rem 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-.about-left {
-  border-right: 1px solid var(--line);
-  padding-right: 3rem;
-  display: flex; flex-direction: column; justify-content: flex-start;
-}
-.about-index {
-  font-size: 0.65rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 2.5rem;
-}
-.about-title {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2rem, 4.5vw, 4rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  margin-bottom: 2.5rem;
-}
-.about-title em { font-style: normal; color: var(--muted); }
-.about-bio {
-  font-size: 0.78rem;
-  color: rgba(242,240,235,0.6);
-  line-height: 1.9;
-  letter-spacing: 0.03em;
-  max-width: 400px;
-}
-.about-right {
-  padding-left: 3rem;
-  display: flex; flex-direction: column; gap: 3rem; justify-content: flex-start;
-}
-.about-stats {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.about-stat {
-  padding: 1.8rem 1.4rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  border-right: 1px solid var(--line);
-  transition: background 0.25s;
-}
-.about-stat:last-child { border-right: none; }
-.about-stat:hover { background: var(--hover-bg); }
-.about-stat-num {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.about-stat-label {
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: var(--muted); text-transform: uppercase;
-  line-height: 1.5;
-}
-.about-focus-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-.about-focus-list {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
-}
-.about-details {
-  display: flex; flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-}
+
+/* ── ABOUT (legacy inline section, retained but unused) ── */
+#about { display: none; }
 .about-detail-row {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.1rem 1.4rem;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s3);
+  padding: 0.9rem 0;
   border-bottom: 1px solid var(--line);
-  transition: background 0.2s;
 }
 .about-detail-row:last-child { border-bottom: none; }
-.about-detail-row:hover { background: var(--hover-bg); }
 .about-detail-key {
-  font-size: 0.58rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
   white-space: nowrap;
 }
 .about-detail-val {
-  font-family: 'Unbounded', sans-serif;
-  font-size: 0.75rem; font-weight: 300;
-  letter-spacing: 0.01em;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-meta);
+  font-weight: 400;
+  color: var(--fg);
   text-align: right;
+  letter-spacing: -0.005em;
 }
 .about-detail-available {
-  display: flex; align-items: center; gap: 0.5rem;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.65rem; letter-spacing: 0.1em;
-  color: #4caf50; text-transform: uppercase;
-}
-@media (max-width: 768px) {
-  .about-body {
-    grid-template-columns: 1fr;
-    padding: 2.5rem 1.4rem;
-  }
-  .about-left {
-    border-right: none;
-    border-bottom: 1px solid var(--line);
-    padding-right: 0;
-    padding-bottom: 2.5rem;
-    margin-bottom: 2.5rem;
-  }
-  .about-right { padding-left: 0; }
-  .about-stats { grid-template-columns: repeat(3, 1fr); }
-  .about-stat { padding: 1.2rem 0.9rem; }
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: var(--t-label); letter-spacing: 0.16em;
+  color: var(--fg); text-transform: uppercase;
 }
 
 /* ── CONTACT ── */
 #contact {
-  padding: 4rem 2rem;
+  padding: clamp(5rem, 10vw, 8rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
   border-top: 1px solid var(--line);
 }
-.contact-left {
-  border-right: 1px solid var(--line);
-  padding-right: 3rem;
-}
-.contact-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 2rem;
-}
+.contact-left { display: flex; flex-direction: column; gap: var(--s4); }
+.contact-label { color: var(--fg-mute); }
 .contact-heading {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2rem, 4.5vw, 4rem);
-  font-weight: 900;
+  font-size: var(--t-h2);
+  font-weight: 300;
   line-height: 0.95;
-  letter-spacing: -0.02em;
-  margin-bottom: 2.5rem;
-  word-break: break-word;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0;
 }
 .contact-email {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(0.9rem, 2vw, 1.3rem);
-  font-weight: 300;
+  font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+  font-weight: 200;
   color: var(--fg);
   text-decoration: none;
-  letter-spacing: -0.01em;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.3rem;
-  transition: border-color 0.2s;
+  letter-spacing: -0.015em;
   display: inline-block;
+  position: relative;
+  padding-bottom: 0.2rem;
+  transition: opacity 0.2s ease;
+  width: max-content;
+  max-width: 100%;
 }
-.contact-email:hover { border-color: var(--fg); }
+.contact-email::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.contact-email:hover::after { transform: scaleX(1); }
 .contact-right {
-  padding-left: 3rem;
-  display: flex; flex-direction: column; justify-content: space-between;
+  display: flex; flex-direction: column;
 }
 .contact-form { display: flex; flex-direction: column; gap: 0; }
 .form-field {
   border-bottom: 1px solid var(--line);
-  padding: 1.2rem 0;
-  display: flex; flex-direction: column; gap: 0.4rem;
-  transition: border-color 0.2s;
+  padding: 1.1rem 0 0.9rem;
+  display: flex; flex-direction: column; gap: 0.45rem;
+  transition: border-color 0.2s ease;
 }
-.form-field:focus-within { border-color: rgba(242,240,235,0.3); }
-.form-field label {
-  font-size: 0.6rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
+.form-field:focus-within { border-bottom-color: var(--fg); }
+.form-field label { color: var(--fg-mute); }
 .form-field input,
 .form-field textarea,
 .form-field select {
   background: none; border: none; outline: none;
-  color: var(--fg); font-family: 'DM Mono', monospace;
-  font-size: 0.82rem; font-weight: 300;
-  resize: none; cursor: crosshair;
+  color: var(--fg); font-family: 'Inter', sans-serif;
+  font-size: var(--t-body); font-weight: 400;
+  resize: none;
   appearance: none;
+  padding: 0;
 }
-.form-field textarea { height: 80px; }
+.form-field textarea { min-height: 88px; line-height: 1.5; }
 .form-field input::placeholder,
-.form-field textarea::placeholder { color: var(--muted); }
+.form-field textarea::placeholder { color: var(--fg-mute); }
 .form-submit {
-  margin-top: 2rem;
+  margin-top: var(--s4);
   display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
 }
 .submit-btn {
-  background: var(--fg); color: var(--bg);
-  border: none; font-family: 'DM Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.18em;
-  text-transform: uppercase; padding: 0.9rem 2rem;
-  cursor: crosshair; transition: opacity 0.2s;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.8rem;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  min-height: 48px;
+  border-radius: 8px;
+  touch-action: manipulation;
 }
-.submit-btn:hover { opacity: 0.85; }
+.submit-btn:hover {
+  background: var(--fg);
+  color: var(--bg);
+  transform: translateY(-1px);
+}
+.submit-btn:active {
+  transform: translateY(0);
+}
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .submit-note {
-  font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted);
-  max-width: 160px; line-height: 1.6;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  max-width: 180px;
+  line-height: 1.5;
 }
 
 /* ── FOOTER ── */
 footer {
+  padding: var(--s5) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
   border-top: 1px solid var(--line);
-  padding: 1.4rem 2rem;
-  display: flex; align-items: center; justify-content: space-between;
 }
-footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
-.footer-links { display: flex; gap: 2rem; }
+footer p {
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+}
+.footer-links { display: flex; gap: 1.75rem; }
 .footer-links a {
-  font-size: 0.62rem; letter-spacing: 0.15em;
-  color: var(--muted); text-decoration: none;
-  text-transform: uppercase; transition: color 0.2s;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
 }
 .footer-links a:hover { color: var(--fg); }
 
-/* ── FADE IN ── */
-.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+/* ── MOTION ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-up.visible { opacity: 1; transform: none; transition: none; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
 
-  .project-card { cursor: pointer; }
+.project-card { cursor: pointer; }
 
+/* ══════════════════════════════════════════════════
+   CASE STUDY OVERLAY
+══════════════════════════════════════════════════ */
 .proj-detail-overlay {
   position: fixed; inset: 0; z-index: 200;
   background: var(--bg);
-  transform: translateX(100%);
+  transform: translateY(100%);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   overflow-y: auto;
   display: flex; flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
-.proj-detail-overlay.open {
-  transform: translateX(0);
-}
+.proj-detail-overlay.open { transform: translateY(0); }
 
+/* sticky header */
 .proj-detail-header {
-  position: sticky; top: 0; z-index: 10;
+  position: sticky; top: 0; z-index: 210;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.4rem 2rem;
-  border-bottom: 1px solid var(--line);
-  background: rgba(12,12,12,0.92);
-  backdrop-filter: blur(12px);
+  padding: 1rem var(--pad-x);
+  background: rgba(11,11,11,0.78);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
 }
 .proj-detail-back {
-  display: flex; align-items: center; gap: 0.6rem;
-  background: none; border: none; cursor: crosshair;
-  color: var(--muted); font-family: 'DM Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
-  transition: color 0.2s;
-  padding: 0;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  background: none; border: none;
+  color: var(--fg-soft);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase;
+  transition: color 0.2s ease;
+  padding: 0.5rem 0;
+  min-height: 44px;
 }
 .proj-detail-back:hover { color: var(--fg); }
-.proj-detail-back svg { width: 14px; height: 14px; }
-
+.proj-detail-back svg { width: 13px; height: 13px; }
 .proj-detail-tag {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-}
-
-.proj-detail-hero {
-  border-bottom: 1px solid var(--line);
-  padding: 3rem 2rem 3rem;
-}
-/* brand mark row */
-.proj-detail-brand-mark {
-  display: flex; align-items: center; gap: 1.2rem;
-  margin-bottom: 1.8rem;
-}
-.proj-detail-brand-logo {
-  width: 52px; height: 52px;
-  object-fit: contain;
-  display: block;
-  opacity: 0.9;
-}
-.proj-detail-brand-name {
-  font-size: 0.6rem; letter-spacing: 0.25em;
-  color: var(--muted); text-transform: uppercase;
-}
-/* title row */
-.proj-detail-title-row {
-  display: flex; align-items: flex-start;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-.proj-detail-title-area { flex: 1; min-width: 0; }
-.proj-detail-label {
-  font-size: 0.58rem; letter-spacing: 0.22em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 0.7rem;
-}
-.proj-detail-title {
-  font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.4rem, 5.5vw, 5rem);
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-}
-.proj-detail-hook {
-  margin-top: 1.2rem;
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: var(--muted);
-  max-width: 520px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-.desc-label {
-  font-family: 'Unbounded', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
   text-transform: uppercase;
-  color: var(--text);
-}
-.desc-sep {
-  color: var(--muted);
-}
-/* meta inline row */
-.proj-detail-meta {
-  display: flex; flex-direction: row;
-  gap: 2.5rem; flex-wrap: wrap;
-  padding-top: 0.3rem;
-}
-.proj-detail-meta-item {}
-.proj-detail-meta-key {
-  font-size: 0.55rem; letter-spacing: 0.22em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 0.25rem;
-}
-.proj-detail-meta-val {
-  font-family: 'Unbounded', sans-serif;
-  font-size: 0.78rem; font-weight: 300;
-  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
-/* masonry grid */
-.proj-detail-masonry {
-  padding: 2rem;
-  columns: 2;
-  column-gap: 1rem;
-  border-bottom: 1px solid var(--line);
+/* shared case-study content frame */
+.cs-frame {
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  padding-inline: var(--pad-x);
+  box-sizing: border-box;
 }
-@media (max-width: 600px) {
-  .proj-detail-masonry { columns: 1; padding: 1rem; }
-}
-.proj-masonry-item {
-  break-inside: avoid;
-  margin-bottom: 1rem;
+
+/* ── HERO ── */
+.cs-hero {
   position: relative;
+  width: 100%;
   overflow: hidden;
-  cursor: zoom-in;
-  background: var(--hover-bg);
-  border-radius: 12px;
+  background: transparent;
+}
+.cs-hero:has(img, video) { background: #0a0a0a; }
+.cs-hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.cs-hero-img.loaded { opacity: 1; }
+.cs-hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
   display: block;
 }
-.proj-masonry-item img {
-  width: 100%; display: block;
-  opacity: 0; transition: opacity 0.4s, transform 0.4s;
-  transform: scale(1.02);
+.cs-hero-overlay {
+  position: relative; z-index: 2;
+  background: linear-gradient(to top, rgba(11,11,11,0.92) 0%, rgba(11,11,11,0.35) 50%, transparent 80%);
+  padding: clamp(8rem, 18vw, 14rem) var(--pad-x) clamp(2.5rem, 5vw, 4rem);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 60vh;
 }
-.proj-masonry-item img.loaded {
-  opacity: 1; transform: scale(1);
+.cs-hero-overlay > * {
+  max-width: var(--shell);
+  width: 100%;
+  margin-inline: auto;
 }
-.proj-masonry-item:hover img { transform: scale(1.04); }
-.proj-masonry-placeholder {
-  aspect-ratio: 4/3;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.62rem; letter-spacing: 0.15em;
-  color: var(--muted); text-transform: uppercase;
-}
-.proj-masonry-video {
-  break-inside: avoid;
+.cs-hero-eyebrow {
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-soft);
+  text-transform: uppercase;
   margin-bottom: 1rem;
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--hover-bg);
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
 }
-.proj-masonry-video video {
+.cs-hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 200;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  max-width: 16ch;
+  margin: 0;
+}
+.cs-hero-plain { padding: clamp(8rem, 16vw, 12rem) var(--pad-x) clamp(2rem, 5vw, 4rem); }
+.cs-hero-plain .cs-hero-title { color: var(--fg); }
+
+/* ── META LINE (replaces 4-cell band) ── */
+.cs-meta-row {
+  display: flex; flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  align-items: baseline;
+  padding: clamp(1.5rem, 3vw, 2rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-soft);
+  text-transform: uppercase;
+}
+.cs-meta-cell {
+  display: inline-flex; align-items: baseline; gap: 0.55rem;
+}
+.cs-meta-cell:not(:last-child)::after {
+  content: '·';
+  color: var(--fg-faint);
+  margin-left: 0.9rem;
+}
+.cs-meta-key { color: var(--fg-mute); }
+.cs-meta-val { color: var(--fg); font-variant-numeric: tabular-nums; }
+
+/* ── editorial 2-col text section (used for Overview / Direction copy / Process / Results lead) ── */
+.cs-section {
+  padding: clamp(3rem, 6vw, 5rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 18ch) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--line);
+  box-sizing: border-box;
+}
+.cs-section-head { display: flex; flex-direction: column; gap: var(--s2); }
+.cs-section-label { color: var(--fg-mute); }
+.cs-section-heading {
+  font-family: 'Unbounded', sans-serif;
+  font-size: var(--t-h3);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0;
+}
+.cs-section-body {
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--fg-soft);
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+  max-width: 64ch;
+}
+.cs-section-body p + p { margin-top: 1em; }
+.cs-section-body strong { color: var(--fg); font-weight: 500; }
+
+/* legacy compat — old class names mapped to .cs-section behaviour */
+.cs-intro,
+.cs-story,
+.cs-section-story {
+  padding: clamp(3rem, 6vw, 5rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 18ch) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--line);
+  box-sizing: border-box;
+}
+.cs-intro-label,
+.cs-story-label { color: var(--fg-mute); display: block; margin-bottom: var(--s2); }
+.cs-intro-subtitle,
+.cs-story-heading {
+  font-family: 'Unbounded', sans-serif;
+  font-size: var(--t-h3);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0;
+}
+.cs-intro-right { display: flex; flex-direction: column; gap: 0.8rem; justify-content: flex-start; }
+.cs-intro-body,
+.cs-story-body {
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--fg-soft);
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+  max-width: 64ch;
+}
+.cs-intro-body strong,
+.cs-story-body strong { color: var(--fg); font-weight: 500; }
+
+/* ── IMAGE BLOCKS ── */
+.cs-images-primary { padding: 0; }
+.cs-section-image {
+  padding: clamp(2rem, 5vw, 4rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--line);
+}
+.cs-section-image .cs-section-label { display: block; margin-bottom: var(--s2); }
+.cs-img-full {
   width: 100%; display: block;
+  max-height: 78vh;
+  object-fit: cover;
+  border-radius: 4px;
+  opacity: 0; transition: opacity 0.5s ease;
+  background: #0e0e0e;
+}
+.cs-img-full.loaded { opacity: 1; }
+.cs-section-image .cs-img-full { opacity: 1; }
+
+/* contain variant — shows full image without cropping */
+.cs-img-contain {
+  width: 100%; display: block;
+  object-fit: contain;
+  border-radius: 4px;
+  opacity: 0; transition: opacity 0.5s ease;
+  background: #0e0e0e;
+}
+.cs-img-contain.loaded { opacity: 1; }
+.cs-section-image .cs-img-contain { opacity: 1; }
+.cs-img-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  margin-top: clamp(0.5rem, 1.5vw, 1rem);
+}
+.cs-img-row-item {
+  overflow: hidden; position: relative;
+  border-radius: 4px;
+  cursor: zoom-in;
+  background: #0e0e0e;
+}
+.cs-img-row-item img {
+  width: 100%; display: block;
+  aspect-ratio: 1/1; object-fit: cover;
+  opacity: 0; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cs-img-row-item img.loaded { opacity: 1; }
+.cs-img-row-item:hover img { transform: scale(1.015); }
+
+/* video block */
+.cs-video-block {
+  padding: clamp(2rem, 5vw, 4rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.cs-video-block video {
+  width: 100%; display: block;
+  max-height: 78vh;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
-/* project detail: story */
-.proj-detail-story {
-  margin-top: 1.35rem;
-  opacity: 0.82;
+/* desc labels in Overview body */
+.desc-label {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg);
 }
+.desc-sep { color: var(--fg-mute); }
+
+/* ── CLOSING GRID ── */
+.cs-grid-section {
+  padding: clamp(3rem, 6vw, 5rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--line);
+}
+.cs-grid-label { color: var(--fg-mute); display: block; margin-bottom: var(--s4); }
+.cs-closing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.cs-grid-item {
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: zoom-in;
+  background: #0e0e0e;
+  aspect-ratio: 4/3;
+}
+.cs-grid-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cs-grid-item img.loaded { opacity: 1; }
+.cs-grid-item:hover img { transform: scale(1.02); }
+
+/* tools row */
+.cs-tools-bar {
+  padding: clamp(1.5rem, 3vw, 2rem) var(--pad-x);
+  display: flex; align-items: baseline; gap: 0.55rem 0.8rem;
+  flex-wrap: wrap;
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--line);
+}
+.cs-tools-label { color: var(--fg-mute); flex-shrink: 0; margin-right: var(--s2); }
+.cs-tools-pills { display: flex; flex-wrap: wrap; gap: 0.55rem 0.8rem; align-items: baseline; }
+.proj-detail-tool-tag {
+  font-size: var(--t-meta);
+  color: var(--fg-soft);
+  letter-spacing: -0.005em;
+  text-transform: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: inline-block;
+  position: relative;
+}
+.proj-detail-tool-tag:not(:last-child)::after {
+  content: '·';
+  color: var(--fg-faint);
+  margin-left: 0.85rem;
+}
+.proj-detail-tool-tag:hover { color: var(--fg); }
 
 /* lightbox */
 .lightbox {
   display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(0,0,0,0.92);
+  background: rgba(0,0,0,0.94);
   align-items: center; justify-content: center;
   cursor: zoom-out;
+  padding: var(--s4);
 }
 .lightbox.open { display: flex; }
 .lightbox img {
   max-width: 92vw; max-height: 92vh;
   object-fit: contain;
-  border: 1px solid var(--line);
+  border-radius: 4px;
 }
 .lightbox-close {
-  position: absolute; top: 1.5rem; right: 2rem;
-  font-size: 0.65rem; letter-spacing: 0.2em;
-  color: var(--muted); cursor: pointer;
+  position: absolute; top: 1.5rem; right: var(--pad-x);
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-soft);
+  cursor: pointer;
   text-transform: uppercase;
+  background: none; border: none;
+  min-height: 44px; min-width: 44px;
+  display: inline-flex; align-items: center; justify-content: flex-end;
+  touch-action: manipulation;
 }
 .lightbox-close:hover { color: var(--fg); }
 
-.proj-detail-body {
-  padding: 4rem 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  border-bottom: 1px solid var(--line);
-}
-.proj-detail-desc-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-.proj-detail-desc {
-  font-size: 0.85rem; line-height: 1.9;
-  color: rgba(242,240,235,0.7);
-  letter-spacing: 0.03em;
-  max-width: 480px;
-}
-.proj-detail-tools {}
-.proj-detail-tools-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-.proj-detail-tools-list {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
-}
-.proj-detail-tool-tag {
-  font-size: 0.62rem; letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  color: var(--muted);
-  transition: all 0.2s;
-}
-.proj-detail-tool-tag:hover {
-  border-color: rgba(242,240,235,0.3);
-  color: var(--fg);
-}
+/* legacy compat */
+.proj-detail-body,
+.proj-detail-hero,
+.proj-detail-masonry { display: none; }
 
 .proj-detail-nav {
-  padding: 2rem;
+  padding: clamp(2rem, 4vw, 3rem) var(--pad-x);
   display: flex; justify-content: space-between; align-items: center;
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  gap: var(--s3);
 }
 .proj-nav-btn {
-  background: none; border: none; cursor: crosshair;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--muted); display: flex; align-items: center; gap: 0.5rem;
-  transition: color 0.2s; padding: 0;
+  background: none; border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--fg-soft);
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  padding: 0.5rem 0;
+  min-height: 44px;
 }
 .proj-nav-btn:hover { color: var(--fg); }
 .proj-nav-btn svg { width: 14px; height: 14px; }
-.proj-nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+.proj-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
+
+@media (max-width: 768px) {
+  .cs-hero-overlay { min-height: 50vh; padding-block-end: var(--s4); }
+  .cs-hero-title { font-size: clamp(2rem, 9vw, 3rem); }
+  .cs-meta-row { padding-block: var(--s3); }
+  .cs-section,
+  .cs-intro,
+  .cs-story,
+  .cs-section-story {
+    grid-template-columns: 1fr;
+    gap: var(--s2);
+    padding-block: var(--s5);
+  }
+  .cs-img-row { grid-template-columns: 1fr; gap: var(--s1); }
+  .cs-closing-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
+  .cs-section-image { padding-block: var(--s4); }
+}
 
 /* ── ABOUT OVERLAY ── */
 .about-overlay {
@@ -853,204 +1159,532 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 .about-overlay-header {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.4rem 2rem;
-  border-bottom: 1px solid var(--line);
-  background: rgba(12,12,12,0.92);
-  backdrop-filter: blur(12px);
+  padding: 1rem var(--pad-x);
+  background: rgba(11,11,11,0.78);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
 }
 .about-overlay-hero {
-  padding: 4rem 2rem 3rem;
-  border-bottom: 1px solid var(--line);
+  padding: clamp(7rem, 14vw, 10rem) var(--pad-x) clamp(3rem, 6vw, 5rem);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 .about-overlay-index {
-  font-size: 0.65rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  margin-bottom: var(--s4);
 }
 .about-overlay-name {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.8rem, 7vw, 6rem);
-  font-weight: 900;
-  line-height: 0.93;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  margin-bottom: var(--s2);
+  background: var(--grad-mark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.about-overlay-name em { font-style: normal; color: var(--muted); }
+.about-overlay-name em { font-style: normal; font-weight: 200; opacity: 0.55; }
 .about-overlay-alias {
-  font-size: 0.65rem; letter-spacing: 0.25em;
-  color: var(--muted); text-transform: uppercase;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
 }
 .about-overlay-body {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  padding: 0 var(--pad-x) clamp(3rem, 6vw, 5rem);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--line);
 }
 .about-overlay-left {
-  padding: 3rem 3rem 3rem 2rem;
-  border-right: none;
-  display: flex; flex-direction: column; gap: 1.5rem;
+  display: flex; flex-direction: column; gap: var(--s3);
+  max-width: 60ch;
 }
 .about-overlay-right {
-  padding: 3rem 2rem 3rem 3rem;
-  display: flex; flex-direction: column; gap: 2.5rem;
+  display: flex; flex-direction: column; gap: clamp(2rem, 4vw, 2.75rem);
 }
 .about-overlay-section-label {
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 1rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  margin-bottom: var(--s2);
   display: block;
 }
 .about-overlay-para {
-  font-size: 0.82rem; line-height: 1.95;
-  color: rgba(242,240,235,0.65);
-  letter-spacing: 0.03em;
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--fg-soft);
+  letter-spacing: -0.005em;
+}
+.about-overlay-stats {
+  font-size: var(--t-meta);
+  color: var(--fg-soft);
+  line-height: 1.6;
+  margin-top: var(--s2);
+  letter-spacing: -0.005em;
+}
+.about-overlay-stats span:not(:last-child)::after {
+  content: ' · ';
+  color: var(--fg-faint);
 }
 .about-overlay-footer {
-  padding: 2.5rem 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 1rem;
+  padding: clamp(2.5rem, 5vw, 4rem) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--s3);
 }
 @media (max-width: 768px) {
   .about-overlay-body { grid-template-columns: 1fr; }
-  .about-overlay-left { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 1.4rem; }
-  .about-overlay-right { padding: 2rem 1.4rem; }
-  .about-overlay-hero { padding: 2.5rem 1.4rem 2rem; }
-  .about-overlay-header { padding: 1rem 1.4rem; }
-  .about-overlay-footer { padding: 2rem 1.4rem; flex-direction: column; align-items: flex-start; }
+  .about-overlay-footer { flex-direction: column; align-items: flex-start; }
 }
 
-/* ── MOBILE ── */
-@media (max-width: 768px) {
-  body { cursor: auto; }
-  nav { padding: 1rem 1.4rem; }
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .nav-logo img { height: 52px; }
-  .lang-btn { display: none; }
+  nav > .nav-right > .lang-btn { display: none; }
 
-  /* Hero: single column, generous spacing */
-  .hero {
-    padding: 8rem 1.6rem 0;
-    grid-template-columns: 1fr;
-    gap: 0;
+  /* Project grid: maintain 2x2 layout on tablets */
+  .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; align-items: stretch; }
+  .project-card,
+  .project-card[data-index="1"],
+  .project-card[data-index="2"],
+  .project-card[data-index="3"],
+  .project-card[data-index="4"],
+  .project-card[data-index="5"],
+  .project-card[data-index="6"] {
+    grid-column: span 1;
+    --aspect: 4 / 3;
   }
-  .hero-left {
-    border-right: none;
-    border-bottom: 1px solid var(--line);
-    padding-right: 0;
-    padding-bottom: 3.5rem;
-  }
-  .hero-title {
-    font-size: clamp(2.6rem, 12vw, 4rem);
-    margin-bottom: 1.8rem;
-  }
-  .hero-sub {
-    font-size: 0.72rem;
-    max-width: 100%;
-    line-height: 1.9;
-  }
-  .hero-right {
-    padding-left: 0;
-    padding-top: 2.5rem;
-    padding-bottom: 3.5rem;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .hero-available {
-    padding-top: 0;
-    margin-bottom: 0;
-    align-self: flex-start;
-  }
-  /* Stats: full width, clean 3 cols */
-  .hero-stats {
-    grid-template-columns: repeat(3, 1fr);
-    border-radius: 10px;
-  }
-  .hero-stat {
-    padding: 1.1rem 0.9rem;
-  }
-  .hero-stat-num {
-    font-size: 1.4rem;
-  }
-  .hero-stat-label {
-    font-size: 0.5rem;
-    letter-spacing: 0.1em;
-    line-height: 1.4;
-  }
-  .hero-right-bottom { gap: 1.8rem; }
 
-  /* Work grid */
-  .shop-grid { grid-template-columns: repeat(2, 1fr); border-left: none; gap: 0.75rem; padding: 0.75rem; }
-  .shop-header { padding: 0.9rem 1rem; }
+  /* About section responsive */
+  .about-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .about-card-main { padding: 1.5rem; }
+  .about-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.25rem; }
+  .about-info-list { padding: 1.25rem; }
 
-  /* Services */
-  #services { padding: 2.5rem 1.4rem; }
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .service-card { padding: 1.4rem 1.2rem; border-radius: 0; }
-
-  /* Contact */
-  #contact { grid-template-columns: 1fr; padding: 3rem 1.4rem; gap: 3rem; }
-  .contact-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 2.5rem; }
-  .contact-right { padding-left: 0; }
-
-  /* Footer */
-  footer { flex-direction: column; gap: 1rem; padding: 1.4rem; text-align: center; }
+  #contact { grid-template-columns: 1fr; gap: 2rem; }
+  footer { padding-block: var(--s4); flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
   .footer-links { justify-content: center; }
 
-  /* Project detail overlay */
-  .proj-detail-hero { padding: 2rem 1.4rem 1.8rem; }
-  .proj-detail-masonry { columns: 1; padding: 1rem; }
-  .proj-detail-body { grid-template-columns: 1fr; gap: 2.5rem; padding: 2rem 1.4rem; }
-  .proj-detail-nav { padding: 2rem 1.4rem; }
-  .proj-detail-header { padding: 1rem 1.4rem; }
-  .proj-detail-title-row { flex-direction: column; gap: 1.5rem; }
-  .proj-detail-meta { gap: 1.5rem; }
+  /* Improved mobile navigation */
+  nav { padding: 0.75rem var(--pad-x); }
+  .nav-logo img { height: 40px; }
+  .hamburger { width: 40px; height: 40px; display: flex; }
+  .mobile-menu { 
+    padding: 6rem var(--pad-x) 2rem; 
+    gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  .mobile-menu a { 
+    font-size: clamp(1.25rem, 4vw, 1.75rem); 
+    padding: 0.65rem 0;
+  }
 
-  /* About info rows */
-  .about-details { border-radius: 8px; }
-  .about-detail-row { padding: 0.9rem 1rem; }
+  /* Fix mobile overlays */
+  .proj-detail-overlay { padding-bottom: 2rem; }
+  .about-overlay { padding-bottom: 2rem; }
+}
+
+@media (max-width: 540px) {
+  .shop-grid { grid-template-columns: 1fr; align-items: start; gap: 1.5rem; }
+  .project-card,
+  .project-card[data-index="1"],
+  .project-card[data-index="2"],
+  .project-card[data-index="3"],
+  .project-card[data-index="4"],
+  .project-card[data-index="5"],
+  .project-card[data-index="6"] {
+    grid-column: span 1;
+    --aspect: 16 / 10;
+  }
+  .project-card { border-radius: 12px; }
+  .project-card:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+
+  /* Better mobile spacing */
+  .hero { padding: 7rem var(--pad-x) clamp(2rem, 6vw, 3rem); }
+  #services { padding: clamp(2rem, 5vw, 3rem) var(--pad-x); }
+  #contact { padding: clamp(2rem, 6vw, 4rem) var(--pad-x); }
+  #about-main { padding: clamp(2rem, 5vw, 3rem) 0; }
+
+  /* Stack hero foot vertically on narrow screens */
+  .hero-foot { flex-direction: column; align-items: flex-start; gap: var(--s2); }
+  
+  /* Improved touch targets */
+  .submit-btn, .load-more-btn { padding: 1.2rem 2rem; min-height: 48px; border-radius: 8px; }
+  .proj-nav-btn { min-height: 48px; padding: 0.75rem 1rem; border-radius: 8px; }
+  .lang-btn { min-height: 44px; padding: 0.5rem 1rem; border-radius: 8px; }
+  
+  /* Better mobile typography */
+  .hero-title { font-size: clamp(2rem, 8vw, 3.5rem); line-height: 0.9; }
+  .contact-heading { font-size: clamp(1.25rem, 5vw, 2rem); line-height: 1.1; }
+  .service-name { font-size: clamp(0.9rem, 4vw, 1.2rem); }
+  .about-title { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+
+  /* Fix mobile form */
+  .contact-form { gap: 1rem; }
+  .form-field { padding: 1rem 0 0.75rem; }
+  .form-field textarea { min-height: 100px; }
+  .form-submit { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .submit-note { text-align: center; max-width: none; }
+
+  /* Hide separator dots in meta row to prevent wrap clutter */
+  .cs-meta-cell:not(:last-child)::after { display: none; }
+  .cs-meta-row { gap: 0.4rem 1.5rem; }
+  .cs-meta-cell { flex-direction: column; gap: 0.15rem; }
+
+  /* Fix mobile project detail overlay */
+  .cs-hero-overlay { padding: clamp(4rem, 12vw, 8rem) var(--pad-x) clamp(2rem, 6vw, 4rem); }
+  .cs-section { padding: clamp(2rem, 6vw, 4rem) var(--pad-x); grid-template-columns: 1fr; gap: 1.5rem; }
+  .cs-section-image { padding: clamp(2rem, 6vw, 4rem) var(--pad-x); }
+  .cs-meta-row { padding: clamp(1rem, 4vw, 2rem) var(--pad-x); flex-wrap: wrap; }
+  .cs-tools-bar { padding: clamp(1rem, 4vw, 2rem) var(--pad-x); flex-direction: column; gap: 1rem; }
+  .cs-tools-pills { flex-wrap: wrap; }
+
+  /* Fix mobile about overlay */
+  .about-overlay-hero { padding: clamp(4rem, 12vw, 8rem) var(--pad-x) clamp(2rem, 6vw, 4rem); }
+  .about-overlay-body { grid-template-columns: 1fr; gap: 2rem; padding: 0 var(--pad-x) clamp(2rem, 6vw, 4rem); }
+  .about-overlay-footer { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
 }
 
 @media (max-width: 390px) {
-  .hero-title { font-size: clamp(2.2rem, 13vw, 3rem); }
-  .hero-stat-num { font-size: 1.2rem; }
-  .hero-stat-label { font-size: 0.42rem; letter-spacing: 0.06em; }
-  .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; padding: 0.5rem; }
-  .project-card-name { font-size: 0.72rem; }
-  .project-card-info { padding: 0.7rem 0.8rem 0.9rem; }
+  .hero-title { font-size: clamp(1.75rem, 10vw, 3rem); line-height: 0.95; }
+  
+  /* Extra small screen optimizations */
+  .nav-logo img { height: 32px; }
+  .hamburger { width: 36px; height: 36px; }
+  .hamburger span { width: 18px; height: 2px; }
+  .mobile-menu { padding: 4rem var(--pad-x) 1.5rem; }
+  .mobile-menu a { font-size: clamp(1.1rem, 6vw, 1.5rem); padding: 0.4rem 0; }
+  
+  /* Tighter spacing for small screens */
+  .hero { padding: 6.5rem var(--pad-x) clamp(1.5rem, 5vw, 2.5rem); }
+  #services { padding: clamp(1.5rem, 4vw, 2.5rem) var(--pad-x); }
+  #contact { padding: clamp(1.5rem, 5vw, 3rem) var(--pad-x); }
+  #about-main { padding: clamp(1.5rem, 4vw, 2.5rem) 0; }
+  
+  /* Smaller touch targets for very small screens */
+  .submit-btn, .load-more-btn { padding: 1rem 1.5rem; min-height: 44px; }
+  .proj-nav-btn { min-height: 44px; padding: 0.5rem 0.75rem; }
+  
+  /* Adjust grid layouts */
+  .about-stats-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+  .stat-item { padding: 1rem 0; }
+  
+  /* Fix overlay spacing */
+  .cs-hero-overlay { padding: clamp(3rem, 10vw, 6rem) var(--pad-x) clamp(1.5rem, 5vw, 3rem); }
+  .cs-section { padding: clamp(1.5rem, 5vw, 3rem) var(--pad-x); }
+  .about-overlay-hero { padding: clamp(3rem, 10vw, 6rem) var(--pad-x) clamp(1.5rem, 5vw, 3rem); }
 }
 
+/* ── ABOUT SECTION GRID ── */
+#about-main {
+  padding: clamp(2rem, 4vw, 3rem) 0;
+  max-width: var(--shell);
+  margin-inline: auto;
+}
+
+/* Black and white theme for About section */
+#about-main {
+  --about-bg: #121212;
+  --about-fg: #ffffff;
+  --about-fg-soft: rgba(255,255,255,0.8);
+  --about-fg-mute: rgba(255,255,255,0.6);
+  --about-fg-faint: rgba(255,255,255,0.3);
+  --about-line: rgba(255,255,255,0.1);
+  --about-hover: rgba(255,255,255,0.05);
+  --about-accent: #ffffff;
+  --about-grad: linear-gradient(180deg, #ffffff 0%, #cccccc 100%);
+}
+
+#about-main .about-card-main {
+  background: var(--about-bg);
+  color: var(--about-fg);
+}
+
+#about-main .about-card-stats .about-stats-grid,
+#about-main .about-info-list {
+  background: var(--about-bg);
+  color: var(--about-fg);
+}
+
+#about-main .about-title {
+  background: var(--about-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#about-main .about-subtitle,
+#about-main .about-para {
+  color: var(--about-fg-soft);
+}
+
+#about-main .stat-number {
+  color: var(--about-accent);
+}
+
+#about-main .stat-label,
+#about-main .info-key {
+  color: var(--about-fg-mute);
+}
+
+#about-main .info-val {
+  color: var(--about-fg);
+}
+
+#about-main .info-row {
+  border-bottom: 1px solid var(--about-line);
+}
+
+#about-main .dot {
+  background: var(--about-accent);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding: 0 var(--pad-x);
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .about-card-main { padding: 1.5rem; }
+  .about-stats-grid { padding: 1.25rem; }
+  .about-info-list { padding: 1.25rem; }
+}
+
+.about-card-main {
+  background: #111214;
+  border-radius: 14px;
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-card-main:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+.about-card-header {
+  margin-bottom: var(--s4);
+}
+
+.about-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 300;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  margin: 0;
+  background: var(--grad-mark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-title em {
+  font-style: normal;
+  font-weight: 200;
+  opacity: 0.55;
+}
+
+.about-subtitle {
+  color: var(--fg-soft);
+  font-size: var(--t-h3);
+  margin: var(--s2) 0 0 0;
+  letter-spacing: -0.005em;
+}
+
+.about-para {
+  color: var(--fg-soft);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  margin-bottom: var(--s3);
+  letter-spacing: -0.005em;
+}
+
+/* ── READ MORE (mobile only) ── */
+.about-read-more-btn {
+  display: none; /* hidden on desktop */
+}
+.about-read-more-wrap { display: contents; }
+
+@media (max-width: 900px) {
+  .about-read-more-wrap {
+    display: block;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    max-height: 5.5rem; /* collapsed: shows ~2 lines of first para */
+  }
+  .about-read-more-wrap.expanded {
+    max-height: 20rem;
+  }
+  .about-para-extra {
+    /* second paragraph — fully hidden in collapsed state via parent max-height */
+  }
+  .about-read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: none;
+    border: none;
+    color: var(--fg-mute);
+    font-family: 'Inter', sans-serif;
+    font-size: var(--t-label);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    margin-top: 0.25rem;
+    margin-bottom: var(--s2);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  .about-read-more-btn:hover { color: var(--fg); }
+  .about-read-more-icon {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    flex-shrink: 0;
+  }
+  .about-read-more-btn[aria-expanded="true"] .about-read-more-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.about-card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+.about-stats-grid {
+  background: #111214;
+  border-radius: 14px;
+  padding: var(--s4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .about-stats-grid { padding: 1.25rem; gap: 1rem; }
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--s2) 0;
+}
+
+.stat-number {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--s1);
+}
+
+.stat-label {
+  font-size: var(--t-label);
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.about-info-list {
+  background: #111214;
+  border-radius: 14px;
+  padding: var(--s4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-key {
+  font-size: var(--t-label);
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.info-val {
+  font-size: var(--t-body);
+  color: var(--fg-soft);
+}
+
+.info-available {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Load more (kept for forward compatibility) */
 .load-more-wrap {
   display: flex;
   justify-content: center;
-  padding: 2.5rem 0 1rem;
+  padding: var(--s5) var(--pad-x);
+  max-width: var(--shell);
+  margin-inline: auto;
 }
 .load-more-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
+  border: 1px solid var(--fg);
+  color: var(--fg);
   font-family: inherit;
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 0.75rem 1.8rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  padding: 0.95rem 1.8rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  min-height: 44px;
 }
-.load-more-btn:hover {
-  background: var(--hover-bg);
-  border-color: var(--text);
-}
-.project-card.hidden-card {
-  display: none;
-}
-.project-card.reveal-card {
-  animation: fadeInUp 0.4s ease forwards;
+.load-more-btn:hover { background: var(--fg); color: var(--bg); }
+.project-card.hidden-card { display: none; }
+.project-card.reveal-card { animation: fadeInUp 0.45s ease forwards; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -1064,7 +1698,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   <div class="nav-right">
     <div class="nav-links">
       <a href="#work" data-en="Work" data-sr="Radovi">Work</a>
-      <a href="javascript:void(0)" onclick="openAbout()" data-en="About" data-sr="O Meni">About</a>
+      <a href="#about-main" data-en="About" data-sr="O Meni">About</a>
       <a href="#contact" data-en="Contact" data-sr="Kontakt">Contact</a>
     </div>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">SR</button>
@@ -1077,47 +1711,81 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work" onclick="closeMenu()" data-en="Work" data-sr="Radovi">Work</a>
-  <a href="javascript:void(0)" onclick="openAbout(); closeMenu();" data-en="About" data-sr="O Meni">About</a>
+  <a href="#about-main" onclick="closeMenu();" data-en="About" data-sr="O Meni">About</a>
   <a href="#contact" onclick="closeMenu()" data-en="Contact" data-sr="Kontakt">Contact</a>
   <button class="lang-btn" onclick="toggleLang(); closeMenu();" id="langBtnMobile">SR</button>
 </div>
 
 <!-- HERO -->
 <section class="hero fade-up visible">
-  <div class="hero-left">
-    <h1 class="hero-title">
-      <span data-en="VUKAŠIN<br><em>ĐORĐEVIĆ</em>" data-sr="VUKAŠIN<br><em>ĐORĐEVIĆ</em>">VUKAŠIN<br><em>ĐORĐEVIĆ</em></span>
-    </h1>
-    <p class="hero-sub" data-en="Visual designer from Serbia. Brand identities, motion graphics and visuals that don't blend in." data-sr="Vizualni dizajner iz Srbije. Brend identiteti, motion grafika i vizuali koji se ne gube u masi.">Visual designer from Serbia. Brand identities, motion graphics and visuals that don't blend in.</p>
+  <p class="eyebrow hero-eyebrow" data-en="Independent visual studio — Serbia" data-sr="Nezavisni vizuelni studio — Srbija">Independent visual studio — Serbia</p>
+  <h1 class="hero-title">
+    <span data-en="VUX<br><em>DZN</em>" data-sr="VUX<br><em>DZN</em>">VUX<br><em>DZN</em></span>
+  </h1>
+  <p class="hero-lede" data-en="Brand identities, motion graphics and visual systems for gaming, online creators and businesses that refuse to blend in." data-sr="Brend identiteti, motion grafika i vizuelni sistemi za gaming, online kreatore i biznise koji odbijaju da se uklope.">Brand identities, motion graphics and visual systems for gaming, online creators and businesses that refuse to blend in.</p>
+  <div class="hero-foot">
+    <span class="hero-available">
+      <span class="dot"></span>
+      <span data-en="Available for new work — 2026" data-sr="Dostupan za nove projekte — 2026">Available for new work — 2026</span>
+    </span>
+    <a href="#work" class="hero-scroll" data-en="Index of work ↓" data-sr="Pregled radova ↓">Index of work ↓</a>
   </div>
-  <div class="hero-right">
-    <div class="hero-available">
-      <div class="dot"></div>
-      <span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about-main" class="fade-up">
+  <div class="shop-header">
+    <span class="eyebrow" data-en="About studio" data-sr="O studiju">About studio</span>
+    <span class="eyebrow" data-en="VuxDZN" data-sr="VuxDZN">VuxDZN</span>
+  </div>
+  
+  <div class="about-grid">
+    <div class="about-card-main">
+      <div class="about-card-header">
+        <h2 class="about-title">VUX<br><em>DZN</em></h2>
+        <p class="about-subtitle" data-en="Visual designer · Serbia" data-sr="Vizuelni dizajner · Srbija">Visual designer · Serbia</p>
+      </div>
+      <div class="about-card-body">
+        <div class="about-read-more-wrap">
+          <p class="about-para" data-en="A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated." data-sr="Studio od jednog čoveka, posvećen vizuelnim sistemima koji deluju neizbežno. Radim sa gaming brendovima, online kreatorima i biznisima koji žele da izgledaju ozbiljno — nikada generički, nikada po šablonu.">A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated.</p>
+          <p class="about-para about-para-extra" data-en="Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale." data-sr="Svaki projekat se gradi od nule, oko onoga što brend stvarno treba. Identitet, motion i sistemi za društvene mreže projektovani su da budu odmah čitljivi i da rade u svakoj veličini.">Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale.</p>
+        </div>
+        <button class="about-read-more-btn" id="aboutReadMoreBtn" onclick="toggleAboutReadMore()" aria-expanded="false">
+          <span class="about-read-more-label" data-en="Read more" data-sr="Pročitaj više">Read more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="about-read-more-icon">
+            <path d="M1 3L5 7L9 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="hero-right-bottom">
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="hero-stat-num">06</span>
-          <span class="hero-stat-label" data-en="Projects Completed" data-sr="Završenih Projekata">Projects Completed</span>
+    
+    <div class="about-card-stats">
+      <div class="about-stats-grid">
+        <div class="stat-item">
+          <span class="stat-number" data-en="4" data-sr="4">4</span>
+          <span class="stat-label" data-en="Selected projects" data-sr="Izabrana projekta">Selected projects</span>
         </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">2+</span>
-          <span class="hero-stat-label" data-en="Years of Experience" data-sr="Godina Iskustva">Years of Experience</span>
+        <div class="stat-item">
+          <span class="stat-number" data-en="2" data-sr="2">2</span>
+          <span class="stat-label" data-en="Years independent" data-sr="Godine samostalno">Years independent</span>
         </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">5</span>
-          <span class="hero-stat-label" data-en="Tools Mastered" data-sr="Savladanih Alata">Tools Mastered</span>
+        <div class="stat-item">
+          <span class="stat-number" data-en="5" data-sr="5">5</span>
+          <span class="stat-label" data-en="Tools daily" data-sr="Alata svakodnevno">Tools daily</span>
         </div>
       </div>
-      <div class="hero-focus-areas">
-        <p class="hero-focus-label" data-en="Focus Areas" data-sr="Oblast Rada">Focus Areas</p>
-        <div class="hero-focus-list">
-          <span class="tool-tag" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-          <span class="tool-tag" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
-          <span class="tool-tag" data-en="Social Media Visuals" data-sr="Vizuali za Mreže">Social Media Visuals</span>
-          <span class="tool-tag" data-en="Gaming Brands" data-sr="Gaming Brendovi">Gaming Brands</span>
-          <span class="tool-tag" data-en="Content Packs" data-sr="Content Paketi">Content Packs</span>
+      <div class="about-info-list">
+        <div class="info-row">
+          <span class="info-key" data-en="Focus" data-sr="Fokus">Focus</span>
+          <span class="info-val" data-en="Identity, motion, social" data-sr="Identitet, motion, social">Identity, motion, social</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key" data-en="Status" data-sr="Status">Status</span>
+          <span class="info-val info-available"><span class="dot"></span><span data-en="Available 2026" data-sr="Dostupan 2026">Available 2026</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-key" data-en="Email" data-sr="Email">Email</span>
+          <span class="info-val"><a href="mailto:hello@vuxdzn.art" style="color:inherit;text-decoration:none;">hello@vuxdzn.art</a></span>
         </div>
       </div>
     </div>
@@ -1127,8 +1795,8 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- WORK -->
 <section id="work">
   <div class="shop-header fade-up">
-    <span data-en="Projects" data-sr="Projekti">Projects</span>
-    <span>06</span>
+    <span class="eyebrow" data-en="Selected work — 2024 / 2026" data-sr="Izabrani radovi — 2024 / 2026">Selected work — 2024 / 2026</span>
+    <span class="eyebrow" data-en="Four projects" data-sr="Četiri projekta">Four projects</span>
   </div>
 
   <div class="shop-grid" id="projectGrid">
@@ -1138,12 +1806,14 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717652/photo_prepop_npxyml.png" alt="GTAVPARE" onload="this.classList.add('loaded')">
       </div>
       <div class="project-card-info">
-        <p class="project-card-num">01</p>
-        <p class="project-card-name" data-en="GTAVPARE" data-sr="GTAVPARE">GTAVPARE</p>
         <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-meta-left">
+            <span class="project-card-num">01</span>
+            <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          </span>
           <span class="project-card-year">2026</span>
         </div>
+        <p class="project-card-name" data-en="GTAVPARE" data-sr="GTAVPARE">GTAVPARE</p>
       </div>
     </div>
 
@@ -1152,68 +1822,46 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895660/blabalbal_khcysz.png" alt="JMFade" onload="this.classList.add('loaded')">
       </div>
       <div class="project-card-info">
-        <p class="project-card-num">02</p>
-        <p class="project-card-name" data-en="JMFade" data-sr="JMFade">JMFade</p>
         <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          <span class="project-card-meta-left">
+            <span class="project-card-num">02</span>
+            <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          </span>
           <span class="project-card-year">2024</span>
         </div>
+        <p class="project-card-name" data-en="JMFade" data-sr="JMFade">JMFade</p>
       </div>
     </div>
 
     <div class="project-card fade-up" data-index="3">
       <div class="project-card-thumb">
-        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif" alt="Goldenito" onload="this.classList.add('loaded')">
+        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778330947/bnr_cjk536.png" alt="Next Forwarding" onload="this.classList.add('loaded')">
       </div>
       <div class="project-card-info">
-        <p class="project-card-num">03</p>
-        <p class="project-card-name" data-en="Goldenito" data-sr="Goldenito">Goldenito</p>
         <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Discord Visuals" data-sr="Discord Vizuali">Discord Visuals</span>
-          <span class="project-card-year">2025</span>
+          <span class="project-card-meta-left">
+            <span class="project-card-num">03</span>
+            <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          </span>
+          <span class="project-card-year">2026</span>
         </div>
+        <p class="project-card-name" data-en="Next Forwarding" data-sr="Next Forwarding">Next Forwarding</p>
       </div>
     </div>
 
     <div class="project-card fade-up" data-index="4">
       <div class="project-card-thumb">
-        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png" alt="PlayZone Visuals" onload="this.classList.add('loaded')">
-      </div>
-      <div class="project-card-info">
-        <p class="project-card-num">04</p>
-        <p class="project-card-name" data-en="PlayZone Visuals" data-sr="PlayZone Vizuali">PlayZone Visuals</p>
-        <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Social Media Design" data-sr="Dizajn Društvenih Mreža">Social Media Design</span>
-          <span class="project-card-year">2026</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-card fade-up" data-index="5">
-      <div class="project-card-thumb">
         <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png" alt="Luka Photography" onload="this.classList.add('loaded')">
       </div>
       <div class="project-card-info">
-        <p class="project-card-num">05</p>
+        <div class="project-card-meta">
+          <span class="project-card-meta-left">
+            <span class="project-card-num">04</span>
+            <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
+          </span>
+          <span class="project-card-year">2026</span>
+        </div>
         <p class="project-card-name" data-en="Luka Photography" data-sr="Luka Photography">Luka Photography</p>
-        <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Brand Identity" data-sr="Brend Identitet">Brand Identity</span>
-          <span class="project-card-year">2026</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-card fade-up" data-index="6">
-      <div class="project-card-thumb">
-        <img src="https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1777404488/dantemazo_1_febhjn.gif" alt="GTAVPARE Ad" onload="this.classList.add('loaded')">
-      </div>
-      <div class="project-card-info">
-        <p class="project-card-num">06</p>
-        <p class="project-card-name" data-en="GTAVPARE Ad" data-sr="GTAVPARE Ad">GTAVPARE Ad</p>
-        <div class="project-card-meta">
-          <span class="project-card-cat" data-en="Motion Design" data-sr="Motion Dizajn">Motion Design</span>
-          <span class="project-card-year">2026</span>
-        </div>
       </div>
     </div>
 
@@ -1226,44 +1874,43 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     </button>
   </div>
 
-  <!-- services & tools -->
+  <!-- capabilities & tools -->
   <section id="services" class="fade-up">
-    <p class="services-header" data-en="What I Do" data-sr="Šta Radim">What I Do</p>
+    <p class="services-header eyebrow" data-en="Capabilities" data-sr="Mogućnosti">Capabilities</p>
     <div class="services-grid">
 
       <div class="service-card">
-        <p class="service-num">01</p>
-        <p class="service-name" data-en="Brand Identity for Gaming & Online Brands" data-sr="Brend Identitet za Gaming i Online Brendove">Brand Identity for Gaming & Online Brands</p>
+        <span class="service-num">01</span>
+        <h3 class="service-name" data-en="Brand identity for gaming and online brands" data-sr="Brend identitet za gaming i online brendove">Brand identity for gaming and online brands</h3>
         <p class="service-desc" data-en="Logos, color systems and visual identity built to stand out in competitive spaces." data-sr="Logotipi, sistemi boja i vizuelni identitet napravljeni da se istaknu u konkurentnom prostoru.">Logos, color systems and visual identity built to stand out in competitive spaces.</p>
       </div>
 
       <div class="service-card">
-        <p class="service-num">02</p>
-        <p class="service-name" data-en="Social Media Visuals (High Engagement)" data-sr="Vizuali za Društvene Mreže (Visok Angažman)">Social Media Visuals (High Engagement)</p>
+        <span class="service-num">02</span>
+        <h3 class="service-name" data-en="Social media visuals" data-sr="Vizuali za društvene mreže">Social media visuals</h3>
         <p class="service-desc" data-en="Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks." data-sr="Postovi, thumbnailovi i baneri koji zaustavljaju skrolovanje i povećavaju klikove.">Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks.</p>
       </div>
 
       <div class="service-card">
-        <p class="service-num">03</p>
-        <p class="service-name" data-en="Motion Graphics & Intros" data-sr="Motion Grafika i Intra">Motion Graphics & Intros</p>
+        <span class="service-num">03</span>
+        <h3 class="service-name" data-en="Motion graphics and intros" data-sr="Motion grafika i intra">Motion graphics and intros</h3>
         <p class="service-desc" data-en="Animated logos, transitions and visuals that bring your brand to life." data-sr="Animirani logotipi, tranzicije i vizuali koji oživljavaju vaš brend.">Animated logos, transitions and visuals that bring your brand to life.</p>
       </div>
 
       <div class="service-card">
-        <p class="service-num">04</p>
-        <p class="service-name" data-en="Content Packs (Bundle)" data-sr="Content Paketi (Paket)">Content Packs (Bundle)</p>
-        <p class="service-desc" data-en="Everything in one, logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Sve u jednom, logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Everything in one, logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
+        <span class="service-num">04</span>
+        <h3 class="service-name" data-en="Content packs" data-sr="Content paketi">Content packs</h3>
+        <p class="service-desc" data-en="Logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
       </div>
 
-    </div>
-
-    <p class="tools-header" data-en="Tools" data-sr="Alati">Tools</p>
-    <div class="tools-list">
-      <span class="tool-tag">Photoshop</span>
-      <span class="tool-tag">Illustrator</span>
-      <span class="tool-tag">After Effects</span>
-      <span class="tool-tag">Blender</span>
-      <span class="tool-tag">Premiere Pro</span>
+      <p class="tools-header eyebrow" data-en="Tools" data-sr="Alati">Tools</p>
+      <div class="tools-list">
+        <span class="tool-tag">Photoshop</span>
+        <span class="tool-tag">Illustrator</span>
+        <span class="tool-tag">After Effects</span>
+        <span class="tool-tag">Blender</span>
+        <span class="tool-tag">Premiere Pro</span>
+      </div>
     </div>
   </section>
 </section>
@@ -1271,27 +1918,27 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-left fade-up">
-    <p class="contact-label" data-en="Get in touch" data-sr="Kontakt">Get in touch</p>
-    <h2 class="contact-heading" data-en="LET'S WORK." data-sr="HAJDE DA RADIMO.">LET'S<br>WORK.</h2>
+    <p class="contact-label eyebrow" data-en="Contact" data-sr="Kontakt">Contact</p>
+    <h2 class="contact-heading" data-en="Let's make something deliberate." data-sr="Hajde da napravimo nešto promišljeno.">Let's make something deliberate.</h2>
     <a href="mailto:hello@vuxdzn.art" class="contact-email">hello@vuxdzn.art</a>
   </div>
   <div class="contact-right fade-up">
     <form class="contact-form" onsubmit="handleSubmit(event)">
       <div class="form-field">
-        <label data-en="Name" data-sr="Ime">Name</label>
+        <label class="eyebrow" data-en="Name" data-sr="Ime">Name</label>
         <input type="text" name="from_name" data-en-placeholder="Your name" data-sr-placeholder="Vaše ime" placeholder="Your name" required>
       </div>
       <div class="form-field">
-        <label data-en="Email" data-sr="Email">Email</label>
+        <label class="eyebrow" data-en="Email" data-sr="Email">Email</label>
         <input type="email" name="from_email" placeholder="your@email.com" required>
       </div>
       <div class="form-field">
-        <label data-en="Message" data-sr="Poruka">Message</label>
+        <label class="eyebrow" data-en="Message" data-sr="Poruka">Message</label>
         <textarea name="message" data-en-placeholder="Tell me about the project..." data-sr-placeholder="Reci mi o projektu..." placeholder="Tell me about the project..." required></textarea>
       </div>
       <div class="form-submit">
-        <button type="submit" class="submit-btn" data-en="Send →" data-sr="Pošalji →">Send →</button>
-        <p class="submit-note" data-en="Usually reply within 24h." data-sr="Obično odgovaram u roku od 24h.">Usually reply within 24h.</p>
+        <button type="submit" class="submit-btn" data-en="Send message" data-sr="Pošalji">Send message</button>
+        <p class="submit-note" data-en="Usually reply within 24h" data-sr="Obično odgovaram u 24h">Usually reply within 24h</p>
       </div>
     </form>
   </div>
@@ -1299,9 +1946,9 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
 <!-- FOOTER -->
 <footer>
-  <p data-en="© 2026 VuxDZN" data-sr="© 2026 VuxDZN">© 2026 VuxDZN</p>
+  <p data-en="© 2026 VuxDZN — Serbia" data-sr="© 2026 VuxDZN — Srbija">© 2026 VuxDZN — Serbia</p>
   <div class="footer-links">
-    <a href="https://instagram.com" target="_blank">Instagram</a>
+    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
   </div>
 </footer>
 
@@ -1314,46 +1961,50 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       </svg>
       <span data-en="Back" data-sr="Nazad">Back</span>
     </button>
-    <span class="proj-detail-tag" data-en="About Me" data-sr="O Meni">About Me</span>
+    <span class="proj-detail-tag" data-en="About" data-sr="O meni">About</span>
   </div>
 
   <div class="about-overlay-hero">
-    <div class="about-overlay-index" data-en="Serbia, Visual Designer" data-sr="Srbija, Vizualni Dizajner">Serbia, Visual Designer</div>
-    <h2 class="about-overlay-name">Vukašin<br><em>Đorđević</em></h2>
-    <p class="about-overlay-alias">VuxDZN</p>
+    <div class="about-overlay-index" data-en="About — VuxDZN" data-sr="O meni — VuxDZN">About — VuxDZN</div>
+    <h2 class="about-overlay-name">VUX<br><em>DZN</em></h2>
+    <p class="about-overlay-alias" data-en="Visual designer · Serbia" data-sr="Vizuelni dizajner · Srbija">Visual designer · Serbia</p>
   </div>
 
   <div class="about-overlay-body">
     <div class="about-overlay-left">
-      <p class="about-overlay-section-label" data-en="Who I Am" data-sr="Ko Sam">Who I Am</p>
-      <p class="about-overlay-para" data-en="I'm Vukašin Đorđević, a graphic designer and motion artist from Serbia. Under the alias VuxDZN, I create visual identities, motion graphics and social media content that cut through the noise." data-sr="Ja sam Vukašin Đorđević, grafički dizajner i motion artist iz Srbije. Pod aliasom VuxDZN, kreiram vizuelne identitete, motion grafiku i sadržaj za društvene mreže koji probija buku.">I'm Vukašin Đorđević, a graphic designer and motion artist from Serbia. Under the alias VuxDZN, I create visual identities, motion graphics and social media content that cut through the noise.</p>
-      <p class="about-overlay-para" data-en="My focus is on gaming brands, online creators and businesses that want to look sharp and be taken seriously. I don't do generic, every project is built from scratch around what the brand actually needs." data-sr="Fokusiram se na gaming brendove, online kreatore i biznise koji žele da izgledaju ozbiljno. Ne radim generičke stvari, svaki projekat gradim od nule oko onoga što brend zaista treba.">My focus is on gaming brands, online creators and businesses that want to look sharp and be taken seriously. I don't do generic, every project is built from scratch around what the brand actually needs.</p>
-      <p class="about-overlay-para" data-en="Design, for me, is about making things feel inevitable, like the brand couldn't have looked any other way." data-sr="Dizajn je za mene stvaranje nečega što deluje neizbežno, kao da brend nije mogao izgledati ni na koji drugi način.">Design, for me, is about making things feel inevitable, like the brand couldn't have looked any other way.</p>
+      <p class="about-overlay-section-label" data-en="Studio note" data-sr="Beleška studija">Studio note</p>
+      <p class="about-overlay-para" data-en="A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated." data-sr="Studio od jednog čoveka, posvećen vizuelnim sistemima koji deluju neizbežno. Radim sa gaming brendovima, online kreatorima i biznisima koji žele da izgledaju ozbiljno — nikada generički, nikada po šablonu.">A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated.</p>
+      <p class="about-overlay-para" data-en="Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale." data-sr="Svaki projekat se gradi od nule, oko onoga što brend stvarno treba. Identitet, motion i sistemi za društvene mreže projektovani su da budu odmah čitljivi i da rade u svakoj veličini.">Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale.</p>
+      <p class="about-overlay-stats">
+        <span data-en="Four selected projects" data-sr="Četiri izabrana projekta">Four selected projects</span>
+        <span data-en="Two years independent" data-sr="Dve godine samostalno">Two years independent</span>
+        <span data-en="Five tools daily" data-sr="Pet alata svakodnevno">Five tools daily</span>
+      </p>
     </div>
 
     <div class="about-overlay-right">
       <div class="about-overlay-info">
         <p class="about-overlay-section-label" data-en="Info" data-sr="Info">Info</p>
-        <div class="about-details">
-          <div class="about-detail-row">
-            <span class="about-detail-key" data-en="Full Name" data-sr="Puno Ime">Full Name</span>
-            <span class="about-detail-val">Vukašin Đorđević</span>
-          </div>
+        <div class="about-overlay-details">
           <div class="about-detail-row">
             <span class="about-detail-key" data-en="Origin" data-sr="Poreklo">Origin</span>
             <span class="about-detail-val" data-en="Serbia" data-sr="Srbija">Serbia</span>
           </div>
           <div class="about-detail-row">
             <span class="about-detail-key" data-en="Role" data-sr="Uloga">Role</span>
-            <span class="about-detail-val" data-en="Visual Designer" data-sr="Vizualni Dizajner">Visual Designer</span>
+            <span class="about-detail-val" data-en="Visual designer" data-sr="Vizuelni dizajner">Visual designer</span>
           </div>
           <div class="about-detail-row">
-            <span class="about-detail-key" data-en="Alias" data-sr="Alias">Alias</span>
-            <span class="about-detail-val">VuxDZN</span>
+            <span class="about-detail-key" data-en="Focus" data-sr="Fokus">Focus</span>
+            <span class="about-detail-val" data-en="Identity, motion, social" data-sr="Identitet, motion, social">Identity, motion, social</span>
           </div>
           <div class="about-detail-row">
             <span class="about-detail-key" data-en="Status" data-sr="Status">Status</span>
-            <span class="about-detail-val about-detail-available"><span class="dot"></span><span data-en="Available for work" data-sr="Dostupan za projekte">Available for work</span></span>
+            <span class="about-detail-val about-detail-available"><span class="dot"></span><span data-en="Available 2026" data-sr="Dostupan 2026">Available 2026</span></span>
+          </div>
+          <div class="about-detail-row">
+            <span class="about-detail-key" data-en="Email" data-sr="Email">Email</span>
+            <span class="about-detail-val"><a href="mailto:hello@vuxdzn.art" style="color:inherit;text-decoration:none;">hello@vuxdzn.art</a></span>
           </div>
         </div>
       </div>
@@ -1366,6 +2017,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
           <span class="tool-tag">After Effects</span>
           <span class="tool-tag">Blender</span>
           <span class="tool-tag">Premiere Pro</span>
+          <span class="tool-tag">Figma</span>
         </div>
       </div>
     </div>
@@ -1373,7 +2025,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
   <div class="about-overlay-footer">
     <a href="mailto:hello@vuxdzn.art" class="contact-email">hello@vuxdzn.art</a>
-    <span class="about-overlay-section-label" data-en="Let's build something." data-sr="Hajde da napravimo nešto.">Let's build something.</span>
+    <span class="eyebrow" data-en="Let's build something." data-sr="Hajde da napravimo nešto.">Let's build something.</span>
   </div>
 </div>
 
@@ -1385,71 +2037,43 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
 
 <!-- PROJECT DETAIL OVERLAY -->
 <div class="proj-detail-overlay" id="projDetailOverlay">
+
+  <!-- sticky nav -->
   <div class="proj-detail-header">
     <button class="proj-detail-back" onclick="closeDetail()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
-      <span data-en="Back" data-sr="Nazad">Back</span>
+      <span data-en="Index" data-sr="Pregled">Index</span>
     </button>
-    <span class="proj-detail-tag" id="detailTag">01 / 07</span>
+    <span class="proj-detail-tag" id="detailTag">01 / 06</span>
   </div>
 
-  <div class="proj-detail-hero">
-    <!-- brand mark: logo + name, injected by JS -->
-    <div class="proj-detail-brand-mark" id="detailBrandMark" style="display:none;">
-      <img class="proj-detail-brand-logo" id="detailBrandLogo" src="" alt="">
-      <span class="proj-detail-brand-name" id="detailBrandName"></span>
-    </div>
+  <!-- HERO -->
+  <div class="cs-hero" id="csHero"></div>
 
-    <div class="proj-detail-title-row">
-      <div class="proj-detail-title-area">
-        <p class="proj-detail-label" id="detailCat">Brand Identity</p>
-        <h2 class="proj-detail-title" id="detailTitle">Project Name</h2>
-        <p class="proj-detail-hook" id="detailDesc">Project description goes here.</p>
-      </div>
-      <div class="proj-detail-meta">
-        <div class="proj-detail-meta-item">
-          <p class="proj-detail-meta-key" data-en="Year" data-sr="Godina">Year</p>
-          <p class="proj-detail-meta-val" id="detailYear">2025</p>
-        </div>
-        <div class="proj-detail-meta-item">
-          <p class="proj-detail-meta-key" data-en="Client" data-sr="Klijent">Client</p>
-          <p class="proj-detail-meta-val" id="detailClient">,</p>
-        </div>
-        <div class="proj-detail-meta-item">
-          <p class="proj-detail-meta-key" data-en="Status" data-sr="Status">Status</p>
-          <p class="proj-detail-meta-val" id="detailStatus">Completed</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- META LINE -->
+  <div class="cs-meta-row" id="csMetaRow"></div>
 
-  <!-- masonry grid -->
-  <div class="proj-detail-masonry" id="detailMasonry"></div>
+  <!-- BODY: Overview / Challenge / Direction / Process / Results -->
+  <div id="csBody"></div>
 
-  <div class="proj-detail-body">
-    <div class="proj-detail-tools">
-      <p class="proj-detail-tools-label" data-en="Tools & Scope" data-sr="Alati i opseg">Tools & Scope</p>
-      <div class="proj-detail-tools-list" id="detailTools"></div>
-    </div>
-  </div>
-
-
+  <!-- PREV / NEXT -->
   <div class="proj-detail-nav">
     <button class="proj-nav-btn" id="prevProjBtn" onclick="navigateDetail(-1)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
-      <span data-en="Prev" data-sr="Preth.">Prev</span>
+      <span data-en="Prev project" data-sr="Prethodni">Prev project</span>
     </button>
     <button class="proj-nav-btn" id="nextProjBtn" onclick="navigateDetail(1)">
-      <span data-en="Next" data-sr="Sledeći">Next</span>
+      <span data-en="Next project" data-sr="Sledeći">Next project</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6"></polyline>
       </svg>
     </button>
   </div>
+
 </div>
 
 <script>
@@ -1529,12 +2153,16 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre, zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
       tools: ['Photoshop', 'Blender', 'After Effects'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716746/hlhlhl_fqxlfh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716739/hl_x6m9ex.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716761/rank_pc_photo_nyrh2g.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716733/cash_pc_photo_xhaqem.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716743/hlhlhlhlh_iacryy.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722984/bnnnr_yzsnvh.png'],
-      closeups: [
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716746/hlhlhl_fqxlfh.png',
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716761/rank_pc_photo_nyrh2g.png',
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716733/cash_pc_photo_xhaqem.png'
-      ]
+      images: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716767/web_photo_bnr_xskfpc.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/v1778188655/post_set_b8d9ls.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/v1778188654/hl_set_pzr5cj.png'
+      ],
+      sections: [
+        { type: 'image', src: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1778188655/post_set_b8d9ls.png', labelEn: 'Posts set', labelSr: 'Set postova' },
+        { type: 'image', src: 'https://res.cloudinary.com/dxetzmj1i/image/upload/v1778188654/hl_set_pzr5cj.png', labelEn: 'Highlights set', labelSr: 'Set highlighta' },
+      ],
+      closeups: []
     },
     {
       num: '02',
@@ -1545,7 +2173,7 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       statusEn: 'Completed', statusSr: 'Završeno',
       descEn: 'Problem, Growing brand with no unified visual system.\nSolution, Clean logo and visual language built to be consistent everywhere.',
       descSr: 'Problem, Brend u razvoju bez ujedinjenog vizuelnog sistema.\nRešenje, Čist logo i vizuelni jezik koji je dosledan svuda.',
-      storyEn: 'JMFade needed a barbershop-adjacent calm that still felt premium on a phone screen. I started from spacing: generous margins, a restrained palette, and a wordmark that reads clean at favicon size. Deliverables were sequenced like a real launch, hero banner first, then in-feed highlights and a price/menu layout, so the client could roll out without redesigning every week.',
+      storyEn: 'Started from spacing — generous margins, restrained palette, wordmark that reads clean at favicon size. Sequenced like a real launch: hero first, then highlights and menu layout. Ready to roll out week one.',
       storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje, prvo hero baner, zatim highlight postovi i raspored cenovnika, da klijent može da uvodi bezikonskog redizajna svake nedelje.',
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
       tools: ['Adobe Illustrator', 'Photoshop', 'Figma'],
@@ -1558,46 +2186,31 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     },
     {
       num: '03',
-      titleEn: 'Goldenito',   titleSr: 'Goldenito',
-      catEn:   'Discord Visuals', catSr: 'Discord Vizuali',
-      year: '2025',
-      client: 'Goldenito',
+      titleEn: 'Next Forwarding',   titleSr: 'Next Forwarding',
+      catEn:   'Brand Identity', catSr: 'Brend Identitet',
+      year: '2026',
+      client: 'Next Forwarding',
       statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem, Discord community with no visual presence or identity.\nSolution, Animated logo, banner and assets that made it feel like a real brand.',
-      descSr: 'Problem, Discord zajednica bez vizuelnog prisustva ili identiteta.\nRešenje, Animirani logo, baner i materijali koji su je pretvorili u pravi brend.',
-      storyEn: 'Creator communities live inside tiny thumbnails and animated headers, so Goldenito prioritized motion-first recognition. The loop reads in under a second: mark → mascot energy → color punch. Banner framing keeps the focal cluster away from Discord UI chrome, and the GIF mark is legible even when Discord compresses the living daylights out of it.',
-      storySr: 'Kreator zajednice žive u malim thumbnailovima i animiranim zaglavljima, zato je Goldenito stavio motion na prvo mesto. Petlja se pročita za manje od sekunde: znak → maskota → boja. Baner je kadriran tako da žarište ne ulazi u Discord UI, a GIF marka ostaje čitljiva i kad platforma agresivno kompresuje fajl.',
-      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif',
-      tools: ['Blender', 'After Effects', 'Photoshop'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716734/goldi_banner_mzrc2i.gif', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716756/goldi_vuy0gn.gif'],
-      closeups: [
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716734/goldi_banner_mzrc2i.gif',
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776716756/goldi_vuy0gn.gif'
+      descEn: 'Problem, A logistics brand with no visual identity to match its ambition.\nSolution, A clean, confident brand system built around motion and bold typography.',
+      descSr: 'Problem, Logistički brend bez vizuelnog identiteta koji prati njegove ambicije.\nRešenje, Čist, samouveren brend sistem izgrađen oko motion dizajna i snažne tipografije.',
+      storyEn: 'Forwarding demands clarity and speed. The identity leans into geometric precision — sharp angles, a neutral palette cut with a single accent — so the brand reads instantly whether it\'s on a banner, a highlight set, or compressed down to a small logo lockup.',
+      storySr: 'Forwarding zahteva jasnoću i brzinu. Identitet se oslanja na geometrijsku preciznost — oštri uglovi, neutralna paleta presečena jednim akcentom — tako da se brend odmah čita, bilo da je na baneru, highlight setu ili smanjenom logo locku.',
+      logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/logos_nf_cyemvz.png',
+      tools: ['Illustrator', 'Photoshop', 'After Effects'],
+      images: [
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329996/banner_nf_keiwcg.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/hl_set_qkuvql.png',
+        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/logos_nf_cyemvz.png'
+      ],
+      sections: [
+        { type: 'image', src: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/logos_nf_cyemvz.png', labelEn: 'Logos', labelSr: 'Logotipi', contain: true },
+        { type: 'image', src: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329982/storyset_i3v5sd.png', labelEn: 'Story Set', labelSr: 'Story Set' },
+        { type: 'image', src: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/hl_set_qkuvql.png', labelEn: 'Highlight Set', labelSr: 'Highlight Set' },
       ]
     },
 
     {
       num: '04',
-      titleEn: 'PlayZone Visuals',  titleSr: 'PlayZone Vizuali',
-      catEn:   'Social Media Design',   catSr:   'Dizajn Društvenih Mreža',
-      year: '2026',
-      client: ',',
-      statusEn: 'Concept', statusSr: 'Koncept',
-      descEn: 'Problem, Gaming platform with generic visuals getting ignored.\nSolution, Bold social content designed to stop the scroll and drive clicks.',
-      descSr: 'Problem, Gaming platforma sa generičkim vizualima koji prolaze nezapaženo.\nRešenje, Bold social sadržaj koji zaustavlja skrolovanje i povećava klikove.',
-      storyEn: 'This concept explores “channel surfing” energy, loud color blocks, diagonal motion cues, and poster-style crops that survive the Instagram crop roulette. The goal wasn’t a single pretty frame; it was a repeatable kit: one hero, one secondary pattern, and a portrait variant that still reads when half-covered by UI.',
-      storySr: 'Koncept istražuje energiju „channel surfinga“, glasne blokove boja, dijagonalne pokretne nagoveštaje i poster kadrove koji prežive Instagram nasumične cropove. Cilj nije bio jedan lep frejm već ponovljiv kit: jedan hero, jedan sekundarni pattern i vertikalna varijanta koja i dalje deluje kad je UI pola prekrije.',
-      tools: ['Photoshop', 'Illustrator'],
-      images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720631/play_now_yjct31.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720612/gw_fs74kk.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776720594/pp_pwxitr.png'],
-      closeups: [
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720631/play_now_yjct31.png',
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720612/gw_fs74kk.png',
-        'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto,c_fill,w_1100,h_1100,g_auto/v1776720594/pp_pwxitr.png'
-      ]
-    },
-
-    {
-      num: '05',
       titleEn: 'Luka Photography',  titleSr: 'Luka Photography',
       catEn:   'Brand Identity',   catSr:   'Brend Identitet',
       year: '2026',
@@ -1617,23 +2230,6 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
       ]
     },
 
-
-    {
-      num: '06',
-      titleEn: 'GTAVPARE Ad',   titleSr: 'GTAVPARE Ad',
-      catEn:   'Motion Design', catSr: 'Motion Dizajn',
-      year: '2026',
-      client: 'GTAVPARE',
-      statusEn: 'Completed', statusSr: 'Završeno',
-      descEn: 'Problem, Brand needed motion but had nothing in video format.\nSolution, 10-second ad that brings the identity to life. Sharp and impossible to ignore.',
-      descSr: 'Problem, Brend je trebao motion ali nije imao ništa za video.\nRešenje, 10-sekundni ad koji oživljava identitet. Oštar i nemoguć za ignorisanje.',
-      storyEn: 'Motion-first branding demands that every second earns its place. The brief was simple: make the mark feel alive. Tight timing, frame-accurate cuts and a restrained color palette let the motion breathe without overstaying its welcome. The loop is engineered to feel inevitable, not just stylish.',
-      storySr: 'Motion-first brending zahteva da svaka sekunda opravda svoje mesto. Zadatak je bio jednostavan: neka znak deluje živo. Precizno tajming, rezovi tačni na frejm i suzdržana paleta boja daju pokretu prostor da diše. Petlja je projektovana da deluje neizbežno, ne samo stilski.',
-      tools: ['After Effects', 'Blender'],
-      video: 'https://res.cloudinary.com/dxetzmj1i/video/upload/q_auto/f_auto/v1777403696/dantemazo_1_tfnkhb.mp4',
-      images: [],
-      closeups: []
-    },
 
   ];
 
@@ -1671,83 +2267,202 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
     document.getElementById('projDetailOverlay').scrollTop = 0;
   }
 
+  // ── helpers ──────────────────────────────────────────────────────
+  function csEscape(str = '') {
+    return String(str).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+  function csParseDesc(text) {
+    // text = "Problem, X.\nSolution, Y." → { challenge: 'X.', direction: 'Y.' }
+    const lines = (text || '').split('\n').map(l => l.trim()).filter(Boolean);
+    const out = { challenge: '', direction: '' };
+    lines.forEach(line => {
+      const idx = line.indexOf(', ');
+      if (idx === -1) return;
+      const head = line.substring(0, idx).toLowerCase();
+      const body = line.substring(idx + 2).trim();
+      if (head.startsWith('problem')) out.challenge = body;
+      else if (head.startsWith('solution') || head.startsWith('rešenje')) out.direction = body;
+    });
+    return out;
+  }
+  function csImg(src, opts = {}) {
+    const cls = opts.className || 'cs-img-full';
+    const onclick = opts.onclick ? ` data-cs-zoom="${csEscape(src)}"` : '';
+    return `<img class="${cls}" src="${csEscape(src)}" alt=""${onclick} onload="this.classList.add('loaded')">`;
+  }
+
   function renderDetail(idx) {
     const p = projects[idx];
     const isEn = (lang === 'en');
+    const t = (en, sr) => isEn ? en : sr;
 
-    document.getElementById('detailTag').textContent = `${p.num} / 0${projects.length}`;
-    document.getElementById('detailTitle').textContent = isEn ? p.titleEn : p.titleSr;
-    document.getElementById('detailCat').textContent   = isEn ? p.catEn   : p.catSr;
-    document.getElementById('detailYear').textContent  = p.year;
-    document.getElementById('detailClient').textContent = p.client;
-    document.getElementById('detailStatus').textContent = isEn ? p.statusEn : p.statusSr;
+    // ── NAV TAG
+    const total = String(projects.length).padStart(2, '0');
+    document.getElementById('detailTag').textContent = `${p.num} / ${total}`;
 
-    const descEl = document.getElementById('detailDesc');
-    const descText = isEn ? p.descEn : p.descSr;
-    const descLines = descText.split('\n');
-    descEl.innerHTML = descLines.map(line => {
-      const dash = line.indexOf(', ');
-      if (dash !== -1) {
-        const label = line.substring(0, dash);
-        const body  = line.substring(dash + 3);
-        return `<span class="desc-label">${label}</span><span class="desc-sep">, </span>${body}`;
-      }
-      return line;
-    }).join('<br><br>');
+    // ── HERO
+    const csHero = document.getElementById('csHero');
+    csHero.innerHTML = '';
+    const heroImg = (p.images && p.images.length > 0) ? p.images[0] : null;
+    const titleHTML = csEscape(t(p.titleEn, p.titleSr));
+    const heroEyebrow = `${csEscape(t(p.catEn, p.catSr))} &nbsp;·&nbsp; ${csEscape(p.year)}`;
 
-    // tools
-    const toolsEl = document.getElementById('detailTools');
-    toolsEl.innerHTML = '';
-    p.tools.forEach(t => {
-      const span = document.createElement('span');
-      span.className = 'proj-detail-tool-tag';
-      span.textContent = t;
-      toolsEl.appendChild(span);
-    });
-
-    // brand mark
-    const brandMark = document.getElementById('detailBrandMark');
-    const brandLogo = document.getElementById('detailBrandLogo');
-    const brandName = document.getElementById('detailBrandName');
-    if (p.logo) {
-      brandLogo.src = p.logo;
-      brandName.textContent = isEn ? p.titleEn : p.titleSr;
-      brandMark.style.display = 'flex';
+    if (p.video && (!p.images || p.images.length === 0)) {
+      csHero.innerHTML = `
+        <video class="cs-hero-video" autoplay loop muted playsinline>
+          <source src="${csEscape(p.video)}" type="video/mp4">
+        </video>
+        <div class="cs-hero-overlay">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+        </div>`;
+    } else if (heroImg) {
+      csHero.innerHTML = `
+        <img class="cs-hero-img" src="${csEscape(heroImg)}" alt="${csEscape(t(p.titleEn, p.titleSr))}" onload="this.classList.add('loaded')">
+        <div class="cs-hero-overlay">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+        </div>`;
     } else {
-      brandMark.style.display = 'none';
+      csHero.innerHTML = `
+        <div class="cs-hero-plain">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+        </div>`;
     }
 
-    // masonry grid
-    const masonry = document.getElementById('detailMasonry');
-    masonry.innerHTML = '';
+    // ── META LINE
+    const metaRow = document.getElementById('csMetaRow');
+    const metaItems = [
+      { k: t('Category', 'Kategorija'), v: t(p.catEn, p.catSr) },
+      { k: t('Client',   'Klijent'),    v: p.client || '—' },
+      { k: t('Year',     'Godina'),     v: p.year },
+      { k: t('Status',   'Status'),     v: t(p.statusEn || 'Completed', p.statusSr || 'Završeno') }
+    ];
+    metaRow.innerHTML = metaItems.map(m => `
+      <span class="cs-meta-cell">
+        <span class="cs-meta-key">${csEscape(m.k)}</span>
+        <span class="cs-meta-val">${csEscape(m.v)}</span>
+      </span>
+    `).join('');
+
+    // ── BODY (Overview / Direction / Process / Supporting / Results / Tools)
+    const body = document.getElementById('csBody');
+    body.innerHTML = '';
+
+    const desc = csParseDesc(t(p.descEn, p.descSr));
+    const storyText = t(p.storyEn || '', p.storySr || '');
     const images = (p.images && p.images.length) ? p.images : [];
 
-    if (images.length === 0) {
-      if (p.video) {
-        const vItem = document.createElement('div');
-        vItem.className = 'proj-masonry-video';
-        vItem.style.columnSpan = 'all';
-        vItem.innerHTML = `<video autoplay loop muted playsinline controls style="width:100%;display:block;border-radius:12px;"><source src="${p.video}" type="video/mp4"></video>`;
-        masonry.appendChild(vItem);
-      } else {
-        const ph = document.createElement('div');
-        ph.className = 'proj-masonry-placeholder';
-        ph.textContent = '[ no images ]';
-        masonry.appendChild(ph);
-      }
-    } else {
-      images.forEach((src, i) => {
-        const item = document.createElement('div');
-        item.className = 'proj-masonry-item';
-        const img = document.createElement('img');
-        img.src = src; img.alt = '';
-        img.onload = () => img.classList.add('loaded');
-        item.appendChild(img);
-        item.addEventListener('click', () => openLightbox(i));
-        masonry.appendChild(item);
-      });
+    // 1. OVERVIEW — title + Problem/Solution body
+    const overviewBody = (desc.challenge && desc.direction)
+      ? `<p><span class="desc-label">${t('Problem', 'Problem')}</span><span class="desc-sep"> — </span>${csEscape(desc.challenge)}</p>
+         <p><span class="desc-label">${t('Solution', 'Rešenje')}</span><span class="desc-sep"> — </span>${csEscape(desc.direction)}</p>`
+      : `<p>${csEscape(t(p.descEn, p.descSr) || '')}</p>`;
+
+    body.insertAdjacentHTML('beforeend', `
+      <section class="cs-section">
+        <div class="cs-section-head">
+          <p class="cs-section-label eyebrow">01 — ${t('Overview', 'Pregled')}</p>
+          <h3 class="cs-section-heading">${titleHTML}</h3>
+        </div>
+        <div class="cs-section-body">${overviewBody}</div>
+      </section>
+    `);
+
+    // 2. DIRECTION — lead image (or video block)
+    if (p.video && images.length === 0) {
+      body.insertAdjacentHTML('beforeend', `
+        <div class="cs-video-block">
+          <video autoplay loop muted playsinline controls>
+            <source src="${csEscape(p.video)}" type="video/mp4">
+          </video>
+        </div>
+      `);
+    } else if (images[0]) {
+      body.insertAdjacentHTML('beforeend', `
+        <div class="cs-section-image">
+          <p class="cs-section-label eyebrow">02 — ${t('Direction', 'Pravac')}</p>
+          ${csImg(images[0], { className: 'cs-img-full', onclick: true })}
+        </div>
+      `);
     }
 
+    // 3. PROCESS — story text (2-col)
+    if (storyText) {
+      body.insertAdjacentHTML('beforeend', `
+        <section class="cs-section">
+          <div class="cs-section-head">
+            <p class="cs-section-label eyebrow">03 — ${t('Process', 'Proces')}</p>
+            <h3 class="cs-section-heading">${t('Behind the work', 'Iza rada')}</h3>
+          </div>
+          <div class="cs-section-body"><p>${csEscape(storyText)}</p></div>
+        </section>
+      `);
+    }
+
+    // 4. LABELED DELIVERABLE SETS (optional) OR SUPPORTING — paired images
+    let resultsSectionNum = '04';
+    const sectionImages = (p.sections || []).filter(s => s.type === 'image');
+    if (sectionImages.length > 0) {
+      sectionImages.forEach((sec, i) => {
+        const num = String(4 + i).padStart(2, '0');
+        const enLbl = sec.labelEn != null ? sec.labelEn : (sec.label || '');
+        const srLbl = sec.labelSr != null ? sec.labelSr : enLbl;
+        const setLabel = enLbl || srLbl ? t(enLbl, srLbl) : '';
+        const imgClass = sec.contain ? 'cs-img-contain' : 'cs-img-full';
+        body.insertAdjacentHTML('beforeend', `
+        <div class="cs-section-image">
+          <p class="cs-section-label eyebrow">${num} — ${csEscape(setLabel)}</p>
+          ${csImg(sec.src, { className: imgClass, onclick: true })}
+        </div>
+        `);
+      });
+      resultsSectionNum = String(4 + sectionImages.length).padStart(2, '0');
+    } else {
+      const supporting = images.slice(1, 3).filter(Boolean);
+      if (supporting.length === 2) {
+        body.insertAdjacentHTML('beforeend', `
+        <div class="cs-section-image">
+          <div class="cs-img-row">
+            ${supporting.map(src => `
+              <div class="cs-img-row-item" data-cs-zoom="${csEscape(src)}">
+                <img src="${csEscape(src)}" alt="" onload="this.classList.add('loaded')">
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        `);
+      } else if (supporting.length === 1) {
+        body.insertAdjacentHTML('beforeend', `
+        <div class="cs-section-image">
+          ${csImg(supporting[0], { className: 'cs-img-full', onclick: true })}
+        </div>
+        `);
+      }
+    }
+
+    
+    // 6. TOOLS BAR
+    body.insertAdjacentHTML('beforeend', `
+      <div class="cs-tools-bar">
+        <span class="cs-tools-label eyebrow">${t('Tools', 'Alati')}</span>
+        <div class="cs-tools-pills">
+          ${(p.tools || []).map(tool => `<span class="proj-detail-tool-tag">${csEscape(tool)}</span>`).join('')}
+        </div>
+      </div>
+    `);
+
+    // wire up zoom on image elements
+    body.querySelectorAll('[data-cs-zoom]').forEach(el => {
+      el.addEventListener('click', () => {
+        document.getElementById('lightboxImg').src = el.getAttribute('data-cs-zoom');
+        document.getElementById('lightbox').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
 
     // nav buttons
     document.getElementById('prevProjBtn').disabled = (idx === 0);
@@ -1808,6 +2523,23 @@ footer p { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); }
   });
 
   initLoadMore();
+
+  // ─── ABOUT READ MORE (mobile) ────────────────────────────────────
+  function toggleAboutReadMore() {
+    const btn = document.getElementById('aboutReadMoreBtn');
+    const wrap = btn ? btn.previousElementSibling : null;
+    if (!wrap) return;
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!isExpanded));
+    wrap.classList.toggle('expanded', !isExpanded);
+    const label = btn.querySelector('.about-read-more-label');
+    if (label) {
+      const lang = document.documentElement.lang || 'en';
+      label.textContent = !isExpanded
+        ? (lang === 'sr' ? 'Zatvori' : 'Read less')
+        : (lang === 'sr' ? 'Pročitaj više' : 'Read more');
+    }
+  }
 
 </script>
 </body>
