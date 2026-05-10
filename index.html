@@ -26,6 +26,7 @@ html { scroll-behavior: smooth; }
 
   /* signature gradient — used only on the hero wordmark */
   --grad-mark: linear-gradient(180deg, #f6f3ec 0%, #c9c4b8 100%);
+  --grad-text-soft: linear-gradient(180deg, rgba(246,243,236,0.98) 0%, rgba(201,196,184,0.78) 100%);
 
   /* legacy compat (some inline references in JS still expect these) */
   --grad-1: var(--grad-mark);
@@ -48,6 +49,7 @@ html { scroll-behavior: smooth; }
 
   /* shell */
   --pad-x: clamp(1.25rem, 4vw, 4rem);
+  --nav-pad-x: max(var(--pad-x), calc((100vw - var(--shell)) / 2 + var(--pad-x)));
   --shell: 1440px;
 }
 
@@ -88,30 +90,37 @@ a { color: inherit; }
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.5rem var(--pad-x);
-  background: rgba(11,11,11,0.92);
+  padding: 1.5rem var(--nav-pad-x);
+  background: rgba(11,11,11,0.45);
   backdrop-filter: saturate(140%) blur(14px);
   -webkit-backdrop-filter: saturate(140%) blur(14px);
-  border-bottom: 1px solid rgba(239,236,230,0.12);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(239,236,230,0.10);
+  box-shadow: none;
   transition: all 0.3s ease;
 }
 .nav-logo { display: inline-flex; align-items: center; transition: transform 0.2s ease; }
 .nav-logo:hover { transform: scale(1.05); }
-.nav-logo img { height: 64px; width: auto; display: block; opacity: 0.95; }
-.nav-right { display: flex; align-items: center; gap: 2.25rem; }
-.nav-links { display: flex; gap: 2.25rem; }
+.nav-logo img { height: 92px; width: auto; display: block; opacity: 0.98; }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
+.nav-links {
+  display: flex;
+  gap: 2.6rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .nav-links a {
-  color: var(--fg-soft);
+  color: rgba(239,236,230,0.88);
   text-decoration: none;
-  font-size: var(--t-label);
+  font-size: 0.74rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  font-weight: 500;
   transition: all 0.2s ease;
   position: relative;
   padding: 0.25rem 0;
 }
-.nav-links a:hover { color: var(--fg); }
+.nav-links a:hover { color: #fff; }
 .nav-links a::after {
   content: '';
   position: absolute;
@@ -119,20 +128,20 @@ nav {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--accent);
+  background: rgba(255,255,255,0.92);
   transition: width 0.3s ease;
 }
 .nav-links a:hover::after { width: 100%; }
 .lang-btn {
   background: none; border: none;
-  color: var(--fg-mute);
+  color: rgba(239,236,230,0.68);
   font-family: 'Inter', sans-serif;
-  font-size: var(--t-label); letter-spacing: 0.16em;
+  font-size: 0.74rem; letter-spacing: 0.16em;
   padding: 0.25rem 0;
   text-transform: uppercase;
   transition: color 0.2s ease;
 }
-.lang-btn:hover { color: var(--fg); }
+.lang-btn:hover { color: #fff; }
 
 /* hamburger */
 .hamburger {
@@ -210,7 +219,7 @@ nav {
   font-family: 'Unbounded', sans-serif;
   font-size: var(--t-display);
   font-weight: 300;
-  line-height: 0.88;
+  line-height: 0.92;
   letter-spacing: -0.035em;
   margin: 0;
   background: var(--grad-mark);
@@ -218,10 +227,20 @@ nav {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+.hero-title span {
+  display: block;
+}
 .hero-title em {
+  display: block;
   font-style: normal;
-  font-weight: 200;
-  opacity: 0.55;
+  font-weight: 300;
+  margin-top: -0.08em;
+  background: linear-gradient(180deg, rgba(246,243,236,0.88) 0%, rgba(177,170,158,0.96) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  opacity: 1;
 }
 .hero-lede {
   font-size: clamp(1rem, 1.4vw, 1.15rem);
@@ -254,6 +273,74 @@ nav {
   transition: color 0.2s ease;
 }
 .hero-scroll:hover { color: var(--fg); }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+}
+.hero-cta,
+.hero-ghost {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.82rem 1.15rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.hero-cta {
+  background: linear-gradient(180deg, rgba(246,243,236,0.98) 0%, rgba(214,208,198,0.94) 100%);
+  color: #111;
+  border: 1px solid rgba(239,236,230,0.92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.hero-ghost {
+  border: 1px solid rgba(239,236,230,0.12);
+  color: var(--fg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 100%);
+}
+.hero-cta:hover,
+.hero-ghost:hover {
+  transform: translateY(-1px);
+}
+.hero-cta:hover {
+  background: linear-gradient(180deg, #ffffff 0%, rgba(230,226,220,0.98) 100%);
+  border-color: #fff;
+}
+.hero-ghost:hover {
+  border-color: rgba(239,236,230,0.24);
+  background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.025) 100%);
+}
+.hero-proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.hero-proof-item {
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.hero-proof-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: var(--t-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.hero-proof-copy {
+  color: var(--fg-soft);
+  font-size: var(--t-meta);
+  line-height: 1.5;
+}
 .dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--accent);
@@ -473,6 +560,10 @@ nav {
   letter-spacing: -0.01em;
   line-height: 1.25;
   color: var(--fg);
+  background: var(--grad-text-soft);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .service-desc {
   font-size: var(--t-meta);
@@ -545,6 +636,14 @@ nav {
   }
   .project-card { border-radius: 10px; }
   .project-card:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+  .hero-proof { grid-template-columns: 1fr; }
+}
+
+.contact-copy {
+  max-width: 38ch;
+  color: var(--fg-soft);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
 }
 
 /* ── ABOUT (legacy inline section, retained but unused) ── */
@@ -596,6 +695,10 @@ nav {
   line-height: 0.95;
   letter-spacing: -0.025em;
   color: var(--fg);
+  background: var(--grad-text-soft);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
 }
 .contact-email {
@@ -701,7 +804,7 @@ footer p {
   color: var(--fg-mute);
   text-transform: uppercase;
 }
-.footer-links { display: flex; gap: 1.75rem; }
+.footer-links { display: flex; gap: 1.75rem; align-items: center; }
 .footer-links a {
   font-size: var(--t-label);
   letter-spacing: 0.16em;
@@ -731,21 +834,90 @@ footer p {
 ══════════════════════════════════════════════════ */
 .proj-detail-overlay {
   position: fixed; inset: 0; z-index: 200;
-  background: var(--bg);
+  background: #050505;
   transform: translateY(100%);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   overflow-y: auto;
   display: flex; flex-direction: column;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  isolation: isolate;
 }
 .proj-detail-overlay.open { transform: translateY(0); }
+.proj-detail-overlay.has-project-image {
+  background:
+    radial-gradient(circle at 14% 6%, var(--proj-glow-1, rgba(51,102,255,0.24)) 0%, transparent 24%),
+    radial-gradient(circle at 82% 10%, var(--proj-glow-2, rgba(22,48,145,0.16)) 0%, transparent 20%),
+    linear-gradient(180deg, var(--proj-bg-top, rgba(10,18,46,0.98)) 0%, var(--proj-bg-mid, rgba(7,10,20,0.98)) 18%, var(--proj-bg-deep, rgba(6,7,12,1)) 42%, rgba(5,5,7,1) 100%);
+}
+.proj-detail-page-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0.98;
+  filter: blur(40px) saturate(108%) brightness(0.62);
+  transform: scale(1.18);
+  transform-origin: center top;
+  pointer-events: none;
+  z-index: 0;
+}
+.proj-detail-overlay::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background-image: var(--proj-page-image, none);
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.proj-detail-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5,5,11,0.10) 0%, rgba(5,5,11,0.30) 25%, rgba(5,5,11,0.58) 50%, rgba(5,5,11,0.82) 72%, rgba(5,5,11,1) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.proj-detail-overlay.has-project-image::after {
+  background:
+    linear-gradient(180deg, rgba(4,5,5,0.08) 0%, rgba(4,5,5,0.18) 16%, rgba(4,5,5,0.34) 34%, rgba(4,5,5,0.52) 56%, rgba(4,5,5,0.74) 76%, rgba(4,5,5,0.88) 90%, rgba(4,5,5,0.96) 100%);
+}
+.proj-detail-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+.proj-detail-overlay.has-project-image::before {
+  opacity: 0;
+}
 
 /* sticky header */
 .proj-detail-header {
-  position: sticky; top: 0; z-index: 210;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 210;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1rem var(--pad-x);
-  background: rgba(11,11,11,0.78);
+  background: rgba(6,6,7,0.45);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid rgba(239,236,230,0.10);
+  box-sizing: border-box;
+}
+.proj-detail-overlay.has-project-image .proj-detail-header {
+  background: rgba(6,6,7,0.45);
   backdrop-filter: saturate(140%) blur(14px);
   -webkit-backdrop-filter: saturate(140%) blur(14px);
 }
@@ -780,33 +952,52 @@ footer p {
 
 /* ── HERO ── */
 .cs-hero {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   overflow: hidden;
-  background: transparent;
+  pointer-events: none;
+  z-index: 0;
 }
-.cs-hero:has(img, video) { background: #0a0a0a; }
-.cs-hero-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.6s ease;
+.cs-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
-.cs-hero-img.loaded { opacity: 1; }
+.cs-hero-bg,
 .cs-hero-video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0.75;
+  filter: blur(12px) saturate(110%) brightness(0.52);
+  transform: scale(1.35);
+  pointer-events: none;
+  z-index: 0;
+}
+.cs-hero-bg.cs-hero-backdrop {
+  opacity: 0.9;
+  filter: none;
+  transform: scale(1.02);
+}
+.proj-detail-overlay.has-project-image .cs-hero-bg.cs-hero-backdrop {
+  opacity: 0;
+  pointer-events: none;
 }
 .cs-hero-overlay {
-  position: relative; z-index: 2;
-  background: linear-gradient(to top, rgba(11,11,11,0.92) 0%, rgba(11,11,11,0.35) 50%, transparent 80%);
-  padding: clamp(8rem, 18vw, 14rem) var(--pad-x) clamp(2.5rem, 5vw, 4rem);
-  display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: 60vh;
+  position: relative;
+  z-index: 3;
+  padding: clamp(7.5rem, 11vw, 9rem) var(--pad-x) clamp(3.5rem, 7vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(2rem, 3.4vw, 2.9rem);
 }
 .cs-hero-overlay > * {
   max-width: var(--shell);
@@ -818,45 +1009,63 @@ footer p {
   letter-spacing: 0.16em;
   color: var(--fg-soft);
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 .cs-hero-title {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-size: clamp(2.7rem, 6vw, 5.8rem);
   font-weight: 200;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  max-width: 16ch;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  color: rgba(239,236,230,0.96);
+  max-width: 15ch;
   margin: 0;
+  text-wrap: balance;
 }
-.cs-hero-plain { padding: clamp(8rem, 16vw, 12rem) var(--pad-x) clamp(2rem, 5vw, 4rem); }
+.cs-hero-plain { padding: clamp(7rem, 12vw, 9rem) var(--pad-x) clamp(3rem, 6vw, 4.5rem); }
 .cs-hero-plain .cs-hero-title { color: var(--fg); }
-
-/* ── META LINE (replaces 4-cell band) ── */
-.cs-meta-row {
-  display: flex; flex-wrap: wrap;
-  gap: 0.5rem 0.9rem;
-  align-items: baseline;
-  padding: clamp(1.5rem, 3vw, 2rem) var(--pad-x);
-  max-width: var(--shell);
-  margin-inline: auto;
-  border-bottom: 1px solid var(--line);
-  font-size: var(--t-label);
-  letter-spacing: 0.16em;
-  color: var(--fg-soft);
-  text-transform: uppercase;
+.cs-hero-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem 2.5rem;
+  max-width: 1180px;
 }
-.cs-meta-cell {
-  display: inline-flex; align-items: baseline; gap: 0.55rem;
+.cs-hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
 }
-.cs-meta-cell:not(:last-child)::after {
-  content: '·';
-  color: var(--fg-faint);
-  margin-left: 0.9rem;
+.cs-hero-meta-key {
+  font-size: clamp(0.88rem, 1vw, 1rem);
+  font-weight: 700;
+  color: rgba(239,236,230,0.4);
+  line-height: 1.15;
 }
-.cs-meta-key { color: var(--fg-mute); }
-.cs-meta-val { color: var(--fg); font-variant-numeric: tabular-nums; }
+.cs-hero-meta-val {
+  font-size: clamp(1rem, 1.35vw, 1.45rem);
+  color: rgba(239,236,230,0.9);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.cs-hero-showcase {
+  width: 100%;
+  max-width: min(1720px, calc(100vw - (var(--pad-x) * 1.2)));
+  margin-top: clamp(0.5rem, 1vw, 1rem);
+  border-radius: 22px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+.cs-hero-showcase img,
+.cs-hero-showcase video {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+.cs-meta-row { display: none; }
 
 /* ── editorial 2-col text section (used for Overview / Direction copy / Process / Results lead) ── */
 .cs-section {
@@ -867,14 +1076,14 @@ footer p {
   display: grid;
   grid-template-columns: minmax(0, 18ch) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 5rem);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   box-sizing: border-box;
 }
 .cs-section-head { display: flex; flex-direction: column; gap: var(--s2); }
 .cs-section-label { color: var(--fg-mute); }
 .cs-section-heading {
   font-family: 'Unbounded', sans-serif;
-  font-size: var(--t-h3);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
   font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.25;
@@ -882,7 +1091,7 @@ footer p {
   margin: 0;
 }
 .cs-section-body {
-  font-size: var(--t-body);
+  font-size: 0.92rem;
   font-weight: 400;
   color: var(--fg-soft);
   line-height: 1.7;
@@ -935,18 +1144,22 @@ footer p {
 .cs-images-primary { padding: 0; }
 .cs-section-image {
   padding: clamp(2rem, 5vw, 4rem) var(--pad-x);
-  max-width: var(--shell);
+  max-width: min(1720px, calc(100vw - (var(--pad-x) * 1.2)));
   margin-inline: auto;
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .cs-section-image .cs-section-label { display: block; margin-bottom: var(--s2); }
 .cs-img-full {
   width: 100%; display: block;
+  max-width: none;
   max-height: 78vh;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 0;
   opacity: 0; transition: opacity 0.5s ease;
   background: #0e0e0e;
 }
@@ -956,8 +1169,9 @@ footer p {
 /* contain variant — shows full image without cropping */
 .cs-img-contain {
   width: 100%; display: block;
+  max-width: none;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 0;
   opacity: 0; transition: opacity 0.5s ease;
   background: #0e0e0e;
 }
@@ -971,7 +1185,7 @@ footer p {
 }
 .cs-img-row-item {
   overflow: hidden; position: relative;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: zoom-in;
   background: #0e0e0e;
 }
@@ -1051,7 +1265,158 @@ footer p {
   margin-inline: auto;
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+@media (max-width: 900px) {
+  .cs-hero {
+    min-height: auto;
+  }
+  .cs-hero-overlay {
+    align-items: center;
+    text-align: center;
+    padding: clamp(6.25rem, 11vw, 7rem) var(--pad-x) clamp(2.75rem, 6vw, 3.25rem);
+    gap: 1.7rem;
+  }
+  .cs-hero-title {
+    max-width: 11.5ch;
+    font-size: clamp(2.35rem, 7vw, 3.6rem);
+    line-height: 1;
+  }
+  .cs-hero-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem 1rem;
+    max-width: 640px;
+  }
+  .cs-hero-meta-item {
+    align-items: center;
+  }
+  .cs-hero-meta-key {
+    font-size: 0.78rem;
+  }
+  .cs-hero-meta-val {
+    font-size: 0.92rem;
+  }
+  .cs-hero-showcase {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}
+@media (max-width: 540px) {
+  .proj-detail-page-bg {
+    object-position: center top;
+  }
+  .proj-detail-overlay::before {
+    background-position: center top;
+    background-size: cover;
+  }
+  .proj-detail-overlay::after {
+    background:
+      linear-gradient(180deg, rgba(5,5,5,0.08) 0%, rgba(5,5,5,0.22) 25%, rgba(5,5,5,0.60) 55%, rgba(5,5,5,0.88) 78%, rgba(5,5,5,1) 100%);
+  }
+  .cs-hero-bg,
+  .cs-hero-video {
+    opacity: 0.75;
+    filter: blur(12px) saturate(110%) brightness(0.52);
+    transform: scale(1.35);
+    object-position: center center;
+  }
+  .cs-hero-overlay {
+    padding: 5.15rem var(--pad-x) 2.15rem;
+    gap: 0.95rem;
+  }
+  .cs-hero-eyebrow {
+    font-size: 0.56rem;
+    color: rgba(239,236,230,0.76);
+  }
+  .cs-hero-title {
+    font-size: clamp(1.85rem, 7.4vw, 2.45rem);
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    max-width: 10.5ch;
+  }
+  .cs-hero-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem 0.5rem;
+    max-width: 360px;
+  }
+  .cs-hero-meta-item {
+    gap: 0.12rem;
+  }
+  .cs-hero-meta-item:last-child {
+    grid-column: 1 / -1;
+  }
+  .cs-hero-meta-key {
+    font-size: 0.54rem;
+    color: rgba(239,236,230,0.44);
+  }
+  .cs-hero-meta-val {
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+  .cs-hero-showcase {
+    border-radius: 0;
+    margin-top: 0.15rem;
+    max-width: 100%;
+  }
+  .cs-section {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.75rem var(--pad-x);
+    text-align: center;
+  }
+  .cs-section-head {
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cs-section-label {
+    text-align: center;
+    font-size: 0.56rem;
+  }
+  .cs-section-heading {
+    font-size: clamp(1.35rem, 5.4vw, 1.6rem);
+    line-height: 1.08;
+  }
+  .cs-section-body {
+    max-width: 34ch;
+    margin-inline: auto;
+    font-size: 0.84rem;
+    line-height: 1.58;
+  }
+  .cs-section-body p:first-child {
+    font-size: 0.98rem;
+    line-height: 1.34;
+    color: rgba(239,236,230,0.95);
+    letter-spacing: -0.02em;
+  }
+  .cs-section-body p:last-child {
+    color: rgba(239,236,230,0.62);
+  }
+  .cs-section-image {
+    padding: 1.15rem var(--pad-x) 1.8rem;
+  }
+  .cs-section-image .cs-section-label {
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  .cs-img-full,
+  .cs-img-contain {
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .cs-tools-bar {
+    justify-content: center;
+    text-align: center;
+    gap: 0.55rem;
+    padding: 1.2rem var(--pad-x) 1.8rem;
+  }
+  .cs-tools-label {
+    margin-right: 0;
+    width: 100%;
+    font-size: 0.56rem;
+  }
+  .cs-tools-pills {
+    justify-content: center;
+  }
 }
 .cs-tools-label { color: var(--fg-mute); flex-shrink: 0; margin-right: var(--s2); }
 .cs-tools-pills { display: flex; flex-wrap: wrap; gap: 0.55rem 0.8rem; align-items: baseline; }
@@ -1118,7 +1483,7 @@ footer p {
 .proj-nav-btn {
   background: none; border: none;
   font-family: 'Inter', sans-serif;
-  font-size: var(--t-label); letter-spacing: 0.16em; text-transform: uppercase;
+  font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--fg-soft);
   display: inline-flex; align-items: center; gap: 0.55rem;
   transition: color 0.2s ease, opacity 0.2s ease;
@@ -1285,7 +1650,7 @@ footer p {
   .footer-links { justify-content: center; }
 
   /* Improved mobile navigation */
-  nav { padding: 0.75rem var(--pad-x); }
+  nav { padding: 0.75rem var(--nav-pad-x); }
   .nav-logo img { height: 40px; }
   .hamburger { width: 40px; height: 40px; display: flex; }
   .mobile-menu { 
@@ -1333,7 +1698,7 @@ footer p {
   .lang-btn { min-height: 44px; padding: 0.5rem 1rem; border-radius: 8px; }
   
   /* Better mobile typography */
-  .hero-title { font-size: clamp(2rem, 8vw, 3.5rem); line-height: 0.9; }
+  .hero-title { font-size: clamp(2.25rem, 11vw, 3.9rem); line-height: 0.94; }
   .contact-heading { font-size: clamp(1.25rem, 5vw, 2rem); line-height: 1.1; }
   .service-name { font-size: clamp(0.9rem, 4vw, 1.2rem); }
   .about-title { font-size: clamp(1.5rem, 6vw, 2.5rem); }
@@ -1365,7 +1730,7 @@ footer p {
 }
 
 @media (max-width: 390px) {
-  .hero-title { font-size: clamp(1.75rem, 10vw, 3rem); line-height: 0.95; }
+  .hero-title { font-size: clamp(2rem, 12vw, 3.2rem); line-height: 0.96; }
   
   /* Extra small screen optimizations */
   .nav-logo img { height: 32px; }
@@ -1411,7 +1776,8 @@ footer p {
   --about-line: rgba(255,255,255,0.1);
   --about-hover: rgba(255,255,255,0.05);
   --about-accent: #ffffff;
-  --about-grad: linear-gradient(180deg, #ffffff 0%, #cccccc 100%);
+  --about-grad: linear-gradient(180deg, #ffffff 0%, #d2cbc0 100%);
+  --about-grad-soft: linear-gradient(180deg, rgba(246,243,236,0.96) 0%, rgba(201,196,184,0.72) 100%);
 }
 
 #about-main .about-card-main {
@@ -1432,13 +1798,22 @@ footer p {
   background-clip: text;
 }
 
-#about-main .about-subtitle,
+#about-main .about-subtitle {
+  background: var(--about-grad-soft);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 #about-main .about-para {
   color: var(--about-fg-soft);
 }
 
 #about-main .stat-number {
-  color: var(--about-accent);
+  background: var(--about-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 #about-main .stat-label,
@@ -1448,6 +1823,10 @@ footer p {
 
 #about-main .info-val {
   color: var(--about-fg);
+  background: var(--about-grad-soft);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 #about-main .info-row {
@@ -1722,11 +2101,29 @@ footer p {
   <h1 class="hero-title">
     <span data-en="VUX<br><em>DZN</em>" data-sr="VUX<br><em>DZN</em>">VUX<br><em>DZN</em></span>
   </h1>
-  <p class="hero-lede" data-en="Brand identities, motion graphics and visual systems for gaming, online creators and businesses that refuse to blend in." data-sr="Brend identiteti, motion grafika i vizuelni sistemi za gaming, online kreatore i biznise koji odbijaju da se uklope.">Brand identities, motion graphics and visual systems for gaming, online creators and businesses that refuse to blend in.</p>
+  <p class="hero-lede" data-en="Identity systems, social visuals and motion for gaming brands, creators and businesses that want to look expensive before they say a word." data-sr="Sistemi identiteta, social vizuali i motion za gaming brendove, kreatore i biznise koji žele da izgledaju ozbiljno pre nego što išta kažu.">Identity systems, social visuals and motion for gaming brands, creators and businesses that want to look expensive before they say a word.</p>
+  <div class="hero-actions">
+    <a href="#work" class="hero-cta" data-en="View selected work" data-sr="Pogledaj radove">View selected work</a>
+    <a href="#contact" class="hero-ghost" data-en="Start a project" data-sr="Pokreni projekat">Start a project</a>
+  </div>
+  <div class="hero-proof">
+    <div class="hero-proof-item">
+      <span class="hero-proof-label" data-en="Built for" data-sr="Za">Built for</span>
+      <p class="hero-proof-copy" data-en="Gaming brands, online creators and modern service businesses." data-sr="Gaming brendove, online kreatore i moderne biznise usluga.">Gaming brands, online creators and modern service businesses.</p>
+    </div>
+    <div class="hero-proof-item">
+      <span class="hero-proof-label" data-en="Deliverables" data-sr="Isporuke">Deliverables</span>
+      <p class="hero-proof-copy" data-en="Logo systems, social kits, banners, highlight sets and motion assets." data-sr="Logo sistemi, social kitovi, baneri, highlight setovi i motion asseti.">Logo systems, social kits, banners, highlight sets and motion assets.</p>
+    </div>
+    <div class="hero-proof-item">
+      <span class="hero-proof-label" data-en="Approach" data-sr="Pristup">Approach</span>
+      <p class="hero-proof-copy" data-en="Built from scratch, designed to read fast and hold up across every format." data-sr="Građeno od nule, dizajnirano da se brzo čita i da radi u svakom formatu.">Built from scratch, designed to read fast and hold up across every format.</p>
+    </div>
+  </div>
   <div class="hero-foot">
     <span class="hero-available">
       <span class="dot"></span>
-      <span data-en="Available for new work — 2026" data-sr="Dostupan za nove projekte — 2026">Available for new work — 2026</span>
+      <span data-en="Currently booking new projects" data-sr="Trenutno primam nove projekte">Currently booking new projects</span>
     </span>
     <a href="#work" class="hero-scroll" data-en="Index of work ↓" data-sr="Pregled radova ↓">Index of work ↓</a>
   </div>
@@ -1747,8 +2144,8 @@ footer p {
       </div>
       <div class="about-card-body">
         <div class="about-read-more-wrap">
-          <p class="about-para" data-en="A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated." data-sr="Studio od jednog čoveka, posvećen vizuelnim sistemima koji deluju neizbežno. Radim sa gaming brendovima, online kreatorima i biznisima koji žele da izgledaju ozbiljno — nikada generički, nikada po šablonu.">A studio of one, focused on visual systems that feel inevitable. I work primarily with gaming brands, online creators and businesses that want to look sharp and be taken seriously — never generic, never templated.</p>
-          <p class="about-para about-para-extra" data-en="Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale." data-sr="Svaki projekat se gradi od nule, oko onoga što brend stvarno treba. Identitet, motion i sistemi za društvene mreže projektovani su da budu odmah čitljivi i da rade u svakoj veličini.">Every project is built from scratch around what the brand actually needs. Identity, motion and social systems are designed to read instantly and hold up at any scale.</p>
+          <p class="about-para" data-en="Independent designer building identity, motion and social systems that make brands feel sharper, more intentional and easier to trust." data-sr="Nezavisni dizajner koji gradi identitet, motion i social sisteme tako da brend izgleda oštrije, promišljenije i ozbiljnije.">Independent designer building identity, motion and social systems that make brands feel sharper, more intentional and easier to trust.</p>
+          <p class="about-para about-para-extra" data-en="Most clients come for a logo, then stay for the full rollout: banners, posts, highlight covers, motion and the small details that make everything feel connected." data-sr="Većina klijenata dođe zbog logotipa, a ostane zbog kompletnog sistema: banera, postova, highlight covera, motiona i sitnih detalja koji sve povežu u celinu.">Most clients come for a logo, then stay for the full rollout: banners, posts, highlight covers, motion and the small details that make everything feel connected.</p>
         </div>
         <button class="about-read-more-btn" id="aboutReadMoreBtn" onclick="toggleAboutReadMore()" aria-expanded="false">
           <span class="about-read-more-label" data-en="Read more" data-sr="Pročitaj više">Read more</span>
@@ -1763,7 +2160,7 @@ footer p {
       <div class="about-stats-grid">
         <div class="stat-item">
           <span class="stat-number" data-en="4" data-sr="4">4</span>
-          <span class="stat-label" data-en="Selected projects" data-sr="Izabrana projekta">Selected projects</span>
+          <span class="stat-label" data-en="Case studies" data-sr="Studije slučaja">Case studies</span>
         </div>
         <div class="stat-item">
           <span class="stat-number" data-en="2" data-sr="2">2</span>
@@ -1796,7 +2193,7 @@ footer p {
 <section id="work">
   <div class="shop-header fade-up">
     <span class="eyebrow" data-en="Selected work — 2024 / 2026" data-sr="Izabrani radovi — 2024 / 2026">Selected work — 2024 / 2026</span>
-    <span class="eyebrow" data-en="Four projects" data-sr="Četiri projekta">Four projects</span>
+    <span class="eyebrow" data-en="Four case studies" data-sr="Četiri studije slučaja">Four case studies</span>
   </div>
 
   <div class="shop-grid" id="projectGrid">
@@ -1881,26 +2278,26 @@ footer p {
 
       <div class="service-card">
         <span class="service-num">01</span>
-        <h3 class="service-name" data-en="Brand identity for gaming and online brands" data-sr="Brend identitet za gaming i online brendove">Brand identity for gaming and online brands</h3>
-        <p class="service-desc" data-en="Logos, color systems and visual identity built to stand out in competitive spaces." data-sr="Logotipi, sistemi boja i vizuelni identitet napravljeni da se istaknu u konkurentnom prostoru.">Logos, color systems and visual identity built to stand out in competitive spaces.</p>
+        <h3 class="service-name" data-en="Identity systems" data-sr="Sistemi identiteta">Identity systems</h3>
+        <p class="service-desc" data-en="For brands that need more than a logo: naming direction, marks, typography, color and a system that stays consistent everywhere." data-sr="Za brendove kojima treba više od logotipa: pravac, znak, tipografija, boje i sistem koji ostaje dosledan svuda.">For brands that need more than a logo: naming direction, marks, typography, color and a system that stays consistent everywhere.</p>
       </div>
 
       <div class="service-card">
         <span class="service-num">02</span>
-        <h3 class="service-name" data-en="Social media visuals" data-sr="Vizuali za društvene mreže">Social media visuals</h3>
-        <p class="service-desc" data-en="Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks." data-sr="Postovi, thumbnailovi i baneri koji zaustavljaju skrolovanje i povećavaju klikove.">Scroll-stopping posts, thumbnails and banners designed to boost attention and clicks.</p>
+        <h3 class="service-name" data-en="Social launch kits" data-sr="Social launch kitovi">Social launch kits</h3>
+        <p class="service-desc" data-en="Banners, post systems, thumbnails and highlight covers designed to make your rollout look planned, not improvised." data-sr="Baneri, sistemi postova, thumbnailovi i highlight coveri napravljeni da lansiranje izgleda planirano, a ne improvizovano.">Banners, post systems, thumbnails and highlight covers designed to make your rollout look planned, not improvised.</p>
       </div>
 
       <div class="service-card">
         <span class="service-num">03</span>
-        <h3 class="service-name" data-en="Motion graphics and intros" data-sr="Motion grafika i intra">Motion graphics and intros</h3>
-        <p class="service-desc" data-en="Animated logos, transitions and visuals that bring your brand to life." data-sr="Animirani logotipi, tranzicije i vizuali koji oživljavaju vaš brend.">Animated logos, transitions and visuals that bring your brand to life.</p>
+        <h3 class="service-name" data-en="Motion add-ons" data-sr="Motion dodaci">Motion add-ons</h3>
+        <p class="service-desc" data-en="Animated logos, transitions and short-form motion pieces that give the brand a stronger presence on video and Discord-heavy platforms." data-sr="Animirani logotipi, tranzicije i kratki motion elementi koji daju jače prisustvo na videu i platformama poput Discorda.">Animated logos, transitions and short-form motion pieces that give the brand a stronger presence on video and Discord-heavy platforms.</p>
       </div>
 
       <div class="service-card">
         <span class="service-num">04</span>
-        <h3 class="service-name" data-en="Content packs" data-sr="Content paketi">Content packs</h3>
-        <p class="service-desc" data-en="Logo, social kit, motion and brand assets bundled into a single ready-to-launch package." data-sr="Logo, social kit, motion i brendirani materijali u jednom paketu spremnom za lansiranje.">Logo, social kit, motion and brand assets bundled into a single ready-to-launch package.</p>
+        <h3 class="service-name" data-en="Project scope" data-sr="Obim projekta">Project scope</h3>
+        <p class="service-desc" data-en="Best fit for clients who want a focused identity sprint, a social refresh or a compact package ready to ship fast." data-sr="Najbolji izbor za klijente kojima treba fokusirani identity sprint, social refresh ili kompaktan paket spreman za brzo lansiranje.">Best fit for clients who want a focused identity sprint, a social refresh or a compact package ready to ship fast.</p>
       </div>
 
       <p class="tools-header eyebrow" data-en="Tools" data-sr="Alati">Tools</p>
@@ -1909,7 +2306,6 @@ footer p {
         <span class="tool-tag">Illustrator</span>
         <span class="tool-tag">After Effects</span>
         <span class="tool-tag">Blender</span>
-        <span class="tool-tag">Premiere Pro</span>
       </div>
     </div>
   </section>
@@ -1919,7 +2315,8 @@ footer p {
 <section id="contact">
   <div class="contact-left fade-up">
     <p class="contact-label eyebrow" data-en="Contact" data-sr="Kontakt">Contact</p>
-    <h2 class="contact-heading" data-en="Let's make something deliberate." data-sr="Hajde da napravimo nešto promišljeno.">Let's make something deliberate.</h2>
+    <h2 class="contact-heading" data-en="Tell me what needs to look sharper." data-sr="Reci mi šta treba da izgleda oštrije.">Tell me what needs to look sharper.</h2>
+    <p class="contact-copy" data-en="If you already know the project type, timeline or platform, include it. A short brief is enough to start the conversation." data-sr="Ako već znaš tip projekta, rok ili platformu, napiši to. Kratak brief je sasvim dovoljan za početak razgovora.">If you already know the project type, timeline or platform, include it. A short brief is enough to start the conversation.</p>
     <a href="mailto:hello@vuxdzn.art" class="contact-email">hello@vuxdzn.art</a>
   </div>
   <div class="contact-right fade-up">
@@ -1938,7 +2335,7 @@ footer p {
       </div>
       <div class="form-submit">
         <button type="submit" class="submit-btn" data-en="Send message" data-sr="Pošalji">Send message</button>
-        <p class="submit-note" data-en="Usually reply within 24h" data-sr="Obično odgovaram u 24h">Usually reply within 24h</p>
+        <p class="submit-note" data-en="Usually reply within 24 hours" data-sr="Obično odgovaram u roku od 24h">Usually reply within 24 hours</p>
       </div>
     </form>
   </div>
@@ -1948,7 +2345,8 @@ footer p {
 <footer>
   <p data-en="© 2026 VuxDZN — Serbia" data-sr="© 2026 VuxDZN — Srbija">© 2026 VuxDZN — Serbia</p>
   <div class="footer-links">
-    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:hello@vuxdzn.art">hello@vuxdzn.art</a>
+    <a href="#" data-en="Back to top" data-sr="Nazad na vrh">Back to top</a>
   </div>
 </footer>
 
@@ -2016,7 +2414,6 @@ footer p {
           <span class="tool-tag">Illustrator</span>
           <span class="tool-tag">After Effects</span>
           <span class="tool-tag">Blender</span>
-          <span class="tool-tag">Premiere Pro</span>
           <span class="tool-tag">Figma</span>
         </div>
       </div>
@@ -2049,17 +2446,23 @@ footer p {
     <span class="proj-detail-tag" id="detailTag">01 / 06</span>
   </div>
 
-  <!-- HERO -->
+  <!-- BLURRED BACKGROUND (absolutely positioned, covers entire overlay) -->
   <div class="cs-hero" id="csHero"></div>
 
-  <!-- META LINE -->
-  <div class="cs-meta-row" id="csMetaRow"></div>
+  <!-- SCROLLABLE CONTENT -->
+  <div class="cs-content" id="csContent">
 
-  <!-- BODY: Overview / Challenge / Direction / Process / Results -->
-  <div id="csBody"></div>
+    <!-- META LINE -->
+    <div class="cs-meta-row" id="csMetaRow"></div>
 
-  <!-- PREV / NEXT -->
-  <div class="proj-detail-nav">
+    <!-- HERO OVERLAY (title, meta, showcase image) -->
+    <div id="csHeroContent"></div>
+
+    <!-- BODY: Overview / Challenge / Direction / Process / Results -->
+    <div id="csBody"></div>
+
+    <!-- PREV / NEXT -->
+    <div class="proj-detail-nav">
     <button class="proj-nav-btn" id="prevProjBtn" onclick="navigateDetail(-1)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"></polyline>
@@ -2072,9 +2475,11 @@ footer p {
         <polyline points="9 18 15 12 9 6"></polyline>
       </svg>
     </button>
-  </div>
+    </div><!-- /.proj-detail-nav -->
 
-</div>
+  </div><!-- /.cs-content -->
+
+</div><!-- /.proj-detail-overlay -->
 
 <script>
   // lang
@@ -2151,6 +2556,17 @@ footer p {
       descSr: 'Problem, GTA boost servis izgubljen među konkurencijom.\nRešenje, Ulični brend sistem koji deluje legitimno i udara jako.',
       storyEn: 'The brief was credibility at a glance: players scroll fast, compare offers in seconds, and bounce if anything feels generic. I leaned into high-contrast street signage, gritty texture, and “system” layouts that echo in-game HUD language, then tightened the hierarchy so cash, rank, and proof-of-service read instantly on both desktop banners and phone-first promos. Motion pieces were storyboarded like short trailers so the brand could flex in Discord and short-form cuts without losing the mark.',
       storySr: 'Brief je bio poverenje na prvi pogled: igrači brzo skroluju, porede ponude za sekunde i odlaze ako sve deluje generički. Oslonio sam se na visok kontrast uličnog vizuelnog jezika, zrnatu teksturu i rasporede koji podsećaju na HUD iz igre, zatim sam doterao hijerarhiju da novac, rank i dokaz usluge budu odmah čitljivi na desktop banerima i mobilnim promocijama. Motion je planiran kao kratki trejleri da brend može da „šika“ na Discordu i u kratkim video formatima bez gubitka znaka.',
+      detailTheme: {
+        glow1: 'rgba(0,0,0,0)',
+        glow2: 'rgba(0,0,0,0)',
+        bgTop: 'rgba(6,7,8,0.98)',
+        bgMid: 'rgba(6,7,8,0.98)',
+        bgDeep: 'rgba(6,7,8,1)',
+        heroGlow1: 'rgba(0,0,0,0)',
+        heroGlow2: 'rgba(0,0,0,0)',
+        heroTop: 'rgba(6,7,8,0.88)',
+        heroMid: 'rgba(6,7,8,0.92)'
+      },
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776717740/pngpng_mspfam.png',
       tools: ['Photoshop', 'Blender', 'After Effects'],
       images: [
@@ -2175,6 +2591,17 @@ footer p {
       descSr: 'Problem, Brend u razvoju bez ujedinjenog vizuelnog sistema.\nRešenje, Čist logo i vizuelni jezik koji je dosledan svuda.',
       storyEn: 'Started from spacing — generous margins, restrained palette, wordmark that reads clean at favicon size. Sequenced like a real launch: hero first, then highlights and menu layout. Ready to roll out week one.',
       storySr: 'JMFade je tražio miran, „barbershop“ osećaj koji i dalje deluje premium na telefonu. Krenuo sam od razmaka: široki margine, suzdržana paleta i wordmark koji je čitljiv i kao favicon. Isporuke su bile poredane kao pravo lansiranje, prvo hero baner, zatim highlight postovi i raspored cenovnika, da klijent može da uvodi bezikonskog redizajna svake nedelje.',
+      detailTheme: {
+        glow1: 'rgba(217,196,166,0.17)',
+        glow2: 'rgba(103,90,74,0.12)',
+        bgTop: 'rgba(24,21,18,0.98)',
+        bgMid: 'rgba(13,11,10,0.98)',
+        bgDeep: 'rgba(8,8,8,1)',
+        heroGlow1: 'rgba(221,201,171,0.24)',
+        heroGlow2: 'rgba(116,102,82,0.14)',
+        heroTop: 'rgba(28,24,20,0.96)',
+        heroMid: 'rgba(12,11,10,0.94)'
+      },
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776722292/jm_white_iueag6.png',
       tools: ['Adobe Illustrator', 'Photoshop', 'Figma'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/bnr_xrtscu.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716759/JM_FADE_HIGHLIGHT_2_g3nxyh.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto,f_auto/q_auto,f_auto/v1776716758/JM_FADE_CENOVNIK_1_kfj21g.png'],
@@ -2195,7 +2622,19 @@ footer p {
       descSr: 'Problem, Logistički brend bez vizuelnog identiteta koji prati njegove ambicije.\nRešenje, Čist, samouveren brend sistem izgrađen oko motion dizajna i snažne tipografije.',
       storyEn: 'Forwarding demands clarity and speed. The identity leans into geometric precision — sharp angles, a neutral palette cut with a single accent — so the brand reads instantly whether it\'s on a banner, a highlight set, or compressed down to a small logo lockup.',
       storySr: 'Forwarding zahteva jasnoću i brzinu. Identitet se oslanja na geometrijsku preciznost — oštri uglovi, neutralna paleta presečena jednim akcentom — tako da se brend odmah čita, bilo da je na baneru, highlight setu ili smanjenom logo locku.',
+      detailTheme: {
+        glow1: 'rgba(50,139,255,0.24)',
+        glow2: 'rgba(29,72,170,0.16)',
+        bgTop: 'rgba(8,20,40,0.98)',
+        bgMid: 'rgba(7,11,22,0.98)',
+        bgDeep: 'rgba(6,7,12,1)',
+        heroGlow1: 'rgba(70,160,255,0.34)',
+        heroGlow2: 'rgba(26,66,160,0.20)',
+        heroTop: 'rgba(10,24,48,0.96)',
+        heroMid: 'rgba(8,11,22,0.94)'
+      },
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329985/logos_nf_cyemvz.png',
+      bgImage: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778330947/bnr_cjk536.png',
       tools: ['Illustrator', 'Photoshop', 'After Effects'],
       images: [
         'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1778329996/banner_nf_keiwcg.png',
@@ -2220,6 +2659,17 @@ footer p {
       descSr: 'Problem, Odlični fotografski radovi, bez brenda koji ih prati.\nRešenje, Premium identitet sa logom i banerima koji odražavaju zanat.',
       storyEn: 'Photography brands win on restraint: fewer gimmicks, more editorial spacing. Here the story is “quiet luxury”, soft neutrals, precise type rhythm, and banners that feel like magazine spreads rather than loud promos. Social templates were designed so photos stay the hero: frames, not fights, with the mark anchoring corners instead of screaming center stage.',
       storySr: 'Fotografski brendovi pobeđuju suzdržanošću: manje trikova, više editorial razmaka. Priča ovde je „tiha luksuznost“, meki neutrali, precizan ritam tipografije i baneri koji deluju kao magazinski spreadovi, a ne kao vikaći promo. Šabloni za mreže su urađeni tako da fotografija ostane heroj: ramovi, a ne borba, sa znakom koji sidri uglove umesto da vrišti iz centra.',
+      detailTheme: {
+        glow1: 'rgba(201,180,150,0.18)',
+        glow2: 'rgba(110,96,82,0.12)',
+        bgTop: 'rgba(23,21,19,0.98)',
+        bgMid: 'rgba(12,11,10,0.98)',
+        bgDeep: 'rgba(8,8,8,1)',
+        heroGlow1: 'rgba(214,194,164,0.24)',
+        heroGlow2: 'rgba(112,98,84,0.14)',
+        heroTop: 'rgba(26,23,20,0.96)',
+        heroMid: 'rgba(12,11,10,0.94)'
+      },
       logo: 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894710/lp_png_anhabh.png',
       tools: ['Photoshop', 'Illustrator'],
       images: ['https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776892525/bnr_vux_lp_bjrion.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776894767/post_lp_2.0_ngjonx.png', 'https://res.cloudinary.com/dxetzmj1i/image/upload/q_auto/f_auto/v1776895161/bnr_g1hll3.png'],
@@ -2297,6 +2747,29 @@ footer p {
     const p = projects[idx];
     const isEn = (lang === 'en');
     const t = (en, sr) => isEn ? en : sr;
+    const overlay = document.getElementById('projDetailOverlay');
+    const existingBg = overlay.querySelector('.proj-detail-page-bg');
+    if (existingBg) existingBg.remove();
+    if (p.detailBackdrop) {
+      const bgImg = document.createElement('img');
+      bgImg.className = 'proj-detail-page-bg';
+      bgImg.src = p.detailBackdrop;
+      bgImg.alt = '';
+      bgImg.setAttribute('aria-hidden', 'true');
+      overlay.prepend(bgImg);
+    }
+    const theme = p.detailTheme || {};
+    overlay.classList.remove('has-project-image');
+    overlay.style.setProperty('--proj-page-image', 'none');
+    overlay.style.setProperty('--proj-glow-1', theme.glow1 || 'rgba(51,102,255,0.24)');
+    overlay.style.setProperty('--proj-glow-2', theme.glow2 || 'rgba(22,48,145,0.16)');
+    overlay.style.setProperty('--proj-bg-top', theme.bgTop || 'rgba(10,18,46,0.98)');
+    overlay.style.setProperty('--proj-bg-mid', theme.bgMid || 'rgba(7,10,20,0.98)');
+    overlay.style.setProperty('--proj-bg-deep', theme.bgDeep || 'rgba(6,7,12,1)');
+    overlay.style.setProperty('--proj-hero-glow-1', theme.heroGlow1 || 'rgba(57,101,255,0.36)');
+    overlay.style.setProperty('--proj-hero-glow-2', theme.heroGlow2 || 'rgba(21,44,135,0.22)');
+    overlay.style.setProperty('--proj-hero-top', theme.heroTop || 'rgba(10,18,46,0.96)');
+    overlay.style.setProperty('--proj-hero-mid', theme.heroMid || 'rgba(8,10,18,0.94)');
 
     // ── NAV TAG
     const total = String(projects.length).padStart(2, '0');
@@ -2305,48 +2778,70 @@ footer p {
     // ── HERO
     const csHero = document.getElementById('csHero');
     csHero.innerHTML = '';
+    const csHeroContent = document.getElementById('csHeroContent');
+    csHeroContent.innerHTML = '';
     const heroImg = (p.images && p.images.length > 0) ? p.images[0] : null;
     const titleHTML = csEscape(t(p.titleEn, p.titleSr));
-    const heroEyebrow = `${csEscape(t(p.catEn, p.catSr))} &nbsp;·&nbsp; ${csEscape(p.year)}`;
+    const metaRow = document.getElementById('csMetaRow');
+    metaRow.innerHTML = '';
 
-    if (p.video && (!p.images || p.images.length === 0)) {
-      csHero.innerHTML = `
-        <video class="cs-hero-video" autoplay loop muted playsinline>
-          <source src="${csEscape(p.video)}" type="video/mp4">
-        </video>
-        <div class="cs-hero-overlay">
-          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
-          <h2 class="cs-hero-title">${titleHTML}</h2>
-        </div>`;
-    } else if (heroImg) {
-      csHero.innerHTML = `
-        <img class="cs-hero-img" src="${csEscape(heroImg)}" alt="${csEscape(t(p.titleEn, p.titleSr))}" onload="this.classList.add('loaded')">
-        <div class="cs-hero-overlay">
-          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
-          <h2 class="cs-hero-title">${titleHTML}</h2>
-        </div>`;
-    } else {
-      csHero.innerHTML = `
-        <div class="cs-hero-plain">
-          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
-          <h2 class="cs-hero-title">${titleHTML}</h2>
-        </div>`;
+    const heroEyebrow = csEscape(t('Case Study', 'Studija Slučaja'));
+    const heroMetaItems = [
+      { k: t('Category', 'Kategorija'), v: t(p.catEn, p.catSr) },
+      { k: t('Year', 'Godina'), v: p.year || '—' },
+      { k: t('Client', 'Klijent'), v: p.client || '—' },
+      { k: t('Services', 'Usluge'), v: (p.tools && p.tools.length ? p.tools.slice(0, 2).join(', ') : t('Brand Identity', 'Brend Identitet')) }
+    ];
+    const heroMetaHTML = `
+      <div class="cs-hero-meta">
+        ${heroMetaItems.map(m => `
+          <div class="cs-hero-meta-item">
+            <span class="cs-hero-meta-key">${csEscape(m.k)}</span>
+            <span class="cs-hero-meta-val">${csEscape(m.v)}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    // Blurred bg image always goes into the absolute cs-hero layer
+    const bgSrc = p.bgImage || heroImg;
+    if (bgSrc) {
+      csHero.innerHTML = `<img class="cs-hero-bg" src="${csEscape(bgSrc)}" alt="">`;
+    } else if (p.video) {
+      csHero.innerHTML = `<video class="cs-hero-video" autoplay loop muted playsinline><source src="${csEscape(p.video)}" type="video/mp4"></video>`;
     }
 
-    // ── META LINE
-    const metaRow = document.getElementById('csMetaRow');
-    const metaItems = [
-      { k: t('Category', 'Kategorija'), v: t(p.catEn, p.catSr) },
-      { k: t('Client',   'Klijent'),    v: p.client || '—' },
-      { k: t('Year',     'Godina'),     v: p.year },
-      { k: t('Status',   'Status'),     v: t(p.statusEn || 'Completed', p.statusSr || 'Završeno') }
-    ];
-    metaRow.innerHTML = metaItems.map(m => `
-      <span class="cs-meta-cell">
-        <span class="cs-meta-key">${csEscape(m.k)}</span>
-        <span class="cs-meta-val">${csEscape(m.v)}</span>
-      </span>
-    `).join('');
+    // Scrollable hero content goes into cs-content > csHeroContent
+    if (p.video && (!p.images || p.images.length === 0)) {
+      csHeroContent.innerHTML = `
+        <div class="cs-hero-overlay">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+          ${heroMetaHTML}
+          <div class="cs-hero-showcase">
+            <video autoplay loop muted playsinline controls>
+              <source src="${csEscape(p.video)}" type="video/mp4">
+            </video>
+          </div>
+        </div>`;
+    } else if (heroImg) {
+      csHeroContent.innerHTML = `
+        <div class="cs-hero-overlay">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+          ${heroMetaHTML}
+          <div class="cs-hero-showcase">
+            <img src="${csEscape(heroImg)}" alt="${csEscape(t(p.titleEn, p.titleSr))}" onload="this.classList.add('loaded')">
+          </div>
+        </div>`;
+    } else {
+      csHeroContent.innerHTML = `
+        <div class="cs-hero-overlay">
+          <p class="cs-hero-eyebrow">${heroEyebrow}</p>
+          <h2 class="cs-hero-title">${titleHTML}</h2>
+          ${heroMetaHTML}
+        </div>`;
+    }
 
     // ── BODY (Overview / Direction / Process / Supporting / Results / Tools)
     const body = document.getElementById('csBody');
@@ -2495,7 +2990,7 @@ footer p {
   // ─── FEATURED CAROUSEL ──────────────────────────────────────────
 
   // ─── LOAD MORE ───────────────────────────────────────────────────
-  const VISIBLE_DEFAULT = 6;
+  const VISIBLE_DEFAULT = 4;
   const LOAD_STEP = 3;
   const allCards = Array.from(document.querySelectorAll('.project-card[data-index]'));
 
